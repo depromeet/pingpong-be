@@ -1,1 +1,5 @@
 rootProject.name = 'winwin'
+include 'winwin-be-domain'
+include 'winwin-be-chatting'
+include 'winwin-be-api'
+include 'winwin-be-common'

@@ -3,7 +3,7 @@ server:
 
 spring:
   jpa:
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    database-platform: org.hibernate.dialect.MySQL8Dialect
     open-in-view: false
     hibernate:
       ddl-auto: create

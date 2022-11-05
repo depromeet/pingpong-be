@@ -1,6 +1,5 @@
-package com.dpm.winwin.domain.entity.category;
+package com.dpm.winwin.domain.entity.chat;
 
-import com.dpm.winwin.domain.entity.post.Post;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,25 +9,29 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class MainCategory {
+public class ChatMessage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private Long senderId;
 
     @Column(nullable = false)
-    private String image;
+    private Long receiverId;
 
-    @OneToMany(mappedBy = "mainCategory")
-    private List<Post> posts = new ArrayList<>();
+    @Column(nullable = false)
+    private String content;
+
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
+
+    @Column(nullable = false)
+    private boolean isRead;
 }

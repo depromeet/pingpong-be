@@ -40,3 +40,4 @@ out/
 .DS_Store
 .AppleDouble
 .LSOverride
+/winwin-be-domain/src/main/generated/

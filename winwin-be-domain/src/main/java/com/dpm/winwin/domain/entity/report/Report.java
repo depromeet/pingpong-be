@@ -1,4 +1,4 @@
-package com.dpm.winwin.domain.entity.post;
+package com.dpm.winwin.domain.entity.report;
 
 import com.dpm.winwin.domain.entity.BaseEntity;
 import javax.persistence.Entity;
@@ -7,7 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class PostGoal extends BaseEntity {
+public class Report extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

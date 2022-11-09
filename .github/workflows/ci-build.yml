@@ -38,3 +38,15 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew build
+
+      - name: jar file check
+        run: |
+          echo "========"
+          pwd
+          ls -al
+          cd ./winwin-be-api
+          ls -al
+          cat dockerfile
+          cd ./build/libs
+          ls -al
+

@@ -1,4 +1,4 @@
-package com.dpm.winwin.api.config;
+package com.dpm.winwin.domain.config;
 
 import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;

@@ -26,6 +26,7 @@ dependencies {
     implementation 'mysql:mysql-connector-java:8.0.31'
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
     annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
+    implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4'
 }
 
 def querydslDir = "src/main/generated/querydsl"

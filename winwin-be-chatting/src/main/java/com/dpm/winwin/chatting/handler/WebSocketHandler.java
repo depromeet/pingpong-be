@@ -15,7 +15,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String payload = message.getPayload();
-        log.info("{}", payload);
+        log.info("payload : {}", payload);
 
         /**
          * 이 부분에 chatService 구현되면 메시지를 알맞은 채팅방에 보내주는 작업 추가

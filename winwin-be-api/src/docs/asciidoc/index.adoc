@@ -1,0 +1,23 @@
+ifndef::snippets[]
+:snippets: build/generated-snippets
+endif::[]
+
+= PingPong API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+
+[[RestDocs-Test]]
+== RestDocs Test
+
+=== http-request
+include::{snippets}/restdocs-test/http-request.adoc[]
+
+=== response-body
+include::{snippets}/restdocs-test/response-body.adoc[]
+
+=== http-response
+include::{snippets}/restdocs-test/http-response.adoc[]

@@ -41,3 +41,6 @@ out/
 .AppleDouble
 .LSOverride
 /winwin-be-domain/src/main/generated/
+
+### RestDocs ###
+BOOT-INF

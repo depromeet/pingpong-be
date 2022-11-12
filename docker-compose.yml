@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+  winwin-api:
+    platform: linux/amd64
+    image: hpwh4457/winwin:latest
+    container_name: winwin-api
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=local"
+    env_file:
+      - spring.env
+  winwin-chat:
+    platform: linux/amd64
+    image: hpwh4457/winwin-chat:latest
+    container_name: winwin-chat
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=local"
+    env_file:
+      - spring.env
+

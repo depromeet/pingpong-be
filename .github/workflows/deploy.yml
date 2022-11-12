@@ -7,7 +7,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    env :
+    env:
       working-directory: ./
       APPLICATION: ${{ secrets.APPLICATION }}
 
@@ -19,16 +19,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-
-      - name : create application yaml
-        run: |
-          touch ./src/main/resources/application.yml
-          echo "${{env.APPLICATION}}" > ./src/main/resources/application.yml
-
-      - uses: actions/upload-artifact@v3
-        with:
-          name: application.yml
-          path: ./src/main/resources/application.yml
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
@@ -44,15 +34,26 @@ jobs:
           password: ${{secrets.DOCKER_HUB_TOKEN}}
 
       # 빌드 이미지 만들어 도커허브로 업로드
-      - name: build and release to DockerHub
+      - name: api server build and release to DockerHub
         env:
           NAME: hpwh4457 # DockerHub 계정 명
           IMAGE: winwin # Docker 이미지 이름
           REPO: winwin #  DockerHub 레포 이름
         run: |
-          docker build -t $IMAGE .
+          docker build -t $IMAGE ./winwin-be-api
           docker tag $IMAGE:latest $NAME/$REPO:latest
           docker push $NAME/$REPO:latest
+
+      - name: chatting server build and release to DockerHub
+        env:
+          NAME: hpwh4457 # DockerHub 계정 명
+          IMAGE: winwin-chat # Docker 이미지 이름
+          REPO: winwin-chat #  DockerHub 레포 이름
+        run: |
+          docker build -t $IMAGE ./winwin-be-chatting
+          docker tag $IMAGE:latest $NAME/$REPO:latest
+          docker push $NAME/$REPO:latest         
+
       - name: Github Action to EC2
         uses: appleboy/ssh-action@master
         with:
@@ -61,4 +62,4 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           port: ${{ secrets.EC2_SSH_PORT }}
           script: |
-            /app/deploy.sh
+            /app/deploy2.sh

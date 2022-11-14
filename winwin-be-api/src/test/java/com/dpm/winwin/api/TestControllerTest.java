@@ -3,6 +3,7 @@ package com.dpm.winwin.api;
 import com.dpm.winwin.api.utils.RestDocsTestSupport;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -18,14 +19,16 @@ class TestControllerTest extends RestDocsTestSupport {
     @DisplayName("restdocs 가 성공적으로 작동하는지 테스트한다.")
     void restdocsTest() throws Exception {
         // when
-        ResultActions result = mockMvc.perform(get("/"));
+        ResultActions result = mockMvc.perform(get("/test")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON));
 
         // then
         result.andExpect(status().isOk())
-            .andDo(restDocs.document(
-                responseFields(
-                    fieldWithPath("key").type(JsonFieldType.STRING).description("키 값").attributes(field("constraint", "3자 이내"))
-                )
-            ));
+                .andDo(restDocs.document(
+                        responseFields(
+                                fieldWithPath("key").type(JsonFieldType.STRING).description("키 값").attributes(field("constraint", "3자 이내"))
+                        )
+                ));
     }
 }

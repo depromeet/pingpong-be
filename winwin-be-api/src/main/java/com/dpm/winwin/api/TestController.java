@@ -9,8 +9,8 @@ import java.util.Map;
 @RestController
 public class TestController {
 
-    @GetMapping("/")
+    @GetMapping("/test")
     public ResponseEntity<Map<String, String>> hello() {
-        return ResponseEntity.ok(Map.of("key", "hello"));
+        return ResponseEntity.ok(Map.of("key", "hello-winwin"));
     }
 }

@@ -1,7 +1,7 @@
 package com.dpm.winwin.chatting.common.error.exception;
 
-import com.dpm.winwin.api.common.error.dto.ErrorResponseDto;
-import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
+import com.dpm.winwin.chatting.common.error.dto.ErrorResponseDto;
+import com.dpm.winwin.chatting.common.error.exception.custom.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

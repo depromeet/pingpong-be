@@ -24,4 +24,3 @@ public class RestDocsConfig {
         return new Attribute(key,value);
     }
 }
-

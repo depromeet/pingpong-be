@@ -448,9 +448,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel1">
 <li><a href="#RestDocs-Test">RestDocs Test</a>
 <ul class="sectlevel2">
-<li><a href="#_http_request">http-request</a></li>
-<li><a href="#_response_body">response-body</a></li>
-<li><a href="#_http_response">http-response</a></li>
+<li><a href="#_http_request">HTTP-request</a></li>
+<li><a href="#_http_response">HTTP-response</a></li>
+<li><a href="#_response_body">Response-body</a></li>
+<li><a href="#_response_fields">Response-fields</a></li>
 </ul>
 </li>
 </ul>
@@ -461,7 +462,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="RestDocs-Test"><a class="link" href="#RestDocs-Test">RestDocs Test</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_http_request"><a class="link" href="#_http_request">http-request</a></h3>
+<h3 id="_http_request"><a class="link" href="#_http_request">HTTP-request</a></h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET / HTTP/1.1
@@ -470,17 +471,7 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_response_body"><a class="link" href="#_response_body">response-body</a></h3>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-none hljs">{
-  "key" : "hello"
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_http_response"><a class="link" href="#_http_response">http-response</a></h3>
+<h3 id="_http_response"><a class="link" href="#_http_response">HTTP-response</a></h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
@@ -493,13 +484,53 @@ Content-Length: 23
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_response_body"><a class="link" href="#_response_body">Response-body</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-none hljs">{
+  "key" : "hello"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_response_fields"><a class="link" href="#_response_fields">Response-fields</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">필드</th>
+<th class="tableblock halign-left valign-top">타입</th>
+<th class="tableblock halign-left valign-top">필수값</th>
+<th class="tableblock halign-left valign-top">설명</th>
+<th class="tableblock halign-left valign-top">제한</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">key</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">키 값</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3자 이내</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-11-12 22:56:15 +0900
+Last updated 2022-11-14 12:56:19 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

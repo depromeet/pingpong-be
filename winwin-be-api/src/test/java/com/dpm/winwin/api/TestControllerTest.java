@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
 
+import static com.dpm.winwin.api.utils.RestDocsConfig.field;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -23,7 +24,7 @@ class TestControllerTest extends RestDocsTestSupport {
         result.andExpect(status().isOk())
             .andDo(restDocs.document(
                 responseFields(
-                    fieldWithPath("key").type(JsonFieldType.STRING).description("키 값")
+                    fieldWithPath("key").type(JsonFieldType.STRING).description("키 값").attributes(field("constraint", "3자 이내"))
                 )
             ));
     }

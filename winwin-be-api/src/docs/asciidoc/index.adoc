@@ -13,11 +13,14 @@ endif::[]
 [[RestDocs-Test]]
 == RestDocs Test
 
-=== http-request
+=== HTTP-request
 include::{snippets}/test-controller-test/restdocs-test/http-request.adoc[]
 
-=== response-body
+=== HTTP-response
+include::{snippets}/test-controller-test/restdocs-test/http-response.adoc[]
+
+=== Response-body
 include::{snippets}/test-controller-test/restdocs-test/response-body.adoc[]
 
-=== http-response
-include::{snippets}/test-controller-test/restdocs-test/http-response.adoc[]
+=== Response-fields
+include::{snippets}/test-controller-test/restdocs-test/response-fields.adoc[]

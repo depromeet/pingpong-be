@@ -22,4 +22,3 @@ services:
       - "SPRING_PROFILES_ACTIVE=local"
     env_file:
       - spring.env
-

@@ -12,9 +12,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
   @ExceptionHandler(BusinessException.class)
-  public ResponseEntity<ErrorResponseDto> businessExceptionHandler(BusinessException e) {
+  public ResponseEntity<ErrorResponseDto> businessExceptionHandle(BusinessException e) {
     log.error("businessException : {}", e);
     return ResponseEntity.internalServerError()
         .body(ErrorResponseDto.of(e.getCode(), e.getMessage()));
+  }
+
+  @ExceptionHandler(Exception.class)
+  public ResponseEntity<ErrorResponseDto> allUncaughtHandle(Exception e) {
+    log.error("allUncaughtHandle : {}", e);
+    return ResponseEntity.internalServerError().build();
   }
 }

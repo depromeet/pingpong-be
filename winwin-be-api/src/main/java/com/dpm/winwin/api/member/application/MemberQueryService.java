@@ -1,4 +1,4 @@
-package com.dpm.winwin.api.member;
+package com.dpm.winwin.api.member.application;
 
 import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
 import com.dpm.winwin.domain.repository.member.dto.MemberDetailResponse;

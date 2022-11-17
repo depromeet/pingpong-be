@@ -1,5 +1,6 @@
 package com.dpm.winwin.domain.entity.member;
 
+import com.dpm.winwin.domain.entity.BaseEntity;
 import com.dpm.winwin.domain.entity.chat.ChatRoom;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -16,9 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Member {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,5 +1,6 @@
 package com.dpm.winwin.domain.entity.talent;
 
+import com.dpm.winwin.domain.entity.BaseEntity;
 import com.dpm.winwin.domain.entity.member.Member;
 import com.dpm.winwin.domain.entity.talent.enums.TalentType;
 import lombok.AccessLevel;
@@ -18,9 +19,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class MemberTalent {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class MemberTalent extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

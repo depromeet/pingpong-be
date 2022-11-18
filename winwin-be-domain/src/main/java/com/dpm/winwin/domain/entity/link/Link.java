@@ -22,4 +22,12 @@ public class Link extends BaseEntity {
 
     @Column(nullable = false)
     private String content;
+
+    public Link(String content) {
+        this.content = content;
+    }
+
+    public static Link of(String content) {
+        return new Link(content);
+    }
 }

@@ -2,6 +2,7 @@ package com.dpm.winwin.domain.entity.member;
 
 import com.dpm.winwin.domain.entity.BaseEntity;
 import com.dpm.winwin.domain.entity.chat.ChatRoom;
+import com.dpm.winwin.domain.entity.post.Post;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,9 @@ public class Member extends BaseEntity {
 
     @OneToMany(mappedBy = "host")
     private List<ChatRoom> chatRooms = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<Post> posts = new ArrayList<>();
 
     @Column(nullable = false)
     private String nickname;

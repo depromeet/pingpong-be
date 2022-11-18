@@ -5,17 +5,18 @@ import com.dpm.winwin.domain.entity.category.MainCategory;
 import com.dpm.winwin.domain.entity.category.MidCategory;
 import com.dpm.winwin.domain.entity.category.SubCategory;
 import com.dpm.winwin.domain.entity.link.Link;
+import com.dpm.winwin.domain.entity.member.Member;
 import com.dpm.winwin.domain.entity.post.enums.ExchangePeriod;
 import com.dpm.winwin.domain.entity.post.enums.ExchangeTime;
 import com.dpm.winwin.domain.entity.post.enums.ExchangeType;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -23,13 +24,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +40,10 @@ public class Post extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "main_category_id")
     private MainCategory mainCategory;
 
@@ -54,7 +55,7 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "sub_category_id")
     private SubCategory subCategory;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "link_id")
     private List<Link> links = new ArrayList<>();
 
@@ -77,4 +78,35 @@ public class Post extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ExchangeTime exchangeTime;
+
+    @Builder
+    public Post(Member member, MainCategory mainCategory, MidCategory midCategory, SubCategory subCategory,
+                List<Link> links, String title, String content, boolean isShare, ExchangeType exchangeType,
+                ExchangePeriod exchangePeriod, ExchangeTime exchangeTime) {
+        this.member = member;
+        this.mainCategory = mainCategory;
+        this.midCategory = midCategory;
+        this.subCategory = subCategory;
+        this.links = links;
+        this.title = title;
+        this.content = content;
+        this.isShare = isShare;
+        this.exchangeType = exchangeType;
+        this.exchangePeriod = exchangePeriod;
+        this.exchangeTime = exchangeTime;
+    }
+
+    public void writeBy(Member member) {
+        this.member = member;
+    }
+
+    public void setAllCategory(MainCategory mainCategory, MidCategory midCategory, SubCategory subCategory) {
+        this.mainCategory = mainCategory;
+        this.midCategory = midCategory;
+        this.subCategory = subCategory;
+    }
+
+    public void setLink(List<Link> links) {
+        this.links = links;
+    }
 }

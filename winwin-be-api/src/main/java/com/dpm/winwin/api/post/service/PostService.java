@@ -1,9 +1,11 @@
-package com.dpm.winwin.api.post.service.PostService;
+package com.dpm.winwin.api.post.service;
 
 import com.dpm.winwin.api.common.error.enums.ErrorMessage;
 import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
 import com.dpm.winwin.api.post.dto.request.PostAddRequest;
+import com.dpm.winwin.api.post.dto.response.LinkResponse;
 import com.dpm.winwin.api.post.dto.response.PostAddResponse;
+import com.dpm.winwin.api.post.dto.response.PostReadResponse;
 import com.dpm.winwin.domain.entity.category.MainCategory;
 import com.dpm.winwin.domain.entity.category.MidCategory;
 import com.dpm.winwin.domain.entity.category.SubCategory;
@@ -26,7 +28,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional
 public class PostService {
-
     private final MemberRepository memberRepository;
     private final MainCategoryRepository mainCategoryRepository;
     private final MidCategoryRepository midCategoryRepository;
@@ -54,5 +55,23 @@ public class PostService {
 
         Post savedPost = postRepository.save(post);
         return PostAddResponse.from(savedPost);
+    }
+
+  @Transactional(readOnly = true)
+  public PostReadResponse get(Long id) {
+      Post post = postRepository.findById(id)
+          .orElseThrow(() -> new BusinessException(ErrorMessage.POST_NOT_FOUND));
+      return PostReadResponse.from(
+          post.getId(),
+          post.getTitle(),
+          post.getContent(),
+          post.isShare(),
+          post.getMainCategory().getName(),
+          post.getMidCategory().getName(),
+          post.getSubCategory().getName(),
+          post.getLinks().stream().map(LinkResponse::of).toList(),
+          post.getExchangeType().getMessage(),
+          post.getExchangePeriod().getMessage(),
+          post.getExchangeTime().getMessage());
     }
 }

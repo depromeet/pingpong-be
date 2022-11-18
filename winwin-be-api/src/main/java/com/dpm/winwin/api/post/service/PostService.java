@@ -46,7 +46,7 @@ public class PostService {
 
         List<Link> linkList = request.links().stream()
                 .map(Link::of)
-                .collect(Collectors.toList());
+                .toList();
 
         Post post = request.toEntity();
         post.writeBy(member);
@@ -60,18 +60,26 @@ public class PostService {
   @Transactional(readOnly = true)
   public PostReadResponse get(Long id) {
       Post post = postRepository.findById(id)
-          .orElseThrow(() -> new BusinessException(ErrorMessage.POST_NOT_FOUND));
+              .orElseThrow(() -> new BusinessException(ErrorMessage.POST_NOT_FOUND));
       return PostReadResponse.from(
-          post.getId(),
-          post.getTitle(),
-          post.getContent(),
-          post.isShare(),
-          post.getMainCategory().getName(),
-          post.getMidCategory().getName(),
-          post.getSubCategory().getName(),
-          post.getLinks().stream().map(LinkResponse::of).toList(),
-          post.getExchangeType().getMessage(),
-          post.getExchangePeriod().getMessage(),
-          post.getExchangeTime().getMessage());
+              post.getId(),
+              post.getTitle(),
+              post.getContent(),
+              post.isShare(),
+              post.getMainCategory().getName(),
+              post.getMidCategory().getName(),
+              post.getSubCategory().getName(),
+              post.getLinks().stream().map(LinkResponse::of).toList(),
+              post.getExchangeType().getMessage(),
+              post.getExchangePeriod().getMessage(),
+              post.getExchangeTime().getMessage());
+  }
+
+    public Long delete(Long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.POST_NOT_FOUND));
+
+        postRepository.delete(post);
+        return post.getId();
     }
 }

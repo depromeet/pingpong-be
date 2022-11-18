@@ -8,6 +8,7 @@ import com.dpm.winwin.api.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,4 +36,12 @@ public class PostController {
     PostAddResponse response = postService.save(memberId, request);
     return BaseResponseDto.ok(response);
   }
+
+    @DeleteMapping("/{id}")
+    public BaseResponseDto<Long> deletePost(
+            @PathVariable Long id
+    ) {
+        Long deletedId = postService.delete(id);
+        return BaseResponseDto.ok(deletedId);
+    }
 }

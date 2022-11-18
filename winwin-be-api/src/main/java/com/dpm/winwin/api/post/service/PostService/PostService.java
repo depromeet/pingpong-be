@@ -35,13 +35,13 @@ public class PostService {
 
     public PostAddResponse save(long memberId, PostAddRequest request) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new BusinessException(ErrorMessage.NOT_FOUND_MEMBER));
+                .orElseThrow(() -> new BusinessException(ErrorMessage.MEMBER_NOT_FOUND));
         MainCategory mainCategory = mainCategoryRepository.findById(request.mainCategoryId())
-                .orElseThrow(() -> new BusinessException(ErrorMessage.NOT_FOUND_MAIN_CATEGORY));
+                .orElseThrow(() -> new BusinessException(ErrorMessage.MAIN_CATEGORY_NOT_FOUND));
         MidCategory midCategory = midCategoryRepository.findById(request.midCategoryId())
-                .orElseThrow(() -> new BusinessException(ErrorMessage.NOT_FOUND_MID_CATEGORY));
+                .orElseThrow(() -> new BusinessException(ErrorMessage.MID_CATEGORY_NOT_FOUND));
         SubCategory subCategory = subCategoryRepository.findById(request.subCategoryId())
-                .orElseThrow(() -> new BusinessException(ErrorMessage.NOT_FOUND_SUB_CATEGORY));
+                .orElseThrow(() -> new BusinessException(ErrorMessage.SUB_CATEGORY_NOT_FOUND));
 
         List<Link> linkList = request.links().stream()
                 .map(Link::of)

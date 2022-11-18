@@ -1,5 +1,6 @@
 package com.dpm.winwin.domain.entity.category;
 
+import com.dpm.winwin.domain.entity.BaseEntity;
 import com.dpm.winwin.domain.entity.post.Post;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -15,9 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class MidCategory {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class MidCategory extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

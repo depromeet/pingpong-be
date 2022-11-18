@@ -1,5 +1,6 @@
 package com.dpm.winwin.domain.entity.report;
 
+import com.dpm.winwin.domain.entity.BaseEntity;
 import com.dpm.winwin.domain.entity.report.enums.ReportType;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -15,9 +16,9 @@ import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Report {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Report extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,14 +33,10 @@ public class Report {
     @Column(nullable = false)
     private String content;
 
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ReportType type;
 
     @Column(nullable = false)
     private Long typeId;
-
 }

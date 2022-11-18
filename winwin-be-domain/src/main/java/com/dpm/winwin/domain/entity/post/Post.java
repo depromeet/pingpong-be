@@ -1,5 +1,6 @@
 package com.dpm.winwin.domain.entity.post;
 
+import com.dpm.winwin.domain.entity.BaseEntity;
 import com.dpm.winwin.domain.entity.category.MainCategory;
 import com.dpm.winwin.domain.entity.category.MidCategory;
 import com.dpm.winwin.domain.entity.category.SubCategory;
@@ -33,9 +34,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Post {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Post extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -76,10 +77,4 @@ public class Post {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ExchangeTime exchangeTime;
-
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
-
-    @Column(nullable = false)
-    private LocalDateTime modifiedAt;
 }

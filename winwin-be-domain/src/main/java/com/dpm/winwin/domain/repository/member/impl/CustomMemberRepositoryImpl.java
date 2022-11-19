@@ -19,7 +19,7 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    public Optional<MemberDetailResponse> findMemberDetailInfo(long memberId){
+    public Optional<MemberDetailResponse> readMemberDetailInfo(long memberId){
         return Optional.ofNullable(
                 jpaQueryFactory
                         .from(member)

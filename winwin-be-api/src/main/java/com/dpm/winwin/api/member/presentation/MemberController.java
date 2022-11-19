@@ -15,7 +15,7 @@ public class MemberController {
     private final MemberQueryService memberQueryService;
     
     @GetMapping("/{memberId}")
-    public MemberDetailResponse getMemberDetailInfo(@PathVariable long memberId){
-        return memberQueryService.findMemberDetailInfo(memberId);
+    public MemberDetailResponse readMemberDetailInfo(@PathVariable long memberId){
+        return memberQueryService.readMemberDetailInfo(memberId);
     }
 }

@@ -16,8 +16,8 @@ public class MemberQueryService {
     private final CustomMemberRepositoryImpl customMemberRepository;
 
     @Transactional(readOnly = true)
-    public MemberDetailResponse findMemberDetailInfo(long memberId){
-        return customMemberRepository.findMemberDetailInfo(memberId)
+    public MemberDetailResponse readMemberDetailInfo(long memberId){
+        return customMemberRepository.readMemberDetailInfo(memberId)
                 .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
     }
 

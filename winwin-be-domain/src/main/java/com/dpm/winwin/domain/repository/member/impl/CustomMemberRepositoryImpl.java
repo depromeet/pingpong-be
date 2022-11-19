@@ -34,4 +34,5 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
                         ).get(memberId)
         );
     }
+
 }

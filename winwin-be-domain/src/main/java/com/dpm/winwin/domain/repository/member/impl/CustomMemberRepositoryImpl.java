@@ -2,7 +2,7 @@ package com.dpm.winwin.domain.repository.member.impl;
 
 import com.dpm.winwin.domain.repository.member.CustomMemberRepository;
 import com.dpm.winwin.domain.repository.member.dto.response.MemberReadResponse;
-import com.dpm.winwin.domain.repository.member.dto.response.QMemberReadResponse;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -20,6 +20,7 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     public Optional<MemberReadResponse> readMemberInfo(Long memberId){
+
         return Optional.ofNullable(
                 jpaQueryFactory
                         .from(member)
@@ -27,12 +28,13 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
                         .leftJoin(memberTalent).on(memberTalent.member.id.eq(memberId))
                         .transform(
                                 groupBy(member.id).as(
-                                        new QMemberReadResponse(member.id,member.nickname, member.image,member.introductions,
+                                        Projections.constructor(MemberReadResponse.class,
+                                                member.id,member.nickname, member.image,member.introductions,
                                                 member.exchangeCount, member.profileLink,
-                                                memberTalent.type.stringValue().as("GIVE"), memberTalent.type.stringValue().as("TAKE"))
+                                                memberTalent.type.stringValue().as("GIVE"),
+                                                memberTalent.type.stringValue().as("TAKE"))
                                 )
                         ).get(memberId)
         );
     }
-
 }

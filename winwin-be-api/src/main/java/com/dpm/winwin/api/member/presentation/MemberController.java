@@ -1,7 +1,7 @@
 package com.dpm.winwin.api.member.presentation;
 
 import com.dpm.winwin.api.member.application.MemberQueryService;
-import com.dpm.winwin.domain.repository.member.dto.response.MemberDetailResponse;
+import com.dpm.winwin.domain.repository.member.dto.response.MemberReadResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +15,7 @@ public class MemberController {
     private final MemberQueryService memberQueryService;
     
     @GetMapping("/{memberId}")
-    public MemberDetailResponse readMemberDetailInfo(@PathVariable long memberId){
-        return memberQueryService.readMemberDetailInfo(memberId);
+    public MemberReadResponse readMemberInfo(@PathVariable Long memberId){
+        return memberQueryService.readMemberInfo(memberId);
     }
 }

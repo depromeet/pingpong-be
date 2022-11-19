@@ -1,8 +1,8 @@
 package com.dpm.winwin.domain.repository.member.impl;
 
 import com.dpm.winwin.domain.repository.member.CustomMemberRepository;
-import com.dpm.winwin.domain.repository.member.dto.MemberDetailResponse;
-import com.dpm.winwin.domain.repository.member.dto.QMemberDetailResponse;
+import com.dpm.winwin.domain.repository.member.dto.response.MemberDetailResponse;
+import com.dpm.winwin.domain.repository.member.dto.response.QMemberDetailResponse;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

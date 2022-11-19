@@ -1,7 +1,7 @@
 package com.dpm.winwin.api.member.presentation;
 
 import com.dpm.winwin.api.member.application.MemberQueryService;
-import com.dpm.winwin.domain.repository.member.dto.MemberDetailResponse;
+import com.dpm.winwin.domain.repository.member.dto.response.MemberDetailResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

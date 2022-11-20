@@ -55,9 +55,12 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "sub_category_id")
     private SubCategory subCategory;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "link_id")
     private List<Link> links = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post")
+    private List<PostTalent> takenTalents = new ArrayList<>();
 
     @Column(nullable = false)
     private String title;
@@ -78,6 +81,8 @@ public class Post extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ExchangeTime exchangeTime;
+
+    private String takenContent;
 
     @Builder
     public Post(Member member, MainCategory mainCategory, MidCategory midCategory, SubCategory subCategory,

@@ -11,26 +11,25 @@ public record PostAddRequest(
         String title,
         String content,
         boolean isShare,
-        long mainCategoryId,
-        long midCategoryId,
-        long subCategoryId,
+        long mainCategory,
+        long midCategory,
+        long subCategory,
         List<String> links,
         List<Long> takenCategories,
-        String takeContent,
+        String takenContent,
         ExchangeType exchangeType,
         ExchangePeriod exchangePeriod,
-        ExchangeTime exchangeTime,
-        String takenContent
+        ExchangeTime exchangeTime
 ) {
     public Post toEntity() {
         return Post.builder()
                 .title(this.title)
                 .content(this.content)
                 .isShare(this.isShare)
+                .takenContent(this.takenContent)
                 .exchangeType(this.exchangeType)
                 .exchangePeriod(this.exchangePeriod)
                 .exchangeTime(this.exchangeTime)
-                .takenContent(this.takenContent)
                 .build();
     }
 }

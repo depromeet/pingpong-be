@@ -22,9 +22,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,11 +37,11 @@ public class PostService {
     public PostAddResponse save(long memberId, PostAddRequest request) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.MEMBER_NOT_FOUND));
-        MainCategory mainCategory = mainCategoryRepository.findById(request.mainCategoryId())
+        MainCategory mainCategory = mainCategoryRepository.findById(request.mainCategory())
                 .orElseThrow(() -> new BusinessException(ErrorMessage.MAIN_CATEGORY_NOT_FOUND));
-        MidCategory midCategory = midCategoryRepository.findById(request.midCategoryId())
+        MidCategory midCategory = midCategoryRepository.findById(request.midCategory())
                 .orElseThrow(() -> new BusinessException(ErrorMessage.MID_CATEGORY_NOT_FOUND));
-        SubCategory subCategory = subCategoryRepository.findById(request.subCategoryId())
+        SubCategory subCategory = subCategoryRepository.findById(request.subCategory())
                 .orElseThrow(() -> new BusinessException(ErrorMessage.SUB_CATEGORY_NOT_FOUND));
 
         List<Link> linkList = request.links().stream()

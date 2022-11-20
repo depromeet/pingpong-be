@@ -12,6 +12,7 @@ import com.dpm.winwin.domain.entity.category.SubCategory;
 import com.dpm.winwin.domain.entity.link.Link;
 import com.dpm.winwin.domain.entity.member.Member;
 import com.dpm.winwin.domain.entity.post.Post;
+import com.dpm.winwin.domain.entity.post.PostTalent;
 import com.dpm.winwin.domain.repository.category.MainCategoryRepository;
 import com.dpm.winwin.domain.repository.category.MidCategoryRepository;
 import com.dpm.winwin.domain.repository.category.SubCategoryRepository;
@@ -21,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,6 +54,16 @@ public class PostService {
         post.writeBy(member);
         post.setAllCategory(mainCategory, midCategory, subCategory);
         post.setLink(linkList);
+        post.writeTakenContent(request.takenContent());
+
+        List<PostTalent> postTalents = request.takenCategories().stream()
+                .map(t -> PostTalent.of(post, subCategoryRepository.findById(t)
+                        .orElseThrow(() -> new BusinessException(ErrorMessage.SUB_CATEGORY_NOT_FOUND))))
+                .toList();
+
+        for (PostTalent postTalent : postTalents) {
+            post.addTakenTalent(postTalent);
+        }
 
         Post savedPost = postRepository.save(post);
         return PostAddResponse.from(savedPost);

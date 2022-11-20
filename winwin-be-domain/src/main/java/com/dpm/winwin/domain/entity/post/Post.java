@@ -10,7 +10,6 @@ import com.dpm.winwin.domain.entity.post.enums.ExchangePeriod;
 import com.dpm.winwin.domain.entity.post.enums.ExchangeTime;
 import com.dpm.winwin.domain.entity.post.enums.ExchangeType;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -56,7 +55,6 @@ public class Post extends BaseEntity {
     private SubCategory subCategory;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "link_id")
     private List<Link> links = new ArrayList<>();
 
     @OneToMany(mappedBy = "post")
@@ -87,7 +85,7 @@ public class Post extends BaseEntity {
     @Builder
     public Post(Member member, MainCategory mainCategory, MidCategory midCategory, SubCategory subCategory,
                 List<Link> links, String title, String content, boolean isShare, ExchangeType exchangeType,
-                ExchangePeriod exchangePeriod, ExchangeTime exchangeTime) {
+                ExchangePeriod exchangePeriod, ExchangeTime exchangeTime, String takenContent) {
         this.member = member;
         this.mainCategory = mainCategory;
         this.midCategory = midCategory;
@@ -99,6 +97,7 @@ public class Post extends BaseEntity {
         this.exchangeType = exchangeType;
         this.exchangePeriod = exchangePeriod;
         this.exchangeTime = exchangeTime;
+        this.takenContent = takenContent;
     }
 
     public void writeBy(Member member) {
@@ -113,5 +112,13 @@ public class Post extends BaseEntity {
 
     public void setLink(List<Link> links) {
         this.links = links;
+    }
+
+    public void addTakenTalent(PostTalent postTalent) {
+        this.takenTalents.add(postTalent);
+    }
+
+    public void writeTakenContent(String takenContent) {
+        this.takenContent = takenContent;
     }
 }

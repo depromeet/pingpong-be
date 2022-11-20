@@ -15,11 +15,12 @@ public record PostAddRequest(
         long midCategoryId,
         long subCategoryId,
         List<String> links,
-        List<Long> takeCategories,
+        List<Long> takenCategories,
         String takeContent,
         ExchangeType exchangeType,
         ExchangePeriod exchangePeriod,
-        ExchangeTime exchangeTime
+        ExchangeTime exchangeTime,
+        String takenContent
 ) {
     public Post toEntity() {
         return Post.builder()
@@ -29,6 +30,7 @@ public record PostAddRequest(
                 .exchangeType(this.exchangeType)
                 .exchangePeriod(this.exchangePeriod)
                 .exchangeTime(this.exchangeTime)
+                .takenContent(this.takenContent)
                 .build();
     }
 }

@@ -29,4 +29,13 @@ public class PostTalent {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "talent_id")
     private SubCategory talent;
+
+    public PostTalent(Post post, SubCategory talent) {
+        this.post = post;
+        this.talent = talent;
+    }
+
+    public static PostTalent of(Post post, SubCategory talent) {
+        return new PostTalent(post, talent);
+    }
 }

@@ -14,8 +14,8 @@ public record PostAddResponse(
         String midCategoryId,
         String subCategoryId,
         List<LinkResponse> links,
-//        List<Long> takeCategories,
-//        String takeContent,
+        List<String> takenCategories,
+        String takenContent,
         String exchangeType,
         String exchangePeriod,
         String exchangeTime
@@ -32,6 +32,10 @@ public record PostAddResponse(
                 savePost.getLinks().stream()
                         .map(LinkResponse::of)
                         .collect(Collectors.toList()),
+                savePost.getTakenTalents().stream()
+                        .map(t -> t.getTalent().getName())
+                        .toList(),
+                savePost.getTakenContent(),
                 savePost.getExchangeType().getMessage(),
                 savePost.getExchangePeriod().getMessage(),
                 savePost.getExchangeTime().getMessage()

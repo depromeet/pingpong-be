@@ -52,7 +52,7 @@ public class PostService {
         post.writeBy(member);
         post.setAllCategory(mainCategory, midCategory, subCategory);
         post.setLink(linkList);
-        post.writeTakenContent(request.takenContent());
+        post.setTakenContent(request.takenContent());
 
         List<PostTalent> postTalents = request.takenCategories().stream()
                 .map(t -> PostTalent.of(post, subCategoryRepository.findById(t)

@@ -57,7 +57,7 @@ public class Post extends BaseEntity {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Link> links = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<PostTalent> takenTalents = new ArrayList<>();
 
     @Column(nullable = false)
@@ -118,7 +118,7 @@ public class Post extends BaseEntity {
         this.takenTalents.add(postTalent);
     }
 
-    public void writeTakenContent(String takenContent) {
+    public void setTakenContent(String takenContent) {
         this.takenContent = takenContent;
     }
 }

@@ -1,0 +1,23 @@
+INSERT INTO winwin.main_category (id, created_date, modified_date, image, name) VALUES (1, null, null, 'mainCategory/1', '대1');
+INSERT INTO winwin.main_category (id, created_date, modified_date, image, name) VALUES (2, null, null, 'mainCategory/2', '대2');
+INSERT INTO winwin.main_category (id, created_date, modified_date, image, name) VALUES (3, null, null, 'mainCategory/3', '대3');
+INSERT INTO winwin.mid_category (id, created_date, modified_date, image, main_category_id, name) VALUES (1, null, null, 'midCategory/1', 1, '대1중1');
+INSERT INTO winwin.mid_category (id, created_date, modified_date, image, main_category_id, name) VALUES (2, null, null, 'midCategory/2', 1, '대1중2');
+INSERT INTO winwin.mid_category (id, created_date, modified_date, image, main_category_id, name) VALUES (3, null, null, 'midCategory/3', 1, '대1중3');
+INSERT INTO winwin.mid_category (id, created_date, modified_date, image, main_category_id, name) VALUES (4, null, null, 'midCategory/4', 2, '대2중1');
+INSERT INTO winwin.mid_category (id, created_date, modified_date, image, main_category_id, name) VALUES (5, null, null, 'midCategory/5', 2, '대2중2');
+INSERT INTO winwin.mid_category (id, created_date, modified_date, image, main_category_id, name) VALUES (6, null, null, 'midCategory/6', 2, '대2중3');
+INSERT INTO winwin.sub_category (id, created_date, modified_date, image, mid_category_id, name) VALUES (1, null, null, 'subCategory/1', 1, '대1중1소1');
+INSERT INTO winwin.sub_category (id, created_date, modified_date, image, mid_category_id, name) VALUES (2, null, null, 'subCategory/2', 1, '대1중1소2');
+INSERT INTO winwin.sub_category (id, created_date, modified_date, image, mid_category_id, name) VALUES (3, null, null, 'subCategory/3', 2, '대1중2소1');
+INSERT INTO winwin.sub_category (id, created_date, modified_date, image, mid_category_id, name) VALUES (4, null, null, 'subCategory/4', 2, '대1중2소2');
+INSERT INTO winwin.sub_category (id, created_date, modified_date, image, mid_category_id, name) VALUES (5, null, null, 'subCategory/5', 3, '대1중3소1');
+INSERT INTO winwin.sub_category (id, created_date, modified_date, image, mid_category_id, name) VALUES (6, null, null, 'subCategory/6', 3, '대1중3소2');
+INSERT INTO winwin.sub_category (id, created_date, modified_date, image, mid_category_id, name) VALUES (7, null, null, 'subCategory/7', 4, '대2중1소1');
+INSERT INTO winwin.sub_category (id, created_date, modified_date, image, mid_category_id, name) VALUES (8, null, null, 'subCategory/8', 4, '대2중1소2');
+INSERT INTO winwin.sub_category (id, created_date, modified_date, image, mid_category_id, name) VALUES (9, null, null, 'subCategory/9', 5, '대2중2소1');
+INSERT INTO winwin.sub_category (id, created_date, modified_date, image, mid_category_id, name) VALUES (10, null, null, 'subCategory/10', 5, '대2중2소2');
+INSERT INTO winwin.sub_category (id, created_date, modified_date, image, mid_category_id, name) VALUES (11, null, null, 'subCategory/11', 6, '대2중3소1');
+INSERT INTO winwin.sub_category (id, created_date, modified_date, image, mid_category_id, name) VALUES (12, null, null, 'subCategory/12', 6, '대2중3소2');
+
+INSERT INTO winwin.member (id, created_date, modified_date, exchange_count, image, introductions, nickname, profile_link) VALUES (1, null, null, 0, 'member/1', 'memberIntro', 'memberNickname', 'www.depromeet.com');

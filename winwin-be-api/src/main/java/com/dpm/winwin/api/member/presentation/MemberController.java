@@ -3,6 +3,7 @@ package com.dpm.winwin.api.member.presentation;
 import com.dpm.winwin.api.common.response.dto.BaseResponseDto;
 import com.dpm.winwin.api.member.application.MemberCommandService;
 import com.dpm.winwin.api.member.application.MemberQueryService;
+import com.dpm.winwin.domain.repository.member.dto.request.MemberImageRequest;
 import com.dpm.winwin.domain.repository.member.dto.request.MemberNicknameRequest;
 import com.dpm.winwin.domain.repository.member.dto.response.MemberReadResponse;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +23,16 @@ public class MemberController {
     private final MemberCommandService memberCommandService;
 
     @PutMapping("/{memberId}")
-    public BaseResponseDto<Long> updateMemberNickname(@PathVariable Long memberId, @RequestBody MemberNicknameRequest memberNicknameRequest){
+    public BaseResponseDto<Long> updateMemberNickname(@PathVariable Long memberId,
+                                                      @RequestBody MemberNicknameRequest memberNicknameRequest){
         Long id = memberCommandService.updateMemberNickname(memberId, memberNicknameRequest);
+        return BaseResponseDto.ok(id);
+    }
+
+    @PutMapping("/{memberId}/image")
+    public BaseResponseDto<Long> updateMemberImage(@PathVariable Long memberId,
+                                                   @RequestBody MemberImageRequest memberImageRequest){
+        Long id = memberCommandService.updateMemberImage(memberId, memberImageRequest);
         return BaseResponseDto.ok(id);
     }
 

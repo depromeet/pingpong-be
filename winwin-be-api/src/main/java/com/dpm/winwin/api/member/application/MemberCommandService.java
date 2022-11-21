@@ -3,6 +3,7 @@ package com.dpm.winwin.api.member.application;
 import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
 import com.dpm.winwin.domain.entity.member.Member;
 import com.dpm.winwin.domain.repository.member.MemberRepository;
+import com.dpm.winwin.domain.repository.member.dto.request.MemberImageRequest;
 import com.dpm.winwin.domain.repository.member.dto.request.MemberNicknameRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,10 +18,20 @@ public class MemberCommandService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public Long updateMemberNickname(Long memberId, MemberNicknameRequest memberNicknameRequest) {
+    public Long updateMemberNickname(Long memberId,
+                                     MemberNicknameRequest memberNicknameRequest) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
         member.updateNickname(memberNicknameRequest.nickname());
+        return member.getId();
+    }
+
+    @Transactional
+    public Long updateMemberImage(Long memberId,
+                                  MemberImageRequest memberImageRequest) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
+        member.updateImage(memberImageRequest.image());
         return member.getId();
     }
 

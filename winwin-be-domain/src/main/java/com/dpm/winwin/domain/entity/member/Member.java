@@ -53,4 +53,9 @@ public class Member extends BaseEntity {
     public void updateNickname(String nickname){
         this.nickname = nickname;
     }
+
+    public void updateImage(String image){
+        this.image = image;
+    }
+
 }

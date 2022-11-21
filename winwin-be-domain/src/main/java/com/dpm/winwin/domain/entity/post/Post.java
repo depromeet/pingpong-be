@@ -55,6 +55,7 @@ public class Post extends BaseEntity {
     private SubCategory subCategory;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "post_id")
     private List<Link> links = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)

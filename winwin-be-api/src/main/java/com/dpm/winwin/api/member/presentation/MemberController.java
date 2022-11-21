@@ -37,7 +37,7 @@ public class MemberController {
     }
 
     @GetMapping("/{memberId}")
-    public MemberReadResponse readMemberInfo(@PathVariable Long memberId){
-        return memberQueryService.readMemberInfo(memberId);
+    public BaseResponseDto<MemberReadResponse> readMemberInfo(@PathVariable Long memberId){
+        return BaseResponseDto.ok(memberQueryService.readMemberInfo(memberId));
     }
 }

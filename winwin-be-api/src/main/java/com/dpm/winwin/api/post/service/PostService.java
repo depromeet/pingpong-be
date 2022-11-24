@@ -80,6 +80,7 @@ public class PostService {
               post.getMidCategory().getName(),
               post.getSubCategory().getName(),
               post.getLinks().stream().map(LinkResponse::of).toList(),
+              post.getLikes().size(),
               post.getExchangeType().getMessage(),
               post.getExchangePeriod().getMessage(),
               post.getExchangeTime().getMessage());

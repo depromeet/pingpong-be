@@ -18,6 +18,7 @@ import com.dpm.winwin.domain.repository.category.MidCategoryRepository;
 import com.dpm.winwin.domain.repository.category.SubCategoryRepository;
 import com.dpm.winwin.domain.repository.member.MemberRepository;
 import com.dpm.winwin.domain.repository.post.PostRepository;
+import com.dpm.winwin.domain.repository.post.dto.PostMemberDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,11 +29,17 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 public class PostService {
+
     private final MemberRepository memberRepository;
     private final MainCategoryRepository mainCategoryRepository;
     private final MidCategoryRepository midCategoryRepository;
     private final SubCategoryRepository subCategoryRepository;
     private final PostRepository postRepository;
+
+    public List<PostMemberDto> getList(Boolean isShare, Long midCategory) {
+        return postRepository.getAllByIsShareAndMidCategory(isShare, midCategory)
+            .orElseThrow(() -> new BusinessException(ErrorMessage.POST_NO_CONTENT));
+    }
 
     public PostAddResponse save(long memberId, PostAddRequest request) {
         Member member = memberRepository.findById(memberId)

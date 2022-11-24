@@ -5,6 +5,8 @@ import com.dpm.winwin.api.post.dto.request.PostAddRequest;
 import com.dpm.winwin.api.post.dto.response.PostAddResponse;
 import com.dpm.winwin.api.post.dto.response.PostReadResponse;
 import com.dpm.winwin.api.post.service.PostService;
+import com.dpm.winwin.domain.repository.post.dto.PostMemberDto;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,6 +26,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class PostController {
 
   private final PostService postService;
+
+  @GetMapping
+  public BaseResponseDto<List<PostMemberDto>> getPostList(
+      @RequestParam(required = false) Boolean isShare,
+      @RequestParam(required = false) Long midCategory) {
+    List<PostMemberDto> response = postService.getList(isShare, midCategory);
+    return BaseResponseDto.ok(response);
+
+  }
 
   @GetMapping("/{id}")
   public BaseResponseDto<PostReadResponse> getPost(@PathVariable Long id) {

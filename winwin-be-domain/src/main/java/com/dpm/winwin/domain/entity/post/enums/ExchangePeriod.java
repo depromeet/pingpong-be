@@ -2,7 +2,6 @@ package com.dpm.winwin.domain.entity.post.enums;
 
 import lombok.Getter;
 
-@Getter
 public enum ExchangePeriod {
     A_WEEK("1주일 이하"),
     LESS_THAN_A_MONTH("1주일 이상"),

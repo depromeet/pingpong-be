@@ -17,6 +17,7 @@ public enum ErrorMessage {
   POST_NOT_FOUND(NOT_FOUND.value(), "해당 포스트를 찾을 수 없습니다."),
   TALENT_NOT_FOUND(NOT_FOUND.value(), "해당 받고 싶은 재능을 찾을 수 없습니다."),
   LINK_NOT_FOUND(NOT_FOUND.value(), "해당 링크를 찾을 수 없습니다.");
+  
   private final int code;
   private final String phrase;
 }

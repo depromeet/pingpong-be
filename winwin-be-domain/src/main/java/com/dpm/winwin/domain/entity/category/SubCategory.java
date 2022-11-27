@@ -30,9 +30,6 @@ public class SubCategory extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private String image;
-
     @OneToMany(mappedBy = "subCategory")
     private List<Post> posts = new ArrayList<>();
 }

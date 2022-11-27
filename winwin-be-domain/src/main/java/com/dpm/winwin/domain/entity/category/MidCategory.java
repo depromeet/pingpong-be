@@ -30,9 +30,6 @@ public class MidCategory extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private String image;
-
     @OneToMany(mappedBy = "midCategory")
     private List<Post> posts = new ArrayList<>();
 }

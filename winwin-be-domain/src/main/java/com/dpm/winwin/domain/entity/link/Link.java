@@ -1,19 +1,20 @@
 package com.dpm.winwin.domain.entity.link;
 
 import com.dpm.winwin.domain.entity.BaseEntity;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Link extends BaseEntity {
 
     @Id
@@ -29,5 +30,9 @@ public class Link extends BaseEntity {
 
     public static Link of(String content) {
         return new Link(content);
+    }
+
+    public void setContent(String content){
+        this.content = content;
     }
 }

@@ -4,9 +4,9 @@ import static com.dpm.winwin.domain.entity.member.QMember.member;
 import static com.dpm.winwin.domain.entity.post.QPost.post;
 
 import com.dpm.winwin.domain.repository.post.CustomPostRepository;
+import com.dpm.winwin.domain.repository.post.dto.QPostListDto;
 import com.dpm.winwin.domain.repository.post.dto.request.PostListConditionRequest;
 import com.dpm.winwin.domain.repository.post.dto.PostListDto;
-import com.dpm.winwin.domain.repository.post.dto.QPostMemberDto;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -29,14 +29,16 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
     ) {
         List<PostListDto> content = queryFactory
             .select(
-                new QPostMemberDto(post.title, post.subCategory.name, post.likes.size(),
+                new QPostListDto(post.title, post.subCategory.name, post.likes.size(),
                     member.nickname, member.image
                 ))
             .from(post)
             .leftJoin(post.member, member)
             .where(
                 isShareEq(condition.isShare()),
-                categoryEq(condition.midCategory())
+                mainCategoryEq(condition.mainCategory()),
+                midCategoryEq(condition.midCategory()),
+                subCategoryEq(condition.subCategory())
             )
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
@@ -47,7 +49,9 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
             .leftJoin(post.member, member)
             .where(
                 isShareEq(condition.isShare()),
-                categoryEq(condition.midCategory())
+                mainCategoryEq(condition.mainCategory()),
+                midCategoryEq(condition.midCategory()),
+                subCategoryEq(condition.subCategory())
             );
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
@@ -61,9 +65,25 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
         return null;
     }
 
-    private BooleanExpression categoryEq(Long midCategory) {
+    private BooleanExpression mainCategoryEq(Long mainCategory) {
+        if (mainCategory != null) {
+            return post.mainCategory.id.eq(mainCategory);
+        }
+
+        return null;
+    }
+
+    private BooleanExpression midCategoryEq(Long midCategory) {
         if (midCategory != null) {
             return post.midCategory.id.eq(midCategory);
+        }
+
+        return null;
+    }
+
+    private BooleanExpression subCategoryEq(Long subCategory) {
+        if (subCategory != null) {
+            return post.subCategory.id.eq(subCategory);
         }
 
         return null;

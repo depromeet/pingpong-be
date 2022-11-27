@@ -5,6 +5,7 @@ import com.dpm.winwin.api.post.dto.request.PostAddRequest;
 import com.dpm.winwin.api.post.dto.response.PostAddResponse;
 import com.dpm.winwin.api.post.dto.response.PostReadResponse;
 import com.dpm.winwin.api.post.service.PostService;
+import com.dpm.winwin.domain.repository.post.dto.PostListCondition;
 import com.dpm.winwin.domain.repository.post.dto.PostMemberDto;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -28,12 +29,9 @@ public class PostController {
   private final PostService postService;
 
   @GetMapping
-  public BaseResponseDto<List<PostMemberDto>> getPostList(
-      @RequestParam(required = false) Boolean isShare,
-      @RequestParam(required = false) Long midCategory) {
-    List<PostMemberDto> response = postService.getList(isShare, midCategory);
-    return BaseResponseDto.ok(response);
-
+  public BaseResponseDto<List<PostMemberDto>> getPostList(PostListCondition condition) {
+      List<PostMemberDto> response = postService.getPosts(condition);
+      return BaseResponseDto.ok(response);
   }
 
   @GetMapping("/{id}")

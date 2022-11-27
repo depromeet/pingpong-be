@@ -2,6 +2,7 @@ package com.dpm.winwin.api.post.service;
 
 import com.dpm.winwin.api.common.error.enums.ErrorMessage;
 import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
+import com.dpm.winwin.domain.repository.post.dto.PostListCondition;
 import com.dpm.winwin.api.post.dto.request.PostAddRequest;
 import com.dpm.winwin.api.post.dto.response.LinkResponse;
 import com.dpm.winwin.api.post.dto.response.PostAddResponse;
@@ -36,8 +37,8 @@ public class PostService {
     private final SubCategoryRepository subCategoryRepository;
     private final PostRepository postRepository;
 
-    public List<PostMemberDto> getList(Boolean isShare, Long midCategory) {
-        return postRepository.getAllByIsShareAndMidCategory(isShare, midCategory)
+    public List<PostMemberDto> getPosts(PostListCondition condition) {
+        return postRepository.getAllByIsShareAndMidCategory(condition)
             .orElseThrow(() -> new BusinessException(ErrorMessage.POST_NO_CONTENT));
     }
 

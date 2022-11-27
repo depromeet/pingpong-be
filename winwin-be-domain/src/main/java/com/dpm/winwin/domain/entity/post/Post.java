@@ -58,6 +58,9 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "post_id")
     private List<Link> links = new ArrayList<>();
 
+    @Column(nullable = false)
+    private String chatLink;
+
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostTalent> takenTalents = new ArrayList<>();
 

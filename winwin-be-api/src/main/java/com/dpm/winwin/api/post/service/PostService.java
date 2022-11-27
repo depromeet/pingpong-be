@@ -7,6 +7,7 @@ import com.dpm.winwin.api.post.dto.request.PostAddRequest;
 import com.dpm.winwin.api.post.dto.request.PostUpdateRequest;
 import com.dpm.winwin.api.post.dto.response.LinkResponse;
 import com.dpm.winwin.api.post.dto.response.PostAddResponse;
+import com.dpm.winwin.api.post.dto.response.PostListResponse;
 import com.dpm.winwin.api.post.dto.response.PostMethodResponse;
 import com.dpm.winwin.api.post.dto.response.PostMethodsResponse;
 import com.dpm.winwin.api.post.dto.response.PostReadResponse;
@@ -27,7 +28,6 @@ import com.dpm.winwin.domain.repository.category.SubCategoryRepository;
 import com.dpm.winwin.domain.repository.link.LinkRepository;
 import com.dpm.winwin.domain.repository.member.MemberRepository;
 import com.dpm.winwin.domain.repository.post.PostRepository;
-import com.dpm.winwin.domain.repository.post.dto.PostListDto;
 import com.dpm.winwin.domain.repository.post.dto.request.PostListConditionRequest;
 import java.util.Arrays;
 import java.util.List;
@@ -49,8 +49,9 @@ public class PostService {
     private final PostRepository postRepository;
     private final LinkRepository linkRepository;
 
-    public Page<PostListDto> getPosts(PostListConditionRequest condition, Pageable pageable) {
-        return postRepository.getAllByIsShareAndMidCategory(condition, pageable);
+    public Page<PostListResponse> getPosts(PostListConditionRequest condition, Pageable pageable) {
+        Page<Post> posts = postRepository.getAllByIsShareAndMidCategory(condition, pageable);
+        return posts.map(PostListResponse::of);
     }
 
     public PostAddResponse save(long memberId, PostAddRequest request) {

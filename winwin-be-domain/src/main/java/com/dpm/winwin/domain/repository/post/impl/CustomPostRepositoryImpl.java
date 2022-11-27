@@ -1,22 +1,20 @@
 package com.dpm.winwin.domain.repository.post.impl;
 
-import static com.dpm.winwin.domain.entity.category.QMainCategory.mainCategory;
-import static com.dpm.winwin.domain.entity.category.QMidCategory.midCategory;
-import static com.dpm.winwin.domain.entity.category.QSubCategory.subCategory;
-import static com.dpm.winwin.domain.entity.link.QLink.link;
 import static com.dpm.winwin.domain.entity.member.QMember.member;
+import static com.dpm.winwin.domain.entity.post.QLikes.likes;
 import static com.dpm.winwin.domain.entity.post.QPost.post;
 
 import com.dpm.winwin.domain.entity.post.Post;
 import com.dpm.winwin.domain.repository.post.CustomPostRepository;
-import com.dpm.winwin.domain.repository.post.dto.PostListDto;
 import com.dpm.winwin.domain.repository.post.dto.request.PostListConditionRequest;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.util.Optional;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -34,11 +32,37 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
             .fetchOne();
     }
 
-    @Override
-    public Page<PostListDto> getAllByIsShareAndMidCategory(
+    public Page<Post> getAllByIsShareAndMidCategory(
         PostListConditionRequest condition, Pageable pageable
     ) {
-        return null;
+        List<Post> posts = queryFactory
+            .select(post)
+            .from(post)
+            .leftJoin(post.member, member)
+            .fetchJoin()
+            .leftJoin(post.likes, likes)
+            .fetchJoin()
+            .where(
+                isShareEq(condition.isShare()),
+                mainCategoryEq(condition.mainCategory()),
+                midCategoryEq(condition.midCategory()),
+                subCategoryEq(condition.subCategory())
+            )
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
+            .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory.select(post.count())
+            .from(post)
+            .leftJoin(post.member, member)
+            .where(
+                isShareEq(condition.isShare()),
+                mainCategoryEq(condition.mainCategory()),
+                midCategoryEq(condition.midCategory()),
+                subCategoryEq(condition.subCategory())
+            );
+
+        return PageableExecutionUtils.getPage(posts, pageable, countQuery::fetchOne);
     }
 
     private BooleanExpression isShareEq(Boolean isShare) {
@@ -71,18 +95,5 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
         }
 
         return null;
-    }
-
-    @Override
-    public Optional<Post> getId(Long id) {
-        return Optional.ofNullable(
-            queryFactory
-                .selectFrom(post)
-                .leftJoin(post.mainCategory, mainCategory).fetchJoin()
-                .leftJoin(post.midCategory, midCategory).fetchJoin()
-                .leftJoin(post.subCategory, subCategory).fetchJoin()
-                .leftJoin(post.links, link).fetchJoin()
-                .where(post.id.eq(id))
-                .fetchOne());
     }
 }

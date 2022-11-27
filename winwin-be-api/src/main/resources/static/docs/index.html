@@ -569,7 +569,7 @@ Content-Length: 30
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 memberId: 1
-Content-Length: 375
+Content-Length: 411
 Host: localhost:8080
 
 {
@@ -580,6 +580,7 @@ Host: localhost:8080
   "midCategory" : 2,
   "subCategory" : 1,
   "links" : [ "www.depromeet.com", "www.pingpong.com" ],
+  "chatLink" : "www.chatLink.com",
   "takenCategories" : [ 1, 2, 3 ],
   "takenContent" : "받고 싶은 재능 내용",
   "exchangeType" : "ONLINE",
@@ -641,6 +642,11 @@ Host: localhost:8080
 <td class="tableblock halign-left valign-top"><p class="tableblock">링크</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>chatLink</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">채팅 링크</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>takenCategories</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">받고 싶은 카테고리 id</p></td>
@@ -674,7 +680,7 @@ Host: localhost:8080
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created
 Content-Type: application/json;charset=UTF-8
-Content-Length: 684
+Content-Length: 722
 
 {
   "message" : "success",
@@ -693,6 +699,7 @@ Content-Length: 684
       "id" : 2,
       "content" : "www.pingpong.com"
     } ],
+    "chatLink" : "www.chatLink.com",
     "takenCategories" : [ "www.depromeet.com", "www.pingpong.com" ],
     "takenContent" : "받고 싶은 재능 내용",
     "exchangeType" : "온라인",
@@ -787,6 +794,13 @@ Content-Length: 684
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">data.chatLink</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">채팅 링크</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">data.links[].id</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
@@ -844,7 +858,7 @@ Content-Length: 684
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-11-22 03:10:43 +0900
+Last updated 2022-11-27 18:38:32 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

@@ -9,11 +9,8 @@ import com.dpm.winwin.domain.entity.member.Member;
 import com.dpm.winwin.domain.entity.post.enums.ExchangePeriod;
 import com.dpm.winwin.domain.entity.post.enums.ExchangeTime;
 import com.dpm.winwin.domain.entity.post.enums.ExchangeType;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,8 +23,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import java.util.ArrayList;
-import java.util.List;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
@@ -90,14 +89,16 @@ public class Post extends BaseEntity {
     private String takenContent;
 
     @Builder
-    public Post(Member member, MainCategory mainCategory, MidCategory midCategory, SubCategory subCategory,
-                List<Link> links, String title, String content, boolean isShare, ExchangeType exchangeType,
-                ExchangePeriod exchangePeriod, ExchangeTime exchangeTime, String takenContent) {
+    public Post(Member member, MainCategory mainCategory, MidCategory midCategory,
+        SubCategory subCategory, List<Link> links, String chatLink, String title, String content,
+        boolean isShare, ExchangeType exchangeType, ExchangePeriod exchangePeriod,
+        ExchangeTime exchangeTime, String takenContent) {
         this.member = member;
         this.mainCategory = mainCategory;
         this.midCategory = midCategory;
         this.subCategory = subCategory;
         this.links = links;
+        this.chatLink = chatLink;
         this.title = title;
         this.content = content;
         this.isShare = isShare;
@@ -111,7 +112,8 @@ public class Post extends BaseEntity {
         this.member = member;
     }
 
-    public void setAllCategory(MainCategory mainCategory, MidCategory midCategory, SubCategory subCategory) {
+    public void setAllCategory(MainCategory mainCategory, MidCategory midCategory,
+        SubCategory subCategory) {
         this.mainCategory = mainCategory;
         this.midCategory = midCategory;
         this.subCategory = subCategory;

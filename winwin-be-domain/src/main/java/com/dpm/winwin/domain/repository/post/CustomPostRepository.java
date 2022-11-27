@@ -1,12 +1,11 @@
 package com.dpm.winwin.domain.repository.post;
 
-import com.dpm.winwin.domain.entity.post.Post;
 import com.dpm.winwin.domain.repository.post.dto.PostListCondition;
 import com.dpm.winwin.domain.repository.post.dto.PostMemberDto;
-import java.util.List;
-import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface CustomPostRepository {
 
-    Optional<List<PostMemberDto>> getAllByIsShareAndMidCategory(PostListCondition condition);
+    Page<PostMemberDto> getAllByIsShareAndMidCategory(PostListCondition condition, Pageable pageable);
 }

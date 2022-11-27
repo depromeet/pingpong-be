@@ -21,6 +21,8 @@ import com.dpm.winwin.domain.repository.member.MemberRepository;
 import com.dpm.winwin.domain.repository.post.PostRepository;
 import com.dpm.winwin.domain.repository.post.dto.PostMemberDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,9 +39,8 @@ public class PostService {
     private final SubCategoryRepository subCategoryRepository;
     private final PostRepository postRepository;
 
-    public List<PostMemberDto> getPosts(PostListCondition condition) {
-        return postRepository.getAllByIsShareAndMidCategory(condition)
-            .orElseThrow(() -> new BusinessException(ErrorMessage.POST_NO_CONTENT));
+    public Page<PostMemberDto> getPosts(PostListCondition condition, Pageable pageable) {
+        return postRepository.getAllByIsShareAndMidCategory(condition, pageable);
     }
 
     public PostAddResponse save(long memberId, PostAddRequest request) {

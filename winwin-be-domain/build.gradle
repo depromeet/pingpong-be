@@ -22,7 +22,7 @@ repositories {
 }
 
 dependencies {
-    api 'org.springframework.boot:spring-boot-starter-data-jpa:2.7.5'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'mysql:mysql-connector-java:8.0.31'
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
     annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"

@@ -3,16 +3,17 @@ package com.dpm.winwin.api.post.controller;
 import com.dpm.winwin.api.common.response.dto.BaseResponseDto;
 import com.dpm.winwin.api.post.dto.request.PostAddRequest;
 import com.dpm.winwin.api.post.dto.response.PostAddResponse;
+import com.dpm.winwin.api.post.dto.response.PostMethodsResponse;
 import com.dpm.winwin.api.post.dto.response.PostReadResponse;
 import com.dpm.winwin.api.post.service.PostService;
-import com.dpm.winwin.domain.repository.post.dto.request.PostListConditionRequest;
 import com.dpm.winwin.domain.repository.post.dto.PostListDto;
+import com.dpm.winwin.domain.repository.post.dto.request.PostListConditionRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,9 +30,11 @@ public class PostController {
   private final PostService postService;
 
   @GetMapping
-  public BaseResponseDto<Page<PostListDto>> getPostList(PostListConditionRequest condition, Pageable pageable) {
-      Page<PostListDto> response = postService.getPosts(condition, pageable);
-      return BaseResponseDto.ok(response);
+  public BaseResponseDto<Page<PostListDto>> getPostList(
+      PostListConditionRequest condition, Pageable pageable
+  ) {
+    Page<PostListDto> response = postService.getPosts(condition, pageable);
+    return BaseResponseDto.ok(response);
   }
 
   @GetMapping("/{id}")
@@ -53,5 +56,11 @@ public class PostController {
     ) {
         Long deletedId = postService.delete(id);
         return BaseResponseDto.ok(deletedId);
+    }
+
+    @GetMapping("/method")
+    public BaseResponseDto<PostMethodsResponse> getPostMethod() {
+      PostMethodsResponse response = postService.getPostMethod();
+      return BaseResponseDto.ok(response);
     }
 }

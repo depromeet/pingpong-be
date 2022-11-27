@@ -2,6 +2,11 @@ package com.dpm.winwin.api.post.service;
 
 import com.dpm.winwin.api.common.error.enums.ErrorMessage;
 import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
+import com.dpm.winwin.api.post.dto.response.PostMethodResponse;
+import com.dpm.winwin.api.post.dto.response.PostMethodsResponse;
+import com.dpm.winwin.domain.entity.post.enums.ExchangePeriod;
+import com.dpm.winwin.domain.entity.post.enums.ExchangeTime;
+import com.dpm.winwin.domain.entity.post.enums.ExchangeType;
 import com.dpm.winwin.domain.repository.post.dto.request.PostListConditionRequest;
 import com.dpm.winwin.api.post.dto.request.PostAddRequest;
 import com.dpm.winwin.api.post.dto.response.LinkResponse;
@@ -20,6 +25,7 @@ import com.dpm.winwin.domain.repository.category.SubCategoryRepository;
 import com.dpm.winwin.domain.repository.member.MemberRepository;
 import com.dpm.winwin.domain.repository.post.PostRepository;
 import com.dpm.winwin.domain.repository.post.dto.PostListDto;
+import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -101,5 +107,21 @@ public class PostService {
 
         postRepository.delete(post);
         return post.getId();
+    }
+
+    public PostMethodsResponse getPostMethod() {
+        List<PostMethodResponse> exchangeTypes = Arrays.stream(ExchangeType.values())
+            .map(e -> PostMethodResponse.of(e.name(), e.getMessage()))
+            .toList();
+
+        List<PostMethodResponse> exchangePeriods = Arrays.stream(ExchangePeriod.values())
+            .map(e -> PostMethodResponse.of(e.name(), e.getMessage()))
+            .toList();
+
+        List<PostMethodResponse> exchangeTimes = Arrays.stream(ExchangeTime.values())
+            .map(e -> PostMethodResponse.of(e.name(), e.getMessage()))
+            .toList();
+
+        return PostMethodsResponse.of(exchangeTypes, exchangePeriods, exchangeTimes);
     }
 }

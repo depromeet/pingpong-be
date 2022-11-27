@@ -14,6 +14,7 @@ public record PostAddResponse(
         String midCategory,
         String subCategory,
         List<LinkResponse> links,
+        String chatLink,
         List<String> takenCategories,
         String takenContent,
         String exchangeType,
@@ -32,6 +33,7 @@ public record PostAddResponse(
                 savePost.getLinks().stream()
                         .map(LinkResponse::of)
                         .collect(Collectors.toList()),
+                savePost.getChatLink(),
                 savePost.getTakenTalents().stream()
                         .map(t -> t.getTalent().getName())
                         .toList(),

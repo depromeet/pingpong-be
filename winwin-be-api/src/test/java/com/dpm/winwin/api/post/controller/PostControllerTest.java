@@ -47,6 +47,7 @@ class PostControllerTest extends RestDocsTestSupport {
             2L,
             1L,
             links,
+            "www.chatLink.com",
             Arrays.asList(1L, 2L, 3L),
             "받고 싶은 재능 내용",
             ExchangeType.ONLINE,
@@ -70,6 +71,7 @@ class PostControllerTest extends RestDocsTestSupport {
             "중분류 카테고리 이름",
             "소분류 카테고리 이름",
             linksResponse,
+            "www.chatLink.com",
             takeCategoriesResponse,
             "받고 싶은 재능 내용",
             ExchangeType.ONLINE.getMessage(),
@@ -109,6 +111,7 @@ class PostControllerTest extends RestDocsTestSupport {
                     fieldWithPath("subCategory").type(JsonFieldType.NUMBER)
                         .description("소분류 카테고리 id"),
                     fieldWithPath("links").type(JsonFieldType.ARRAY).description("링크"),
+                    fieldWithPath("chatLink").type(JsonFieldType.STRING).description("채팅 링크"),
                     fieldWithPath("takenCategories").type(JsonFieldType.ARRAY)
                         .description("받고 싶은 카테고리 id"),
                     fieldWithPath("takenContent").type(JsonFieldType.STRING)
@@ -131,6 +134,7 @@ class PostControllerTest extends RestDocsTestSupport {
                         .description("소분류 카테고리 이름"),
                     fieldWithPath("data.links").type(JsonFieldType.ARRAY).description("링크")
                         .optional(),
+                    fieldWithPath("data.chatLink").type(JsonFieldType.STRING).description("채팅 링크"),
                     fieldWithPath("data.links[].id").type(JsonFieldType.NUMBER)
                         .description("링크 id"),
                     fieldWithPath("data.links[].content").type(JsonFieldType.STRING)

@@ -3,7 +3,7 @@ package com.dpm.winwin.domain.repository.post.dto;
 import com.querydsl.core.annotations.QueryProjection;
 import java.util.List;
 
-public record PostMemberDto(
+public record PostListDto(
     String title,
     String subCategory,
     Integer likes,
@@ -14,6 +14,6 @@ public record PostMemberDto(
 ) {
 
     @QueryProjection
-    public PostMemberDto {
+    public PostListDto {
     }
 }

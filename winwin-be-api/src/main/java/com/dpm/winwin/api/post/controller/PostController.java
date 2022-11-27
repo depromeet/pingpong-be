@@ -5,8 +5,8 @@ import com.dpm.winwin.api.post.dto.request.PostAddRequest;
 import com.dpm.winwin.api.post.dto.response.PostAddResponse;
 import com.dpm.winwin.api.post.dto.response.PostReadResponse;
 import com.dpm.winwin.api.post.service.PostService;
-import com.dpm.winwin.domain.repository.post.dto.PostListCondition;
-import com.dpm.winwin.domain.repository.post.dto.PostMemberDto;
+import com.dpm.winwin.domain.repository.post.dto.request.PostListConditionRequest;
+import com.dpm.winwin.domain.repository.post.dto.PostListDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,8 +29,8 @@ public class PostController {
   private final PostService postService;
 
   @GetMapping
-  public BaseResponseDto<Page<PostMemberDto>> getPostList(PostListCondition condition, Pageable pageable) {
-      Page<PostMemberDto> response = postService.getPosts(condition, pageable);
+  public BaseResponseDto<Page<PostListDto>> getPostList(PostListConditionRequest condition, Pageable pageable) {
+      Page<PostListDto> response = postService.getPosts(condition, pageable);
       return BaseResponseDto.ok(response);
   }
 

@@ -4,8 +4,8 @@ import static com.dpm.winwin.domain.entity.member.QMember.member;
 import static com.dpm.winwin.domain.entity.post.QPost.post;
 
 import com.dpm.winwin.domain.repository.post.CustomPostRepository;
-import com.dpm.winwin.domain.repository.post.dto.PostListCondition;
-import com.dpm.winwin.domain.repository.post.dto.PostMemberDto;
+import com.dpm.winwin.domain.repository.post.dto.request.PostListConditionRequest;
+import com.dpm.winwin.domain.repository.post.dto.PostListDto;
 import com.dpm.winwin.domain.repository.post.dto.QPostMemberDto;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -24,10 +24,10 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<PostMemberDto> getAllByIsShareAndMidCategory(
-        PostListCondition condition, Pageable pageable
+    public Page<PostListDto> getAllByIsShareAndMidCategory(
+        PostListConditionRequest condition, Pageable pageable
     ) {
-        List<PostMemberDto> content = queryFactory
+        List<PostListDto> content = queryFactory
             .select(
                 new QPostMemberDto(post.title, post.subCategory.name, post.likes.size(),
                     member.nickname, member.image

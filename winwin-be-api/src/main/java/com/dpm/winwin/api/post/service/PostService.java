@@ -2,7 +2,7 @@ package com.dpm.winwin.api.post.service;
 
 import com.dpm.winwin.api.common.error.enums.ErrorMessage;
 import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
-import com.dpm.winwin.domain.repository.post.dto.PostListCondition;
+import com.dpm.winwin.domain.repository.post.dto.request.PostListConditionRequest;
 import com.dpm.winwin.api.post.dto.request.PostAddRequest;
 import com.dpm.winwin.api.post.dto.response.LinkResponse;
 import com.dpm.winwin.api.post.dto.response.PostAddResponse;
@@ -19,7 +19,7 @@ import com.dpm.winwin.domain.repository.category.MidCategoryRepository;
 import com.dpm.winwin.domain.repository.category.SubCategoryRepository;
 import com.dpm.winwin.domain.repository.member.MemberRepository;
 import com.dpm.winwin.domain.repository.post.PostRepository;
-import com.dpm.winwin.domain.repository.post.dto.PostMemberDto;
+import com.dpm.winwin.domain.repository.post.dto.PostListDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,7 +39,7 @@ public class PostService {
     private final SubCategoryRepository subCategoryRepository;
     private final PostRepository postRepository;
 
-    public Page<PostMemberDto> getPosts(PostListCondition condition, Pageable pageable) {
+    public Page<PostListDto> getPosts(PostListConditionRequest condition, Pageable pageable) {
         return postRepository.getAllByIsShareAndMidCategory(condition, pageable);
     }
 

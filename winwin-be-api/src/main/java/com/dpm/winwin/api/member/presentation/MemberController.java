@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -30,14 +32,16 @@ public class MemberController {
     }
 
     @PutMapping("/{memberId}/image")
-    public BaseResponseDto<Long> updateMemberImage(@PathVariable Long memberId,
-                                                   @RequestBody MemberImageRequest memberImageRequest){
+    public BaseResponseDto<Long> updateMemberImage(
+            @PathVariable Long memberId,
+            @RequestBody MemberImageRequest memberImageRequest){
         Long id = memberCommandService.updateMemberImage(memberId, memberImageRequest);
         return BaseResponseDto.ok(id);
     }
 
     @GetMapping("/{memberId}")
-    public BaseResponseDto<MemberReadResponse> readMemberInfo(@PathVariable Long memberId){
+    public @ResponseBody BaseResponseDto<MemberReadResponse> readMemberInfo(
+            @PathVariable @RequestParam Long memberId){
         return BaseResponseDto.ok(memberQueryService.readMemberInfo(memberId));
     }
 }

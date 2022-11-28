@@ -3,6 +3,8 @@ package com.dpm.winwin.api.member.presentation;
 import com.dpm.winwin.api.common.response.dto.BaseResponseDto;
 import com.dpm.winwin.api.member.application.MemberCommandService;
 import com.dpm.winwin.api.member.application.MemberQueryService;
+import com.dpm.winwin.api.member.dto.request.MemberCreateRequest;
+import com.dpm.winwin.api.member.dto.response.MemberCreateResponse;
 import com.dpm.winwin.domain.repository.member.dto.request.MemberImageRequest;
 import com.dpm.winwin.domain.repository.member.dto.request.MemberNicknameRequest;
 import com.dpm.winwin.domain.repository.member.dto.response.MemberReadResponse;
@@ -10,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,5 +46,11 @@ public class MemberController {
     public @ResponseBody BaseResponseDto<MemberReadResponse> readMemberInfo(
             @PathVariable @RequestParam Long memberId){
         return BaseResponseDto.ok(memberQueryService.readMemberInfo(memberId));
+    }
+
+    @PostMapping
+    public BaseResponseDto<MemberCreateResponse> createMember(@RequestBody final MemberCreateRequest memberCreateRequest){
+        MemberCreateResponse memberCreateResponse = memberCommandService.createMember(memberCreateRequest);
+        return BaseResponseDto.ok(memberCreateResponse);
     }
 }

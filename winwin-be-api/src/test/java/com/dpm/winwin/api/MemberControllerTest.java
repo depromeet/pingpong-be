@@ -1,6 +1,10 @@
 package com.dpm.winwin.api;
 
+import static org.mockito.BDDMockito.given;
+import com.dpm.winwin.api.member.application.MemberCommandService;
 import com.dpm.winwin.api.member.application.MemberQueryService;
+import com.dpm.winwin.api.member.dto.request.MemberCreateRequest;
+import com.dpm.winwin.api.member.dto.response.MemberCreateResponse;
 import com.dpm.winwin.api.utils.RestDocsTestSupport;
 import com.dpm.winwin.domain.repository.member.dto.response.MemberReadResponse;
 import org.junit.jupiter.api.Disabled;
@@ -18,8 +22,8 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -27,15 +31,56 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class MemberControllerTest extends RestDocsTestSupport {
 
+    @MockBean
+    private MemberCommandService memberCommandService;
+
+    @Disabled
+    @Test
+    void member가_생성된다() throws Exception {
+
+        MemberCreateRequest memberCreateRequest = new MemberCreateRequest(
+                "김감자"
+        );
+
+        MemberCreateResponse memberCreateResponse = new MemberCreateResponse(
+                1L,
+                "김감자"
+        );
+
+        given(memberCommandService.createMember(memberCreateRequest))
+                .willReturn(memberCreateResponse);
+
+        ResultActions result = mockMvc.perform(
+                post("/api/v1/members")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(createJson(memberCreateRequest))
+        );
+
+        result.andExpect(status().is2xxSuccessful())
+                .andDo(restDocs.document(
+                        requestFields(
+                                fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임")
+                        ),
+                        responseFields(
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("성공 여부"),
+                                fieldWithPath("data.memberId").type(JsonFieldType.NUMBER).description("저장된 닉네임 id"),
+                                fieldWithPath("data.nickname").type(JsonFieldType.NUMBER).description("저장된 회원 닉네임")
+
+                                )
+                        ));
+    }
+
+
 
     @Test
     @Disabled
     @DisplayName("아직 데이터가 없어서 나중에 사용할 회원 조회 테스트 ")
-    public void member를_조회한다() throws Exception {
+    void member를_조회한다() throws Exception {
 
         // 조회 API -> 대상의 데이터가 있어야 작동
         mockMvc.perform(
-                        get("/api/v1/member/{memberId}", 1L)
+                        get("/api/v1/members/{memberId}", 1L)
                                 .accept(MediaType.APPLICATION_JSON)
                                 .contentType(MediaType.APPLICATION_JSON)
                 )

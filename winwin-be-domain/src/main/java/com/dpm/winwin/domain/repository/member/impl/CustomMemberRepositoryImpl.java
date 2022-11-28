@@ -12,6 +12,7 @@ import java.util.Optional;
 import static com.dpm.winwin.domain.entity.member.QMember.member;
 import static com.dpm.winwin.domain.entity.talent.QMemberTalent.memberTalent;
 import static com.querydsl.core.group.GroupBy.groupBy;
+import static com.querydsl.core.types.Projections.list;
 
 @Repository
 @RequiredArgsConstructor
@@ -31,8 +32,8 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
                                         Projections.constructor(MemberReadResponse.class,
                                                 member.id,member.nickname, member.image,member.introductions,
                                                 member.exchangeCount, member.profileLink,
-                                                memberTalent.type.stringValue().as("GIVE"),
-                                                memberTalent.type.stringValue().as("TAKE"))
+                                                list(memberTalent.type.stringValue().as("GIVE")),
+                                                list(memberTalent.type.stringValue().as("TAKE")))
                                 )
                         ).get(memberId)
         );

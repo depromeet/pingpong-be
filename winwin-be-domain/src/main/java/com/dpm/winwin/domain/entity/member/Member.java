@@ -2,6 +2,7 @@ package com.dpm.winwin.domain.entity.member;
 
 import com.dpm.winwin.domain.entity.BaseEntity;
 import com.dpm.winwin.domain.entity.chat.ChatRoom;
+import com.dpm.winwin.domain.entity.talent.MemberTalent;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.CascadeType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +31,12 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "host")
     private List<ChatRoom> chatRooms = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MemberTalent> givenTalents = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MemberTalent> takenTalents = new ArrayList<>();
+
     @Column(nullable = false)
     private String nickname;
 
@@ -41,8 +49,11 @@ public class Member extends BaseEntity {
     private String profileLink;
 
     @Builder
-    public Member(String nickname, String image, String introduction,
-                  int exchangeCount, String profileLink){
+    public Member(String nickname,
+                  String image,
+                  String introduction,
+                  int exchangeCount,
+                  String profileLink){
         this.nickname = nickname;
         this.image = image;
         this.introductions = introduction;

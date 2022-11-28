@@ -64,14 +64,14 @@ public class PostService {
         SubCategory subCategory = subCategoryRepository.findById(request.subCategory())
             .orElseThrow(() -> new BusinessException(ErrorMessage.SUB_CATEGORY_NOT_FOUND));
 
-        List<Link> linkList = request.links().stream()
+        List<Link> links = request.links().stream()
             .map(Link::of)
             .toList();
 
         Post post = request.toEntity();
         post.writeBy(member);
         post.setAllCategory(mainCategory, midCategory, subCategory);
-        post.setLink(linkList);
+        post.setLink(links);
         post.setTakenContent(request.takenContent());
 
         List<PostTalent> postTalents = request.takenCategories().stream()
@@ -79,9 +79,7 @@ public class PostService {
                 .orElseThrow(() -> new BusinessException(ErrorMessage.SUB_CATEGORY_NOT_FOUND))))
             .toList();
 
-        for (PostTalent postTalent : postTalents) {
-            post.addTakenTalent(postTalent);
-        }
+        postTalents.forEach(post::addTakenTalent);
 
         Post savedPost = postRepository.save(post);
         return PostAddResponse.from(savedPost);

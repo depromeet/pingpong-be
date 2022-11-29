@@ -44,3 +44,4 @@ out/
 
 ### RestDocs ###
 BOOT-INF
+/winwin-be-api/src/main/resources/static/docs/index.html

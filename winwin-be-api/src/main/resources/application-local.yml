@@ -14,7 +14,7 @@ spring:
     defer-datasource-initialization: true
 
   datasource:
-      url: ENC(lIjKE4PdYj5818BDfciSgTztEiRtDOt1g+A13kRBpqHnJibN07gl+1sLrI34I5kL9KIXh0vcwwlPdLzXe+DcZsjLr8OhFBV6tP/ePWzJpdbC4fNtcyy777BphqkSpk0csrU0gvPu8y2AyHl+u3xm+Z3jWAAumwzDhTsPXEf2VyMxOw3S5U6c7JvhAcBbqNHCN4W0vqXQX04=)
+      url: ENC(XZiReczSSeVhtjiRh2EdMn/QCY1Ju8DgNneba7kajJb9G7wtJP1U0swDxr9ITwHKWPMhgxlJf9YU0AU9ZH2D6X7WhGeTVOlxBjuZcWJathFd6hF94P6yWur5+WOhzb22EHiXmiymzFVJuTLSPQSpruiaenLxEPXfWsyq6/ialV+kwHRbjNyZVSMVycPMM9uZ7c2oHkyf2KY=)
       username: ENC(kSbVij29Q5IxlMTyH1g0rw==)
       password: ENC(f2DZKexIllOKp9G6wKa2T+E/dqGcnngS)
       driver-class-name: com.mysql.cj.jdbc.Driver

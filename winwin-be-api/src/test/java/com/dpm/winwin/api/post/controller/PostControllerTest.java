@@ -104,15 +104,15 @@ class PostControllerTest extends RestDocsTestSupport {
                     fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
                     fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
                     fieldWithPath("isShare").type(JsonFieldType.BOOLEAN).description("나눔 여부"),
-                    fieldWithPath("mainCategory").type(JsonFieldType.NUMBER)
+                    fieldWithPath("mainCategoryId").type(JsonFieldType.NUMBER)
                         .description("대분류 카테고리 id"),
-                    fieldWithPath("midCategory").type(JsonFieldType.NUMBER)
+                    fieldWithPath("midCategoryId").type(JsonFieldType.NUMBER)
                         .description("중분류 카테고리 id"),
-                    fieldWithPath("subCategory").type(JsonFieldType.NUMBER)
+                    fieldWithPath("subCategoryId").type(JsonFieldType.NUMBER)
                         .description("소분류 카테고리 id"),
                     fieldWithPath("links").type(JsonFieldType.ARRAY).description("링크"),
                     fieldWithPath("chatLink").type(JsonFieldType.STRING).description("채팅 링크"),
-                    fieldWithPath("takenCategories").type(JsonFieldType.ARRAY)
+                    fieldWithPath("takenTalents").type(JsonFieldType.ARRAY)
                         .description("받고 싶은 카테고리 id"),
                     fieldWithPath("takenContent").type(JsonFieldType.STRING)
                         .description("받고 싶은 내용"),
@@ -139,7 +139,7 @@ class PostControllerTest extends RestDocsTestSupport {
                         .description("링크 id"),
                     fieldWithPath("data.links[].content").type(JsonFieldType.STRING)
                         .description("링크 내용"),
-                    fieldWithPath("data.takenCategories").type(JsonFieldType.ARRAY)
+                    fieldWithPath("data.takenTalents").type(JsonFieldType.ARRAY)
                         .description("받고 싶은 카테고리"),
                     fieldWithPath("data.takenContent").type(JsonFieldType.STRING)
                         .description("받고 싶은 내용"),

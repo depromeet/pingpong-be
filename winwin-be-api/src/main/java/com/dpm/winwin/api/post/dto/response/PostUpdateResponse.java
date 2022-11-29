@@ -12,7 +12,7 @@ public record PostUpdateResponse(
     String subCategory,
     List<LinkResponse> links,
     String chatLink,
-    List<String> takenCategories,
+    List<String> takenTalents,
     String takenContent,
     String exchangeType,
     String exchangePeriod,

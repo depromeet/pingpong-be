@@ -60,9 +60,7 @@ public class PostController {
       return BaseResponseDto.ok(postService.updatePost(memberId, id, updateRequest));
   }
     @DeleteMapping("/{id}")
-    public BaseResponseDto<Long> deletePost(
-            @PathVariable Long id
-    ) {
+    public BaseResponseDto<Long> deletePost(@PathVariable Long id) {
         Long deletedId = postService.delete(id);
         return BaseResponseDto.ok(deletedId);
     }

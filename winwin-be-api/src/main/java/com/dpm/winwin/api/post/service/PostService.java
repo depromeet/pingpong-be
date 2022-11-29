@@ -57,11 +57,11 @@ public class PostService {
     public PostAddResponse save(long memberId, PostAddRequest request) {
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new BusinessException(ErrorMessage.MEMBER_NOT_FOUND));
-        MainCategory mainCategory = mainCategoryRepository.findById(request.mainCategory())
+        MainCategory mainCategory = mainCategoryRepository.findById(request.mainCategoryId())
             .orElseThrow(() -> new BusinessException(ErrorMessage.MAIN_CATEGORY_NOT_FOUND));
-        MidCategory midCategory = midCategoryRepository.findById(request.midCategory())
+        MidCategory midCategory = midCategoryRepository.findById(request.midCategoryId())
             .orElseThrow(() -> new BusinessException(ErrorMessage.MID_CATEGORY_NOT_FOUND));
-        SubCategory subCategory = subCategoryRepository.findById(request.subCategory())
+        SubCategory subCategory = subCategoryRepository.findById(request.subCategoryId())
             .orElseThrow(() -> new BusinessException(ErrorMessage.SUB_CATEGORY_NOT_FOUND));
 
         List<Link> links = request.links().stream()
@@ -74,7 +74,7 @@ public class PostService {
         post.setLink(links);
         post.setTakenContent(request.takenContent());
 
-        List<PostTalent> postTalents = request.takenCategories().stream()
+        List<PostTalent> postTalents = request.takenTalents().stream()
             .map(t -> PostTalent.of(post, subCategoryRepository.findById(t)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.SUB_CATEGORY_NOT_FOUND))))
             .toList();
@@ -120,14 +120,14 @@ public class PostService {
     public PostUpdateResponse updatePost(Long memberId, Long postId,
         PostUpdateRequest updateRequest) {
         Post post = getPostByMemberId(memberId, postId);
-        MainCategory mainCategory = mainCategoryRepository.findById(updateRequest.mainCategory())
+        MainCategory mainCategory = mainCategoryRepository.findById(updateRequest.mainCategoryId())
             .orElseThrow(() -> new BusinessException(ErrorMessage.MAIN_CATEGORY_NOT_FOUND));
-        MidCategory midCategory = midCategoryRepository.findById(updateRequest.mainCategory())
+        MidCategory midCategory = midCategoryRepository.findById(updateRequest.mainCategoryId())
             .orElseThrow(() -> new BusinessException(ErrorMessage.MID_CATEGORY_NOT_FOUND));
-        SubCategory subCategory = subCategoryRepository.findById(updateRequest.subCategory())
+        SubCategory subCategory = subCategoryRepository.findById(updateRequest.subCategoryId())
             .orElseThrow(() -> new BusinessException(ErrorMessage.SUB_CATEGORY_NOT_FOUND));
         List<SubCategory> savedSubCategories = subCategoryRepository.findAllById(
-            updateRequest.takeCategories());
+            updateRequest.takenTalents());
 
         post.update(updateRequest.toDto(),mainCategory, midCategory, subCategory,savedSubCategories);
 

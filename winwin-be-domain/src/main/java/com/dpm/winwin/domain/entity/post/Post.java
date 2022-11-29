@@ -177,15 +177,8 @@ public class Post extends BaseEntity {
 
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public void update(PostUpdateDto updateDto, MainCategory mainCategory, MidCategory midCategory, SubCategory subCategory, List<SubCategory> savedSubCategories) {
+    public void update(PostUpdateDto updateDto, MainCategory mainCategory, MidCategory midCategory,
+        SubCategory subCategory, List<SubCategory> savedTalents) {
         this.title = updateDto.title();
         this.content = updateDto.content();
         this.isShare = updateDto.isShare();
@@ -195,7 +188,7 @@ public class Post extends BaseEntity {
         this.exchangePeriod = updateDto.exchangePeriod();
         this.exchangeTime = updateDto.exchangeTime();
         setAllCategory(mainCategory, midCategory, subCategory);
-        setTakenTalents(savedSubCategories);
+        setTakenTalents(savedTalents);
         setLinks(updateDto.links());
     }
 }

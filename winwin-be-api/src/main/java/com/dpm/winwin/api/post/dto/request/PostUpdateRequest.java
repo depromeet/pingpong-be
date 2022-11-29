@@ -7,7 +7,6 @@ import com.dpm.winwin.domain.entity.post.enums.ExchangeType;
 import java.util.List;
 
 public record PostUpdateRequest(
-    Long id,
     String title,
     String content,
     boolean isShare,

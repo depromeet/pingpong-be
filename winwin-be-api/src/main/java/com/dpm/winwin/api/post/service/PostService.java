@@ -122,14 +122,14 @@ public class PostService {
         Post post = getPostByMemberId(memberId, postId);
         MainCategory mainCategory = mainCategoryRepository.findById(updateRequest.mainCategoryId())
             .orElseThrow(() -> new BusinessException(ErrorMessage.MAIN_CATEGORY_NOT_FOUND));
-        MidCategory midCategory = midCategoryRepository.findById(updateRequest.mainCategoryId())
+        MidCategory midCategory = midCategoryRepository.findById(updateRequest.midCategoryId())
             .orElseThrow(() -> new BusinessException(ErrorMessage.MID_CATEGORY_NOT_FOUND));
         SubCategory subCategory = subCategoryRepository.findById(updateRequest.subCategoryId())
             .orElseThrow(() -> new BusinessException(ErrorMessage.SUB_CATEGORY_NOT_FOUND));
-        List<SubCategory> savedSubCategories = subCategoryRepository.findAllById(
+        List<SubCategory> savedTalents = subCategoryRepository.findAllById(
             updateRequest.takenTalents());
 
-        post.update(updateRequest.toDto(),mainCategory, midCategory, subCategory,savedSubCategories);
+        post.update(updateRequest.toDto(),mainCategory, midCategory, subCategory, savedTalents);
 
         for (LinkRequest linkRequest : updateRequest.getExistentLinks()) {
             Link link = linkRepository.findById(linkRequest.id())

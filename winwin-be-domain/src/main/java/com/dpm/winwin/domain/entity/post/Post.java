@@ -158,21 +158,21 @@ public class Post extends BaseEntity {
 
     }
 
-    public void setTakenTalents(List<SubCategory> afterTalentCategories) {
+    public void setTakenTalents(List<SubCategory> afterTakenTalents) {
 
         Set<Long> before = this.takenTalents.stream()
             .map(takenTalent -> takenTalent.getTalent().getId())
             .collect(Collectors.toSet());
 
-        Set<Long> after = afterTalentCategories.stream()
+        Set<Long> after = afterTakenTalents.stream()
             .map(SubCategory::getId)
             .collect(Collectors.toSet());
 
         this.takenTalents.removeIf(takenTalent -> !after.contains(takenTalent.getTalent().getId()));
 
-        this.takenTalents.addAll(afterTalentCategories.stream()
+        this.takenTalents.addAll(afterTakenTalents.stream()
             .filter(category -> !before.contains(category.getId()))
-            .map(category -> PostTalent.of(this, category))
+            .map(postTalent -> PostTalent.of(this, postTalent))
             .toList());
 
     }

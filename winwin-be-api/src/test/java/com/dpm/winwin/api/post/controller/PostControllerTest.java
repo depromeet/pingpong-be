@@ -112,8 +112,8 @@ class PostControllerTest extends RestDocsTestSupport {
                         .description("소분류 카테고리 id"),
                     fieldWithPath("links").type(JsonFieldType.ARRAY).description("링크"),
                     fieldWithPath("chatLink").type(JsonFieldType.STRING).description("채팅 링크"),
-                    fieldWithPath("takenTalents").type(JsonFieldType.ARRAY)
-                        .description("받고 싶은 카테고리 id"),
+                    fieldWithPath("takenTalentIds").type(JsonFieldType.ARRAY)
+                        .description("받고 싶은 재능 id"),
                     fieldWithPath("takenContent").type(JsonFieldType.STRING)
                         .description("받고 싶은 내용"),
                     fieldWithPath("exchangeType").type(JsonFieldType.STRING).description("교환 방식"),

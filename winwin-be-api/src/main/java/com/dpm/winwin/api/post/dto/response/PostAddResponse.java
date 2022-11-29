@@ -33,7 +33,7 @@ public record PostAddResponse(
                         .toList(),
                 savePost.getChatLink(),
                 savePost.getTakenTalents().stream()
-                        .map(t -> t.getTalent().getName())
+                        .map(postTalent -> postTalent.getTalent().getName())
                         .toList(),
                 savePost.getTakenContent(),
                 savePost.getExchangeType().getMessage(),

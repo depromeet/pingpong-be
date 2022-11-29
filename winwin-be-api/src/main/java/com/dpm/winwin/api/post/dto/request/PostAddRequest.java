@@ -15,7 +15,7 @@ public record PostAddRequest(
     Long subCategoryId,
     List<String> links,
     String chatLink,
-    List<Long> takenTalents,
+    List<Long> takenTalentIds,
     String takenContent,
     ExchangeType exchangeType,
     ExchangePeriod exchangePeriod,

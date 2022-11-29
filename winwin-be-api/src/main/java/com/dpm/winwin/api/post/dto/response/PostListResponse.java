@@ -24,7 +24,7 @@ public record PostListResponse(
             post.getMember().getImage(),
             post.getMember().getRanks().getMessage(),
             post.getTakenTalents().stream()
-                .map(pt -> pt.getTalent().getName())
+                .map(postTalent -> postTalent.getTalent().getName())
                 .toList());
     }
 }

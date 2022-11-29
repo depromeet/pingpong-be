@@ -74,8 +74,8 @@ public class PostService {
         post.setLink(links);
         post.setTakenContent(request.takenContent());
 
-        List<PostTalent> postTalents = request.takenTalents().stream()
-            .map(t -> PostTalent.of(post, subCategoryRepository.findById(t)
+        List<PostTalent> postTalents = request.takenTalentIds().stream()
+            .map(talentId -> PostTalent.of(post, subCategoryRepository.findById(talentId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.SUB_CATEGORY_NOT_FOUND))))
             .toList();
 
@@ -150,7 +150,7 @@ public class PostService {
                 .toList(),
             post.getChatLink(),
             post.getTakenTalents().stream()
-                .map(talent -> talent.getTalent().getName())
+                .map(postTalent -> postTalent.getTalent().getName())
                 .toList(),
             post.getTakenContent(),
             post.getExchangeType().getMessage(),
@@ -161,15 +161,15 @@ public class PostService {
 
     public PostMethodsResponse getPostMethod() {
         List<PostMethodResponse> exchangeTypes = Arrays.stream(ExchangeType.values())
-            .map(e -> PostMethodResponse.of(e.name(), e.getMessage()))
+            .map(type -> PostMethodResponse.of(type.name(), type.getMessage()))
             .toList();
 
         List<PostMethodResponse> exchangePeriods = Arrays.stream(ExchangePeriod.values())
-            .map(e -> PostMethodResponse.of(e.name(), e.getMessage()))
+            .map(period -> PostMethodResponse.of(period.name(), period.getMessage()))
             .toList();
 
         List<PostMethodResponse> exchangeTimes = Arrays.stream(ExchangeTime.values())
-            .map(e -> PostMethodResponse.of(e.name(), e.getMessage()))
+            .map(time -> PostMethodResponse.of(time.name(), time.getMessage()))
             .toList();
 
         return PostMethodsResponse.of(exchangeTypes, exchangePeriods, exchangeTimes);

@@ -1,10 +1,11 @@
 package com.dpm.winwin.domain.entity.member;
 
 public enum Ranks {
-    RANK1("등급1"),
-    RANK2("등급2"),
-    RANK3("등급3"),
-    RANK4("등급4");
+    ROOKIE("루키"),
+    BEGINNER("비기너"),
+    JUNIOR("주니어"),
+    PRO("프로");
+
 
     private final String message;
 

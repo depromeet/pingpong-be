@@ -29,19 +29,6 @@ create table if not exists sub_category
     mid_category_id bigint       not null,
     name            varchar(255) not null
 );
-create table if not exists member
-(
-    id             bigint auto_increment
-        primary key,
-    created_date   datetime(6)  null,
-    modified_date  datetime(6)  null,
-    exchange_count int          not null,
-    image          varchar(255) null,
-    introductions  varchar(255) null,
-    nickname       varchar(255) not null,
-    profile_link   varchar(255) null,
-    ranks          varchar(255) not null
-);
 
 INSERT INTO main_category (id, created_date, modified_date, image, name)
 VALUES (1, null, null, 'mainCategory/1', '대1');
@@ -85,8 +72,3 @@ INSERT INTO sub_category (id, created_date, modified_date, image, mid_category_i
 VALUES (11, null, null, 'subCategory/11', 6, '대2중3소1');
 INSERT INTO sub_category (id, created_date, modified_date, image, mid_category_id, name)
 VALUES (12, null, null, 'subCategory/12', 6, '대2중3소2');
-
-INSERT INTO member (id, created_date, modified_date, exchange_count, image, introductions, nickname,
-                    profile_link, ranks)
-VALUES (1, null, null, 0, 'member/1', 'memberIntro', 'memberNickname', 'www.depromeet.com',
-        'RANK1');

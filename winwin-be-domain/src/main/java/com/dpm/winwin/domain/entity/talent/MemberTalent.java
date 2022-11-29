@@ -39,4 +39,24 @@ public class MemberTalent extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TalentType type;
+
+    public MemberTalent(Member member,SubCategory talent, TalentType type){
+        this.member = member;
+        this.talent = talent;
+        this.type = type;
+    }
+
+    public static MemberTalent of(Member member,SubCategory talent,TalentType type){
+        return new MemberTalent(member,talent,type);
+    }
+
+    public MemberTalent(SubCategory talent, TalentType type){
+        this.talent = talent;
+        this.type = type;
+    }
+
+    public static MemberTalent of(SubCategory talent,TalentType type){
+        return new MemberTalent(talent,type);
+    }
+
 }

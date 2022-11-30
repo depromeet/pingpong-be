@@ -11,6 +11,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,12 +25,13 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Post getPostByMemberId(Long memberId, Long postId) {
-        return queryFactory
-            .selectFrom(post)
-            .leftJoin(post.member, member)
-            .where(post.id.eq(postId), member.id.eq(memberId))
-            .fetchOne();
+    public Optional<Post> getPostByMemberId(Long memberId, Long postId) {
+        return Optional.ofNullable(
+            queryFactory
+                .selectFrom(post)
+                .leftJoin(post.member, member)
+                .where(post.id.eq(postId), member.id.eq(memberId))
+                .fetchOne());
     }
 
     public Page<Post> getAllByIsShareAndMidCategory(
@@ -63,6 +65,18 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
             );
 
         return PageableExecutionUtils.getPage(posts, pageable, countQuery::fetchOne);
+    }
+
+    @Override
+    public Optional<Post> getByIdFetchJoin(Long postId) {
+        return Optional.ofNullable(
+            queryFactory
+                .select(post)
+                .from(post)
+                .leftJoin(post.member, member).fetchJoin()
+                .where(post.id.eq(postId))
+                .fetchOne()
+        );
     }
 
     private BooleanExpression isShareEq(Boolean isShare) {

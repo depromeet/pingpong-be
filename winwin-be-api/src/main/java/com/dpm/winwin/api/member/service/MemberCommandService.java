@@ -1,21 +1,12 @@
-package com.dpm.winwin.api.member.application;
+package com.dpm.winwin.api.member.service;
 
-import com.dpm.winwin.api.common.error.enums.ErrorMessage;
 import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
 import com.dpm.winwin.api.member.dto.request.MemberCreateRequest;
 import com.dpm.winwin.api.member.dto.request.MemberUpdateRequest;
 import com.dpm.winwin.api.member.dto.response.MemberCreateResponse;
 import com.dpm.winwin.api.member.dto.response.MemberUpdateResponse;
-import com.dpm.winwin.api.post.dto.request.LinkRequest;
-import com.dpm.winwin.api.post.dto.request.PostUpdateRequest;
-import com.dpm.winwin.api.post.dto.response.LinkResponse;
-import com.dpm.winwin.api.post.dto.response.PostUpdateResponse;
-import com.dpm.winwin.domain.entity.category.MainCategory;
-import com.dpm.winwin.domain.entity.category.MidCategory;
 import com.dpm.winwin.domain.entity.category.SubCategory;
-import com.dpm.winwin.domain.entity.link.Link;
 import com.dpm.winwin.domain.entity.member.Member;
-import com.dpm.winwin.domain.entity.post.Post;
 import com.dpm.winwin.domain.repository.category.SubCategoryRepository;
 import com.dpm.winwin.domain.repository.member.MemberRepository;
 import com.dpm.winwin.domain.repository.member.dto.request.MemberImageRequest;
@@ -23,7 +14,7 @@ import com.dpm.winwin.domain.repository.member.dto.request.MemberNicknameRequest
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.Arrays;
+
 import java.util.List;
 import static com.dpm.winwin.api.common.error.enums.ErrorMessage.MEMBER_NOT_FOUND;
 

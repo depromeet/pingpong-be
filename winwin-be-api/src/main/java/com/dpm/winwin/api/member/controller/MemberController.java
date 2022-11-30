@@ -1,8 +1,8 @@
-package com.dpm.winwin.api.member.presentation;
+package com.dpm.winwin.api.member.controller;
 
 import com.dpm.winwin.api.common.response.dto.BaseResponseDto;
-import com.dpm.winwin.api.member.application.MemberCommandService;
-import com.dpm.winwin.api.member.application.MemberQueryService;
+import com.dpm.winwin.api.member.service.MemberCommandService;
+import com.dpm.winwin.api.member.service.MemberQueryService;
 import com.dpm.winwin.api.member.dto.request.MemberCreateRequest;
 import com.dpm.winwin.api.member.dto.response.MemberCreateResponse;
 import com.dpm.winwin.domain.repository.member.dto.request.MemberImageRequest;
@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 
 @RequiredArgsConstructor

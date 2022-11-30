@@ -50,7 +50,7 @@ public class MemberController {
     }
 
     @PostMapping
-    public BaseResponseDto<MemberCreateResponse> createMember(@RequestBody final MemberCreateRequest memberCreateRequest){
+    public BaseResponseDto<MemberCreateResponse> createMember(@RequestBody MemberCreateRequest memberCreateRequest){
         MemberCreateResponse memberCreateResponse = memberCommandService.createMember(memberCreateRequest);
         return BaseResponseDto.ok(memberCreateResponse);
     }

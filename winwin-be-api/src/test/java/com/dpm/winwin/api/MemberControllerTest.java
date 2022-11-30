@@ -39,7 +39,8 @@ public class MemberControllerTest extends RestDocsTestSupport {
     void member가_생성된다() throws Exception {
 
         MemberCreateRequest memberCreateRequest = new MemberCreateRequest(
-                "김감자"
+                "김감자",
+                null,"hello",0,null
         );
 
         MemberCreateResponse memberCreateResponse = new MemberCreateResponse(
@@ -65,8 +66,11 @@ public class MemberControllerTest extends RestDocsTestSupport {
                         responseFields(
                                 fieldWithPath("message").type(JsonFieldType.STRING).description("성공 여부"),
                                 fieldWithPath("data.memberId").type(JsonFieldType.NUMBER).description("저장된 닉네임 id"),
-                                fieldWithPath("data.nickname").type(JsonFieldType.NUMBER).description("저장된 회원 닉네임")
-
+                                fieldWithPath("data.nickname").type(JsonFieldType.STRING).description("저장된 회원 닉네임"),
+                                fieldWithPath("data.image").type(JsonFieldType.STRING).description("저장된 회원 이미지"),
+                                fieldWithPath("data.introductions").type(JsonFieldType.STRING).description("저장된 회원 소개"),
+                                fieldWithPath("data.exchangeCount").type(JsonFieldType.NUMBER).description("저장된 회원 교환횟수"),
+                                fieldWithPath("data.profileLink").type(JsonFieldType.STRING).description("저장된 회원 프로필 링크")
                                 )
                         ));
     }

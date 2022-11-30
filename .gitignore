@@ -40,3 +40,8 @@ out/
 .DS_Store
 .AppleDouble
 .LSOverride
+/winwin-be-domain/src/main/generated/
+
+### RestDocs ###
+BOOT-INF
+/winwin-be-api/src/main/resources/static/docs/index.html

@@ -1,0 +1,44 @@
+ifndef::snippets[]
+:snippets: build/generated-snippets
+endif::[]
+
+= PingPong API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+
+[[RestDocs-Test]]
+== RestDocs Test
+
+=== HTTP-request
+include::{snippets}/test-controller-test/restdocs-test/http-request.adoc[]
+
+=== HTTP-response
+include::{snippets}/test-controller-test/restdocs-test/http-response.adoc[]
+
+=== Response-body
+include::{snippets}/test-controller-test/restdocs-test/response-body.adoc[]
+
+=== Response-fields
+include::{snippets}/test-controller-test/restdocs-test/response-fields.adoc[]
+
+[[재능-게시물-생성]]
+== 재능 게시물 생성
+
+=== HTTP-headers
+include::{snippets}/post-controller-test/post가_생성된다/request-headers.adoc[]
+
+=== HTTP-request
+include::{snippets}/post-controller-test/post가_생성된다/http-request.adoc[]
+
+=== Request-fields
+include::{snippets}/post-controller-test/post가_생성된다/request-fields.adoc[]
+
+=== HTTP-response
+include::{snippets}/post-controller-test/post가_생성된다/http-response.adoc[]
+
+=== Response-fields
+include::{snippets}/post-controller-test/post가_생성된다/response-fields.adoc[]

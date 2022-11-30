@@ -1,0 +1,30 @@
+server:
+  port: 8080
+
+spring:
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    defer-datasource-initialization: true
+
+  datasource:
+      url: ENC(XZiReczSSeVhtjiRh2EdMn/QCY1Ju8DgNneba7kajJb9G7wtJP1U0swDxr9ITwHKWPMhgxlJf9YU0AU9ZH2D6X7WhGeTVOlxBjuZcWJathFd6hF94P6yWur5+WOhzb22EHiXmiymzFVJuTLSPQSpruiaenLxEPXfWsyq6/ialV+kwHRbjNyZVSMVycPMM9uZ7c2oHkyf2KY=)
+      username: ENC(kSbVij29Q5IxlMTyH1g0rw==)
+      password: ENC(f2DZKexIllOKp9G6wKa2T+E/dqGcnngS)
+      driver-class-name: com.mysql.cj.jdbc.Driver
+  sql:
+    init:
+      mode: never
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
+    password: ${ENCRYPT_KEY}

@@ -1,10 +1,11 @@
 package com.dpm.winwin.api.controller;
 
+import com.dpm.winwin.api.common.error.enums.ErrorMessage;
+import com.dpm.winwin.api.common.error.exception.custom.LoginCancelException;
+import com.dpm.winwin.api.common.response.dto.BaseResponseDto;
 import com.dpm.winwin.api.service.AppleLoginService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,14 +26,14 @@ public class AppleLoginController {
     private final AppleLoginService appleLoginService;
 
     @PostMapping(value = "/apple/redirect", consumes = "application/x-www-form-urlencoded;charset=UTF-8")
-    public ResponseEntity<String> appleRedirect(@RequestBody MultiValueMap<String, String> redirectInfo) throws IOException, ParseException, NoSuchAlgorithmException, InvalidKeySpecException, URISyntaxException {
+    public BaseResponseDto<String> appleRedirect(@RequestBody MultiValueMap<String, String> redirectInfo) throws IOException, ParseException, NoSuchAlgorithmException, InvalidKeySpecException, URISyntaxException {
         log.info("----> {}", redirectInfo);
 
         /**
          * 로그인 후 취소한 경우
          */
         if (!ObjectUtils.isEmpty(redirectInfo.get("error"))) {
-            return ResponseEntity.badRequest().body("login cancel");
+            throw new LoginCancelException(ErrorMessage.LOGIN_CANCEL);
         }
 
         /**
@@ -46,7 +47,7 @@ public class AppleLoginController {
             String jwtToken = appleLoginService.singUpMember(memberInfo, code);
 
             log.info("jwtToken : {}", jwtToken);
-            return new ResponseEntity<>(jwtToken, HttpStatus.CREATED);
+            return BaseResponseDto.ok(jwtToken);
         }
 
         /**
@@ -61,6 +62,6 @@ public class AppleLoginController {
         String code = redirectInfo.getFirst("code");
         String token = appleLoginService.singInMember(code);
 
-        return ResponseEntity.ok(token);
+        return BaseResponseDto.ok(token);
     }
 }

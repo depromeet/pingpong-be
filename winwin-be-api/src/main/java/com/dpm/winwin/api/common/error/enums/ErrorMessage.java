@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @Getter
 @RequiredArgsConstructor
@@ -21,7 +22,9 @@ public enum ErrorMessage {
     DOES_NOT_MATCH_NONCE(BAD_REQUEST.value(), "ID_TOKEN 값 중 NONCE 값이 일치하지 않습니다."),
     INVALID_ISSUER_VALUE(BAD_REQUEST.value(), "ISSUER 값이 잘못되었습니다."),
     INVALID_CLIENT_ID(BAD_REQUEST.value(), "클라이언트 아이디가 잘못되었습니다."),
-    APPLE_TOKEN_GENERATE_FAIL(BAD_REQUEST.value(), "잘못된 액세스 토큰입니다.");
+    APPLE_TOKEN_GENERATE_FAIL(BAD_REQUEST.value(), "잘못된 액세스 토큰입니다."),
+
+    LOGIN_CANCEL(UNAUTHORIZED.value(),"사용자가 로그인을 취소하였습니다.");
 
     private final int code;
     private final String phrase;

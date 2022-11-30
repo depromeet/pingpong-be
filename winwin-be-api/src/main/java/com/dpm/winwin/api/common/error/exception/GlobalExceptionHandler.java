@@ -3,7 +3,9 @@ package com.dpm.winwin.api.common.error.exception;
 import com.dpm.winwin.api.common.error.dto.ErrorResponseDto;
 import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
 import com.dpm.winwin.api.common.error.exception.custom.InvalidIdTokenException;
+import com.dpm.winwin.api.common.error.exception.custom.LoginCancelException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -12,8 +14,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+  @ExceptionHandler(LoginCancelException.class)
+  public ResponseEntity<ErrorResponseDto> loginCancelExceptionHandle(LoginCancelException e) {
+    log.warn("loginCancelException : {}", e);
+
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ErrorResponseDto.of(e.getCode(), e.getMessage()));
+  }
+
   @ExceptionHandler(InvalidIdTokenException.class)
-  public ResponseEntity<ErrorResponseDto> invalidTokenExceptionHandle(BusinessException e) {
+  public ResponseEntity<ErrorResponseDto> invalidTokenExceptionHandle(InvalidIdTokenException e) {
     log.warn("invalidTokenException : {}", e);
     return ResponseEntity.badRequest()
             .body(ErrorResponseDto.of(e.getCode(), e.getMessage()));

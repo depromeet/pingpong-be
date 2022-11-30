@@ -19,11 +19,11 @@ import static com.dpm.winwin.api.common.error.enums.ErrorMessage.MEMBER_NOT_FOUN
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class MemberCommandService {
 
     private final MemberRepository memberRepository;
 
-    @Transactional
     public Long updateMemberNickname(Long memberId,
                                      MemberNicknameRequest memberNicknameRequest) {
         Member member = memberRepository.findById(memberId)
@@ -32,7 +32,6 @@ public class MemberCommandService {
         return member.getId();
     }
 
-    @Transactional
     public Long updateMemberImage(Long memberId,
                                   MemberImageRequest memberImageRequest) {
         Member member = memberRepository.findById(memberId)
@@ -40,8 +39,7 @@ public class MemberCommandService {
         member.updateImage(memberImageRequest.image());
         return member.getId();
     }
-
-    @Transactional
+    
     public MemberCreateResponse createMember(MemberCreateRequest memberCreateRequest){
         Member memberRequest = memberCreateRequest.toEntity();
         Member member = memberRepository.save(memberRequest);

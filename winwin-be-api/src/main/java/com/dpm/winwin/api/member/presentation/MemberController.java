@@ -1,6 +1,8 @@
 package com.dpm.winwin.api.member.presentation;
 
+import com.dpm.winwin.api.common.response.dto.BaseResponseDto;
 import com.dpm.winwin.api.member.application.MemberQueryService;
+import com.dpm.winwin.api.member.dto.response.RanksListResponse;
 import com.dpm.winwin.domain.repository.member.dto.response.MemberReadResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,5 +19,11 @@ public class MemberController {
     @GetMapping("/{memberId}")
     public MemberReadResponse readMemberInfo(@PathVariable Long memberId){
         return memberQueryService.readMemberInfo(memberId);
+    }
+
+    @GetMapping("/ranks")
+    public BaseResponseDto<RanksListResponse> getRankList() {
+        RanksListResponse response = memberQueryService.getRankList();
+        return BaseResponseDto.ok(response);
     }
 }

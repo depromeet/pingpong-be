@@ -27,5 +27,7 @@ jobs:
 #
       - name: Gradle Build Action
         uses: gradle/gradle-build-action@v2.3.3
-        env:
-          ENCRYPT_KEY: ${{ secrets.ENCRYPT_KEY }}
+#        env:
+#          ENCRYPT_KEY: ${{ secrets.ENCRYPT_KEY }}
+        with:
+          arguments: build

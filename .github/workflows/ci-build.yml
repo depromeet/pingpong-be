@@ -8,11 +8,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-    env :
-      working-directory: ./
-      APPLICATION: ${{ secrets.APPLICATION }}
 
     steps:
       - uses: actions/checkout@v3
@@ -22,9 +18,14 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: gradle
-
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
-      - name: Build with Gradle
-        run: ./gradlew build
+#
+#      - name: Grant execute permission for gradlew
+#        run: chmod +x gradlew
+#
+#      - name: Build with Gradle
+#        run: ./gradlew build
+#
+      - name: Gradle Build Action
+        uses: gradle/gradle-build-action@v2.3.3
+        env:
+          ENCRYPT_KEY: ${{ secrets.ENCRYPT_KEY }}

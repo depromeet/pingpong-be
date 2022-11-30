@@ -1,5 +1,9 @@
 package com.dpm.winwin.domain.repository.post.impl;
 
+import static com.dpm.winwin.domain.entity.category.QMainCategory.mainCategory;
+import static com.dpm.winwin.domain.entity.category.QMidCategory.midCategory;
+import static com.dpm.winwin.domain.entity.category.QSubCategory.subCategory;
+import static com.dpm.winwin.domain.entity.link.QLink.link;
 import static com.dpm.winwin.domain.entity.member.QMember.member;
 import static com.dpm.winwin.domain.entity.post.QLikes.likes;
 import static com.dpm.winwin.domain.entity.post.QPost.post;
@@ -71,9 +75,12 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
     public Optional<Post> getByIdFetchJoin(Long postId) {
         return Optional.ofNullable(
             queryFactory
-                .select(post)
-                .from(post)
+                .selectFrom(post)
                 .leftJoin(post.member, member).fetchJoin()
+                .leftJoin(post.links, link).fetchJoin()
+                .leftJoin(post.mainCategory, mainCategory).fetchJoin()
+                .leftJoin(post.midCategory, midCategory).fetchJoin()
+                .leftJoin(post.subCategory, subCategory).fetchJoin()
                 .where(post.id.eq(postId))
                 .fetchOne()
         );

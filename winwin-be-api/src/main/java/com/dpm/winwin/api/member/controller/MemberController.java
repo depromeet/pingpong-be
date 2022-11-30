@@ -1,6 +1,8 @@
 package com.dpm.winwin.api.member.controller;
 
 import com.dpm.winwin.api.common.response.dto.BaseResponseDto;
+import com.dpm.winwin.api.member.dto.request.MemberUpdateRequest;
+import com.dpm.winwin.api.member.dto.response.MemberUpdateResponse;
 import com.dpm.winwin.api.member.service.MemberCommandService;
 import com.dpm.winwin.api.member.service.MemberQueryService;
 import com.dpm.winwin.api.member.dto.request.MemberCreateRequest;
@@ -28,8 +30,9 @@ public class MemberController {
     private final MemberCommandService memberCommandService;
 
     @PutMapping("/nickname/{memberId}")
-    public BaseResponseDto<Long> updateMemberNickname(@PathVariable Long memberId,
-                                                      @RequestBody MemberNicknameRequest memberNicknameRequest){
+    public BaseResponseDto<Long> updateMemberNickname(
+            @PathVariable Long memberId,
+            @RequestBody MemberNicknameRequest memberNicknameRequest){
         Long id = memberCommandService.updateMemberNickname(memberId, memberNicknameRequest);
         return BaseResponseDto.ok(id);
     }
@@ -49,8 +52,16 @@ public class MemberController {
     }
 
     @PostMapping
-    public BaseResponseDto<MemberCreateResponse> createMember(@RequestBody MemberCreateRequest memberCreateRequest){
+    public BaseResponseDto<MemberCreateResponse> createMember(
+            @RequestBody final MemberCreateRequest memberCreateRequest){
         MemberCreateResponse memberCreateResponse = memberCommandService.createMember(memberCreateRequest);
         return BaseResponseDto.ok(memberCreateResponse);
+    }
+
+    @PutMapping("/{memberId}}")
+    public BaseResponseDto<MemberUpdateResponse> updateMember(
+            @PathVariable Long memberId,
+            @RequestBody final  MemberUpdateRequest memberUpdateRequest) {
+        return BaseResponseDto.ok(memberCommandService.updateMember(memberId,memberUpdateRequest));
     }
 }

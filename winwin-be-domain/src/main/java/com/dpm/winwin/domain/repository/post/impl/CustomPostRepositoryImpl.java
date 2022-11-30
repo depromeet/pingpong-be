@@ -1,5 +1,9 @@
 package com.dpm.winwin.domain.repository.post.impl;
 
+import static com.dpm.winwin.domain.entity.category.QMainCategory.mainCategory;
+import static com.dpm.winwin.domain.entity.category.QMidCategory.midCategory;
+import static com.dpm.winwin.domain.entity.category.QSubCategory.subCategory;
+import static com.dpm.winwin.domain.entity.link.QLink.link;
 import static com.dpm.winwin.domain.entity.member.QMember.member;
 import static com.dpm.winwin.domain.entity.post.QLikes.likes;
 import static com.dpm.winwin.domain.entity.post.QPost.post;
@@ -11,6 +15,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,12 +29,13 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Post getPostByMemberId(Long memberId, Long postId) {
-        return queryFactory
-            .selectFrom(post)
-            .leftJoin(post.member, member)
-            .where(post.id.eq(postId), member.id.eq(memberId))
-            .fetchOne();
+    public Optional<Post> getPostByMemberId(Long memberId, Long postId) {
+        return Optional.ofNullable(
+            queryFactory
+                .selectFrom(post)
+                .leftJoin(post.member, member)
+                .where(post.id.eq(postId), member.id.eq(memberId))
+                .fetchOne());
     }
 
     public Page<Post> getAllByIsShareAndMidCategory(
@@ -63,6 +69,21 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
             );
 
         return PageableExecutionUtils.getPage(posts, pageable, countQuery::fetchOne);
+    }
+
+    @Override
+    public Optional<Post> getByIdFetchJoin(Long postId) {
+        return Optional.ofNullable(
+            queryFactory
+                .selectFrom(post)
+                .leftJoin(post.member, member).fetchJoin()
+                .leftJoin(post.links, link).fetchJoin()
+                .leftJoin(post.mainCategory, mainCategory).fetchJoin()
+                .leftJoin(post.midCategory, midCategory).fetchJoin()
+                .leftJoin(post.subCategory, subCategory).fetchJoin()
+                .where(post.id.eq(postId))
+                .fetchOne()
+        );
     }
 
     private BooleanExpression isShareEq(Boolean isShare) {

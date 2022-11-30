@@ -1,4 +1,4 @@
-package com.dpm.winwin.api;
+package com.dpm.winwin.api.member.controller;
 
 import static org.mockito.BDDMockito.given;
 import com.dpm.winwin.api.member.service.MemberCommandService;

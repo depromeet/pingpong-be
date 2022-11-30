@@ -27,7 +27,7 @@ public class MemberController {
     private final MemberQueryService memberQueryService;
     private final MemberCommandService memberCommandService;
 
-    @PutMapping("/{memberId}")
+    @PutMapping("/nickname/{memberId}")
     public BaseResponseDto<Long> updateMemberNickname(@PathVariable Long memberId,
                                                       @RequestBody MemberNicknameRequest memberNicknameRequest){
         Long id = memberCommandService.updateMemberNickname(memberId, memberNicknameRequest);

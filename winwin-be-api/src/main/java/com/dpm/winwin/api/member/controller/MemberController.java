@@ -58,7 +58,7 @@ public class MemberController {
         return BaseResponseDto.ok(memberCreateResponse);
     }
 
-    @PutMapping("/{memberId}}")
+    @PutMapping("/{memberId}")
     public BaseResponseDto<MemberUpdateResponse> updateMember(
             @PathVariable Long memberId,
             @RequestBody final  MemberUpdateRequest memberUpdateRequest) {

@@ -1,6 +1,6 @@
 package com.dpm.winwin.api.post.dto.response;
 
-import com.dpm.winwin.domain.entity.member.Ranks;
+import com.dpm.winwin.domain.entity.member.enums.Ranks;
 import java.util.List;
 
 public record PostReadResponse(Long id, String title, String content, boolean isShare,

@@ -1,15 +1,12 @@
 package com.dpm.winwin.api.member.service;
 
 import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
-import com.dpm.winwin.api.member.dto.request.MemberCreateRequest;
 import com.dpm.winwin.api.member.dto.request.MemberUpdateRequest;
-import com.dpm.winwin.api.member.dto.response.MemberCreateResponse;
 import com.dpm.winwin.api.member.dto.response.MemberUpdateResponse;
 import com.dpm.winwin.domain.entity.category.SubCategory;
 import com.dpm.winwin.domain.entity.member.Member;
 import com.dpm.winwin.domain.repository.category.SubCategoryRepository;
 import com.dpm.winwin.domain.repository.member.MemberRepository;
-import com.dpm.winwin.domain.repository.member.dto.request.MemberImageRequest;
 import com.dpm.winwin.domain.repository.member.dto.request.MemberNicknameRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,12 +31,6 @@ public class MemberCommandService {
         return member.getId();
     }
 
-    public MemberCreateResponse createMember(MemberCreateRequest memberCreateRequest){
-        Member memberRequest = memberCreateRequest.toEntity();
-        Member member = memberRepository.save(memberRequest);
-        return MemberCreateResponse.from(member);
-    }
-
     public MemberUpdateResponse updateMember(Long memberId,
                                          MemberUpdateRequest memberUpdateRequest) {
         Member member = memberRepository.findById(memberId)
@@ -49,7 +40,7 @@ public class MemberCommandService {
         List<SubCategory> givenTalents = subCategoryRepository.findAllById(
                 memberUpdateRequest.givenTalents());
 
-        member.update(memberUpdateRequest.toDto(),takenTalents,givenTalents);
+        member.update(memberUpdateRequest.toDto(), takenTalents, givenTalents);
 
         return new MemberUpdateResponse(
                 member.getId(),

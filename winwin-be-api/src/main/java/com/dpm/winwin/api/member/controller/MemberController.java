@@ -5,20 +5,14 @@ import com.dpm.winwin.api.member.dto.request.MemberUpdateRequest;
 import com.dpm.winwin.api.member.dto.response.MemberUpdateResponse;
 import com.dpm.winwin.api.member.service.MemberCommandService;
 import com.dpm.winwin.api.member.service.MemberQueryService;
-import com.dpm.winwin.api.member.dto.request.MemberCreateRequest;
-import com.dpm.winwin.api.member.dto.response.MemberCreateResponse;
-import com.dpm.winwin.domain.repository.member.dto.request.MemberImageRequest;
 import com.dpm.winwin.domain.repository.member.dto.request.MemberNicknameRequest;
 import com.dpm.winwin.domain.repository.member.dto.response.MemberReadResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -38,7 +32,7 @@ public class MemberController {
     }
 
     @GetMapping("/{memberId}")
-    public @ResponseBody BaseResponseDto<MemberReadResponse> readMemberInfo(
+    public BaseResponseDto<MemberReadResponse> readMemberInfo(
             @PathVariable Long memberId){
         return BaseResponseDto.ok(memberQueryService.readMemberInfo(memberId));
     }

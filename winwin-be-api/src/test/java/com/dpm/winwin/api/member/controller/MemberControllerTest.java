@@ -1,9 +1,6 @@
 package com.dpm.winwin.api.member.controller;
 
-import static org.mockito.BDDMockito.given;
 import com.dpm.winwin.api.member.service.MemberCommandService;
-import com.dpm.winwin.api.member.dto.request.MemberCreateRequest;
-import com.dpm.winwin.api.member.dto.response.MemberCreateResponse;
 import com.dpm.winwin.api.utils.RestDocsTestSupport;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -11,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.web.servlet.ResultActions;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;

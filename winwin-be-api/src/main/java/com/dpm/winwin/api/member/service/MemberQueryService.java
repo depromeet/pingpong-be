@@ -1,6 +1,7 @@
 package com.dpm.winwin.api.member.service;
 
 import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
+import com.dpm.winwin.api.member.dto.response.MemberRankReadResponse;
 import com.dpm.winwin.api.member.dto.response.RanksListResponse;
 import com.dpm.winwin.api.member.dto.response.RanksResponse;
 import com.dpm.winwin.domain.entity.member.enums.Ranks;
@@ -20,9 +21,15 @@ public class MemberQueryService {
     private final MemberRepository memberRepository;
 
     @Transactional(readOnly = true)
-    public MemberReadResponse readMemberInfo(Long memberId){
-        return memberRepository.readMemberInfo(memberId)
+    public MemberRankReadResponse readMemberInfo(Long memberId){
+
+        MemberReadResponse member =  memberRepository.readMemberInfo(memberId)
                 .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
+
+        RanksResponse rank = RanksResponse.of(member.ranks().getName(),
+                member.ranks().getImage(), member.ranks().getCondition());
+
+        return new MemberRankReadResponse(member,rank);
     }
 
     @Transactional(readOnly = true)

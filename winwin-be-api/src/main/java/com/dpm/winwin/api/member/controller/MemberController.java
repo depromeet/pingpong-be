@@ -2,6 +2,7 @@ package com.dpm.winwin.api.member.controller;
 
 import com.dpm.winwin.api.common.response.dto.BaseResponseDto;
 import com.dpm.winwin.api.member.dto.request.MemberUpdateRequest;
+import com.dpm.winwin.api.member.dto.response.MemberRankReadResponse;
 import com.dpm.winwin.api.member.dto.response.MemberUpdateResponse;
 import com.dpm.winwin.api.member.dto.response.RanksListResponse;
 import com.dpm.winwin.api.member.service.MemberCommandService;
@@ -33,7 +34,7 @@ public class MemberController {
     }
 
     @GetMapping("/{memberId}")
-    public BaseResponseDto<MemberReadResponse> readMemberInfo(
+    public BaseResponseDto<MemberRankReadResponse> readMemberInfo(
             @PathVariable Long memberId){
         return BaseResponseDto.ok(memberQueryService.readMemberInfo(memberId));
     }

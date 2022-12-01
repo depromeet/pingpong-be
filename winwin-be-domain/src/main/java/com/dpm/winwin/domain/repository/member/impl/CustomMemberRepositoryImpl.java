@@ -29,11 +29,18 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
                         .leftJoin(memberTalent).on(memberTalent.member.id.eq(memberId))
                         .transform(
                                 groupBy(member.id).as(
-                                        Projections.constructor(MemberReadResponse.class,
-                                                member.id,member.nickname, member.image,member.introduction,
-                                                member.exchangeCount, member.profileLink,
+                                        Projections.constructor(
+                                                MemberReadResponse.class,
+                                                member.id,
+                                                member.nickname,
+                                                member.image,
+                                                member.introduction,
+                                                member.exchangeCount,
+                                                member.profileLink,
                                                 list(memberTalent.type.stringValue().as("GIVE")),
-                                                list(memberTalent.type.stringValue().as("TAKE")))
+                                                list(memberTalent.type.stringValue().as("TAKE")),
+                                                member.ranks
+                                                )
                                 )
                         ).get(memberId)
         );

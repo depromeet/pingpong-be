@@ -1,14 +1,11 @@
 package com.dpm.winwin.api.member.service;
 
 import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
-import com.dpm.winwin.api.member.dto.response.MemberGivenTalentsResponse;
 import com.dpm.winwin.api.member.dto.response.MemberRankReadResponse;
 import com.dpm.winwin.api.member.dto.response.RanksListResponse;
 import com.dpm.winwin.api.member.dto.response.RanksResponse;
 import com.dpm.winwin.domain.entity.member.Member;
-import com.dpm.winwin.domain.entity.member.MemberTalent;
 import com.dpm.winwin.domain.entity.member.enums.Ranks;
-import com.dpm.winwin.domain.entity.member.enums.TalentType;
 import com.dpm.winwin.domain.repository.member.MemberRepository;
 import com.dpm.winwin.domain.repository.member.dto.response.MemberReadResponse;
 import java.util.Arrays;

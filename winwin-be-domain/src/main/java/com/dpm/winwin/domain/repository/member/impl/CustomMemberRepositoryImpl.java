@@ -38,8 +38,6 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
                                                 member.introduction,
                                                 member.exchangeCount,
                                                 member.profileLink,
-//                                                list(memberTalent.type.stringValue().as("GIVE")),
-//                                                list(memberTalent.type.stringValue().as("TAKE")),
                                                 member.ranks
                                                 )
                                 )

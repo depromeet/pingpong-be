@@ -13,7 +13,7 @@ public record MemberUpdateRequest(
         List<Long> givenTalents,
         List<Long> takenTalents
 ) {
-    public MemberUpdateDto toDto(){
+    public MemberUpdateDto toDto( ){
         return new MemberUpdateDto(
                 this.nickname,
                 this.image,

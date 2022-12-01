@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 import static com.dpm.winwin.domain.entity.member.QMember.member;
-import static com.dpm.winwin.domain.entity.talent.QMemberTalent.memberTalent;
+import static com.dpm.winwin.domain.entity.member.QMemberTalent.memberTalent;
 import static com.querydsl.core.group.GroupBy.groupBy;
 import static com.querydsl.core.types.Projections.list;
 

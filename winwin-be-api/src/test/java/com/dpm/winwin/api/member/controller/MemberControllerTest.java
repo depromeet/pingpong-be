@@ -23,7 +23,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class MemberControllerTest extends RestDocsTestSupport {
-    
+
+    @MockBean
+    private MemberCommandService memberCommandService;
+
     @Test
     @Disabled
     @DisplayName("아직 데이터가 없어서 나중에 사용할 회원 조회 테스트 ")

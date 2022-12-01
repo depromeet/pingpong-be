@@ -30,7 +30,7 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
                         .transform(
                                 groupBy(member.id).as(
                                         Projections.constructor(MemberReadResponse.class,
-                                                member.id,member.nickname, member.image,member.introductions,
+                                                member.id,member.nickname, member.image,member.introduction,
                                                 member.exchangeCount, member.profileLink,
                                                 list(memberTalent.type.stringValue().as("GIVE")),
                                                 list(memberTalent.type.stringValue().as("TAKE")))

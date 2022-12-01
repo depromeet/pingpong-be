@@ -5,7 +5,7 @@ import java.util.List;
 public record MemberReadResponse(Long memberId,
                                  String nickname,
                                  String image,
-                                 String introductions,
+                                 String introduction,
                                  int exchangeCount,
                                  String profileLink,
                                  List<String> givenTalent,

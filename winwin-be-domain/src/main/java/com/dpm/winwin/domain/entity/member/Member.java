@@ -6,7 +6,6 @@ import com.dpm.winwin.domain.entity.chat.ChatRoom;
 import com.dpm.winwin.domain.entity.category.SubCategory;
 import com.dpm.winwin.domain.entity.member.enums.Ranks;
 import com.dpm.winwin.domain.entity.post.Post;
-import com.dpm.winwin.domain.entity.talent.MemberTalent;
 import com.dpm.winwin.domain.entity.member.enums.TalentType;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -25,8 +24,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.CascadeType;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Entity

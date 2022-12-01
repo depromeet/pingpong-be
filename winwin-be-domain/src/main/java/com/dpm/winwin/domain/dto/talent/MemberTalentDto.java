@@ -1,7 +1,7 @@
 package com.dpm.winwin.domain.dto.talent;
 
 import com.dpm.winwin.domain.entity.category.SubCategory;
-import com.dpm.winwin.domain.entity.talent.MemberTalent;
+import com.dpm.winwin.domain.entity.member.MemberTalent;
 import com.dpm.winwin.domain.entity.member.enums.TalentType;
 
 public record MemberTalentDto(

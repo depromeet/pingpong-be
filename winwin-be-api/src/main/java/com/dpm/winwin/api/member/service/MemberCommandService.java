@@ -34,14 +34,6 @@ public class MemberCommandService {
         return member.getId();
     }
 
-    public Long updateMemberImage(Long memberId,
-                                  MemberImageRequest memberImageRequest) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
-        member.updateImage(memberImageRequest.image());
-        return member.getId();
-    }
-
     public MemberCreateResponse createMember(MemberCreateRequest memberCreateRequest){
         Member memberRequest = memberCreateRequest.toEntity();
         Member member = memberRepository.save(memberRequest);
@@ -63,7 +55,7 @@ public class MemberCommandService {
                 member.getId(),
                 member.getNickname(),
                 member.getImage(),
-                member.getIntroductions(),
+                member.getIntroduction(),
                 member.getProfileLink(),
                 member.getGivenTalents().stream()
                         .map(memberTalent -> memberTalent.getTalent().getName())

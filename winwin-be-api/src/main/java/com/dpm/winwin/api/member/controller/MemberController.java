@@ -37,25 +37,10 @@ public class MemberController {
         return BaseResponseDto.ok(id);
     }
 
-    @PutMapping("/{memberId}/image")
-    public BaseResponseDto<Long> updateMemberImage(
-            @PathVariable Long memberId,
-            @RequestBody MemberImageRequest memberImageRequest){
-        Long id = memberCommandService.updateMemberImage(memberId, memberImageRequest);
-        return BaseResponseDto.ok(id);
-    }
-
     @GetMapping("/{memberId}")
     public @ResponseBody BaseResponseDto<MemberReadResponse> readMemberInfo(
-            @PathVariable @RequestParam Long memberId){
+            @PathVariable Long memberId){
         return BaseResponseDto.ok(memberQueryService.readMemberInfo(memberId));
-    }
-
-    @PostMapping
-    public BaseResponseDto<MemberCreateResponse> createMember(
-            @RequestBody final MemberCreateRequest memberCreateRequest){
-        MemberCreateResponse memberCreateResponse = memberCommandService.createMember(memberCreateRequest);
-        return BaseResponseDto.ok(memberCreateResponse);
     }
 
     @PutMapping("/{memberId}")

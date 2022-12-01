@@ -4,7 +4,7 @@ import com.dpm.winwin.domain.entity.member.Member;
 
 public record MemberCreateRequest(String nickname,
                                   String image,
-                                  String introductions,
+                                  String introduction,
                                   int exchangeCount,
                                   String profileLink
 ) {
@@ -12,7 +12,7 @@ public record MemberCreateRequest(String nickname,
         return Member.builder()
                 .nickname(this.nickname)
                 .image(this.image)
-                .introductions(this.introductions)
+                .introduction(this.introduction)
                 .exchangeCount(this.exchangeCount)
                 .profileLink(this.profileLink)
                 .build();

@@ -40,14 +40,14 @@ public class MemberTalent extends BaseEntity {
     @Column(nullable = false)
     private TalentType type;
 
-    public MemberTalent(Member member,SubCategory talent, TalentType type){
+    public MemberTalent(Member member, SubCategory talent, TalentType type){
         this.member = member;
         this.talent = talent;
         this.type = type;
     }
 
-    public static MemberTalent of(Member member,SubCategory talent,TalentType type){
-        return new MemberTalent(member,talent,type);
+    public static MemberTalent of(Member member, SubCategory talent, TalentType type){
+        return new MemberTalent(member, talent, type);
     }
 
     public MemberTalent(SubCategory talent, TalentType type){
@@ -55,8 +55,8 @@ public class MemberTalent extends BaseEntity {
         this.type = type;
     }
 
-    public static MemberTalent of(SubCategory talent,TalentType type){
-        return new MemberTalent(talent,type);
+    public static MemberTalent of(SubCategory talent, TalentType type){
+        return new MemberTalent(talent, type);
     }
 
 }

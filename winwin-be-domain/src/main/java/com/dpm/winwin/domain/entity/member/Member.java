@@ -53,7 +53,7 @@ public class Member extends BaseEntity{
 
     private String image;
 
-    private String introductions;
+    private String introduction;
 
     private int exchangeCount;
 
@@ -66,12 +66,12 @@ public class Member extends BaseEntity{
     @Builder
     public Member(String nickname,
                   String image,
-                  String introductions,
+                  String introduction,
                   int exchangeCount,
                   String profileLink){
         this.nickname = nickname;
         this.image = image;
-        this.introductions = introductions;
+        this.introduction = introduction;
         this.exchangeCount = exchangeCount;
         this.profileLink = profileLink;
     }
@@ -80,42 +80,38 @@ public class Member extends BaseEntity{
         this.nickname = nickname;
     }
 
-    public void updateImage(String image){
-        this.image = image;
-    }
-
-    public void setGivenTalents(List<SubCategory> afterTalentCategories) {
+    public void setGivenTalents(List<SubCategory> afterGivenTalents) {
 
         Set<Long> before = this.takenTalents.stream()
                 .map(takenTalent -> takenTalent.getTalent().getId())
                 .collect(Collectors.toSet());
 
-        Set<Long> after = afterTalentCategories.stream()
+        Set<Long> after = afterGivenTalents.stream()
                 .map(SubCategory::getId)
                 .collect(Collectors.toSet());
 
         this.takenTalents.removeIf(takenTalent -> !after.contains(takenTalent.getTalent().getId()));
 
-        this.takenTalents.addAll(afterTalentCategories.stream()
+        this.takenTalents.addAll(afterGivenTalents.stream()
                 .filter(category -> !before.contains(category.getId()))
                 .map(category -> MemberTalent.of(this, category, TalentType.GIVE))
                 .toList());
 
     }
 
-    public void setTakenTalents(List<SubCategory> afterTalentCategories) {
+    public void setTakenTalents(List<SubCategory> afterTakenTalents) {
 
         Set<Long> before = this.takenTalents.stream()
                 .map(takenTalent -> takenTalent.getTalent().getId())
                 .collect(Collectors.toSet());
 
-        Set<Long> after = afterTalentCategories.stream()
+        Set<Long> after = afterTakenTalents.stream()
                 .map(SubCategory::getId)
                 .collect(Collectors.toSet());
 
         this.takenTalents.removeIf(takenTalent -> !after.contains(takenTalent.getTalent().getId()));
 
-        this.takenTalents.addAll(afterTalentCategories.stream()
+        this.takenTalents.addAll(afterTakenTalents.stream()
                 .filter(category -> !before.contains(category.getId()))
                 .map(category -> MemberTalent.of(this, category, TalentType.TAKE))
                 .toList());
@@ -125,7 +121,7 @@ public class Member extends BaseEntity{
     public void update(MemberUpdateDto memberUpdateDto,List<SubCategory> givenTalents,List<SubCategory> takenTalents){
         this.nickname = memberUpdateDto.nickname();
         this.image = memberUpdateDto.image();
-        this.introductions = memberUpdateDto.introductions();
+        this.introduction = memberUpdateDto.introduction();
         this.profileLink = memberUpdateDto.profileLink();
         setGivenTalents(givenTalents);
         setTakenTalents(takenTalents);

@@ -43,7 +43,6 @@ public class MemberCommandService {
         member.update(memberUpdateRequest.toDto(), takenTalents, givenTalents);
 
         return new MemberUpdateResponse(
-                member.getId(),
                 member.getNickname(),
                 member.getImage(),
                 member.getIntroduction(),

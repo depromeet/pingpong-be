@@ -1,5 +1,6 @@
 package com.dpm.winwin.domain.repository.member.impl;
 
+import com.dpm.winwin.domain.entity.member.enums.TalentType;
 import com.dpm.winwin.domain.repository.member.CustomMemberRepository;
 import com.dpm.winwin.domain.repository.member.dto.response.MemberReadResponse;
 import com.querydsl.core.types.Projections;
@@ -37,8 +38,8 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
                                                 member.introduction,
                                                 member.exchangeCount,
                                                 member.profileLink,
-                                                list(memberTalent.type.stringValue().as("GIVE")),
-                                                list(memberTalent.type.stringValue().as("TAKE")),
+//                                                list(memberTalent.type.stringValue().as("GIVE")),
+//                                                list(memberTalent.type.stringValue().as("TAKE")),
                                                 member.ranks
                                                 )
                                 )

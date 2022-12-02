@@ -4,9 +4,11 @@ import com.dpm.winwin.api.common.error.enums.ErrorMessage;
 import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
 import com.dpm.winwin.api.post.dto.request.LinkRequest;
 import com.dpm.winwin.api.post.dto.request.PostAddRequest;
+import com.dpm.winwin.domain.repository.post.dto.request.PostCustomizedConditionRequest;
 import com.dpm.winwin.api.post.dto.request.PostUpdateRequest;
 import com.dpm.winwin.api.post.dto.response.LinkResponse;
 import com.dpm.winwin.api.post.dto.response.PostAddResponse;
+import com.dpm.winwin.api.post.dto.response.PostCustomizedListResponse;
 import com.dpm.winwin.api.post.dto.response.PostListResponse;
 import com.dpm.winwin.api.post.dto.response.PostMethodResponse;
 import com.dpm.winwin.api.post.dto.response.PostMethodsResponse;
@@ -52,6 +54,12 @@ public class PostService {
     public Page<PostListResponse> getPosts(PostListConditionRequest condition, Pageable pageable) {
         Page<Post> posts = postRepository.getAllByIsShareAndMidCategory(condition, pageable);
         return posts.map(PostListResponse::of);
+    }
+
+    public Page<PostCustomizedListResponse> getPostsCustomized(
+        Long memberId, PostCustomizedConditionRequest condition, Pageable pageable) {
+        Page<Post> posts = postRepository.getAllByMemberTalents(memberId, condition, pageable);
+        return posts.map(PostCustomizedListResponse::of);
     }
 
     public PostAddResponse save(long memberId, PostAddRequest request) {

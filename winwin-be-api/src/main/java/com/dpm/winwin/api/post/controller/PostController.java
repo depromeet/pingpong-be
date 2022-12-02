@@ -4,11 +4,13 @@ import com.dpm.winwin.api.common.response.dto.BaseResponseDto;
 import com.dpm.winwin.api.post.dto.request.PostAddRequest;
 import com.dpm.winwin.api.post.dto.request.PostUpdateRequest;
 import com.dpm.winwin.api.post.dto.response.PostAddResponse;
+import com.dpm.winwin.api.post.dto.response.PostCustomizedListResponse;
 import com.dpm.winwin.api.post.dto.response.PostListResponse;
 import com.dpm.winwin.api.post.dto.response.PostMethodsResponse;
 import com.dpm.winwin.api.post.dto.response.PostReadResponse;
 import com.dpm.winwin.api.post.dto.response.PostUpdateResponse;
 import com.dpm.winwin.api.post.service.PostService;
+import com.dpm.winwin.domain.repository.post.dto.request.PostCustomizedConditionRequest;
 import com.dpm.winwin.domain.repository.post.dto.request.PostListConditionRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -40,13 +42,21 @@ public class PostController {
     return BaseResponseDto.ok(response);
   }
 
+  @GetMapping("/custom")
+  public BaseResponseDto<Page<PostCustomizedListResponse>> getCustomPostList(
+      PostCustomizedConditionRequest condition, Pageable pageable) {
+    Long tempMemberId = 1L;
+    Page<PostCustomizedListResponse> response = postService
+        .getPostsCustomized(tempMemberId, condition, pageable);
+    return BaseResponseDto.ok(response);
+  }
+
   @GetMapping("/{id}")
   public BaseResponseDto<PostReadResponse> getPost(@PathVariable Long id) {
     return BaseResponseDto.ok(postService.get(id));
   }
 
   @PostMapping
-  @ResponseStatus(HttpStatus.CREATED)
   public BaseResponseDto<PostAddResponse> createPost(
       @RequestHeader("memberId") final long memberId, @RequestBody final PostAddRequest request) {
     PostAddResponse response = postService.save(memberId, request);

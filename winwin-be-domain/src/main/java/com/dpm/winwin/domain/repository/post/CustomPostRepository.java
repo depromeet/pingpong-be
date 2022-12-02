@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface CustomPostRepository {
 
-    Optional<Post> getPostByMemberId(Long memberId, Long postId);
+    Optional<Post> getByIdAndMemberId(Long memberId, Long postId);
 
     Page<Post> getAllByIsShareAndMidCategory(PostListConditionRequest condition, Pageable pageable);
 

@@ -117,14 +117,14 @@ public class PostService {
         return post.getId();
     }
 
-    public Post getPostByMemberId(long memberId, Long id) {
-        return postRepository.getPostByMemberId(memberId, id)
+    public Post getByIdAndMemberId(long memberId, Long id) {
+        return postRepository.getByIdAndMemberId(memberId, id)
             .orElseThrow(() -> new BusinessException(ErrorMessage.POST_NOT_FOUND));
     }
 
-    public PostUpdateResponse updatePost(Long memberId, Long postId,
+    public PostUpdateResponse update(Long memberId, Long postId,
         PostUpdateRequest updateRequest) {
-        Post post = getPostByMemberId(memberId, postId);
+        Post post = getByIdAndMemberId(memberId, postId);
         MainCategory mainCategory = mainCategoryRepository.findById(updateRequest.mainCategoryId())
             .orElseThrow(() -> new BusinessException(ErrorMessage.MAIN_CATEGORY_NOT_FOUND));
         MidCategory midCategory = midCategoryRepository.findById(updateRequest.midCategoryId())

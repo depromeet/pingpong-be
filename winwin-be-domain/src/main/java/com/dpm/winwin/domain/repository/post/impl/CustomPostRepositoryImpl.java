@@ -29,7 +29,7 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Optional<Post> getPostByMemberId(Long memberId, Long postId) {
+    public Optional<Post> getByIdAndMemberId(Long memberId, Long postId) {
         return Optional.ofNullable(
             queryFactory
                 .selectFrom(post)

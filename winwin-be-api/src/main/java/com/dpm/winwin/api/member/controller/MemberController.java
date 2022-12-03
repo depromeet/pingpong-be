@@ -24,10 +24,10 @@ public class MemberController {
     private final MemberQueryService memberQueryService;
     private final MemberCommandService memberCommandService;
 
-    @PutMapping("/nickname/{memberId}")
+    @PutMapping("/nickname")
     public BaseResponseDto<Long> updateMemberNickname(
-            @PathVariable Long memberId,
             @RequestBody MemberNicknameRequest memberNicknameRequest){
+        Long memberId = 1L; //임시로 특정 회원 고정
         Long id = memberCommandService.updateMemberNickname(memberId, memberNicknameRequest);
         return BaseResponseDto.ok(id);
     }

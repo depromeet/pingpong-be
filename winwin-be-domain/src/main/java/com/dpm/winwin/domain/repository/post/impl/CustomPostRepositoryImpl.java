@@ -38,6 +38,16 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
                 .fetchOne());
     }
 
+    public Optional<Integer> getMemberLikeByMemberId(Long memberId) {
+        return Optional.ofNullable(
+                queryFactory
+                        .select(post.likes.size())
+                        .from(post)
+                        .leftJoin(post.member, member)
+                        .where(member.id.eq(memberId))
+                        .fetchOne());
+    }
+
     public Page<Post> getAllByIsShareAndMidCategory(
         PostListConditionRequest condition, Pageable pageable
     ) {

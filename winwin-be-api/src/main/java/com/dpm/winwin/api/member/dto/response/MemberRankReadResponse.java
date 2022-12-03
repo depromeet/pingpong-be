@@ -6,7 +6,7 @@ import java.util.List;
 
 public record MemberRankReadResponse(
         MemberReadResponse memberReadResponse,
-        RanksResponse ranksResponse,
+        MemberRankResponse memberRankResponse,
         List<String> givenTalents,
         List<String> takenTalents
 ) {

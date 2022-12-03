@@ -46,6 +46,9 @@ public class MemberQueryService {
         return new MemberRankReadResponse(
                 memberReadResponse,
                 rank,
+                member.getProfileLinks().stream()
+                        .map(link -> link.getContent())
+                        .toList(),
                 member.getGivenTalents().stream()
                         .filter(memberTalent -> memberTalent.getType().equals(TalentType.GIVE))
                         .map(memberTalent -> memberTalent.getTalent().getName())

@@ -1,11 +1,16 @@
 package com.dpm.winwin.api.member.service;
 
+import com.dpm.winwin.api.common.error.enums.ErrorMessage;
 import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
 import com.dpm.winwin.api.member.dto.request.MemberUpdateRequest;
 import com.dpm.winwin.api.member.dto.response.MemberUpdateResponse;
+import com.dpm.winwin.api.post.dto.request.LinkRequest;
+import com.dpm.winwin.api.post.dto.response.LinkResponse;
 import com.dpm.winwin.domain.entity.category.SubCategory;
+import com.dpm.winwin.domain.entity.link.Link;
 import com.dpm.winwin.domain.entity.member.Member;
 import com.dpm.winwin.domain.repository.category.SubCategoryRepository;
+import com.dpm.winwin.domain.repository.link.LinkRepository;
 import com.dpm.winwin.domain.repository.member.MemberRepository;
 import com.dpm.winwin.domain.repository.member.dto.request.MemberNicknameRequest;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +27,7 @@ public class MemberCommandService {
 
     private final MemberRepository memberRepository;
     private final SubCategoryRepository subCategoryRepository;
+    private final LinkRepository linkRepository;
 
     public Long updateMemberNickname(Long memberId,
                                      MemberNicknameRequest memberNicknameRequest) {
@@ -40,13 +46,21 @@ public class MemberCommandService {
         List<SubCategory> givenTalents = subCategoryRepository.findAllById(
                 memberUpdateRequest.givenTalents());
 
+        for (LinkRequest linkRequest : memberUpdateRequest.getExistentLinks()) {
+            Link link = linkRepository.findById(linkRequest.id())
+                    .orElseThrow(() -> new BusinessException(ErrorMessage.LINK_NOT_FOUND));
+            link.setContent(linkRequest.content());
+        }
+
         member.update(memberUpdateRequest.toDto(), takenTalents, givenTalents);
 
         return new MemberUpdateResponse(
                 member.getNickname(),
                 member.getImage(),
                 member.getIntroduction(),
-                member.getProfileLink(),
+                member.getProfileLinks().stream()
+                        .map(LinkResponse::of)
+                        .toList(),
                 member.getGivenTalents().stream()
                         .map(memberTalent -> memberTalent.getTalent().getName())
                         .toList(),

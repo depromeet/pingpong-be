@@ -37,7 +37,6 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
                                                 member.image,
                                                 member.introduction,
                                                 member.exchangeCount,
-                                                member.profileLink,
                                                 member.ranks
                                                 )
                                 )

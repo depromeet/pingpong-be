@@ -7,6 +7,7 @@ import com.dpm.winwin.api.member.dto.response.RanksListResponse;
 import com.dpm.winwin.api.member.dto.response.RanksResponse;
 import com.dpm.winwin.domain.entity.member.Member;
 import com.dpm.winwin.domain.entity.member.enums.Ranks;
+import com.dpm.winwin.domain.entity.member.enums.TalentType;
 import com.dpm.winwin.domain.repository.member.MemberRepository;
 import com.dpm.winwin.domain.repository.member.dto.response.MemberReadResponse;
 import java.util.Arrays;
@@ -46,9 +47,11 @@ public class MemberQueryService {
                 memberReadResponse,
                 rank,
                 member.getGivenTalents().stream()
+                        .filter(memberTalent -> memberTalent.getType().equals(TalentType.GIVE))
                         .map(memberTalent -> memberTalent.getTalent().getName())
                         .toList(),
                 member.getTakenTalents().stream()
+                        .filter(memberTalent -> memberTalent.getType().equals(TalentType.TAKE))
                         .map(memberTalent -> memberTalent.getTalent().getName())
                         .toList()
         );

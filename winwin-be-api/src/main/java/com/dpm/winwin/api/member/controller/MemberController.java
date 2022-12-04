@@ -47,6 +47,12 @@ public class MemberController {
         return BaseResponseDto.ok(memberCommandService.updateMember(memberId, memberUpdateRequest));
     }
 
+    @DeleteMapping("/{memberId}")
+    public BaseResponseDto<Long> deleteMember(@PathVariable Long memberId) {
+        Long deletedId = memberCommandService.deleteMember(memberId);
+        return BaseResponseDto.ok(deletedId);
+    }
+
     @GetMapping("/ranks")
     public BaseResponseDto<RanksListResponse> getRankList() {
         RanksListResponse response = memberQueryService.getRankList();

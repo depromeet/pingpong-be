@@ -9,6 +9,7 @@ import com.dpm.winwin.api.post.dto.response.LinkResponse;
 import com.dpm.winwin.domain.entity.category.SubCategory;
 import com.dpm.winwin.domain.entity.link.Link;
 import com.dpm.winwin.domain.entity.member.Member;
+import com.dpm.winwin.domain.entity.post.Post;
 import com.dpm.winwin.domain.repository.category.SubCategoryRepository;
 import com.dpm.winwin.domain.repository.link.LinkRepository;
 import com.dpm.winwin.domain.repository.member.MemberRepository;
@@ -41,7 +42,6 @@ public class MemberCommandService {
 
     public MemberUpdateResponse updateMember(Long memberId,
                                          MemberUpdateRequest memberUpdateRequest) {
-
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
 
@@ -75,6 +75,14 @@ public class MemberCommandService {
                         .map(memberTalent -> memberTalent.getTalent().getName())
                         .toList()
         );
+    }
+
+    public Long deleteMember(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
+
+        memberRepository.deleteById(memberId);
+        return member.getId();
     }
 
 }

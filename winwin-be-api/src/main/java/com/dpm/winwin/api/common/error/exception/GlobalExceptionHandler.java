@@ -17,7 +17,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AppleTokenGenerateException.class)
     public ResponseEntity<ErrorResponseDto> appleTokenGenerateExceptionHandle(AppleTokenGenerateException e) {
-      log.warn("AppleTokenGenerateException : {}", e);
+      log.warn("AppleTokenGenerateException : {} , {}", e, e.getErrorDescription());
 
       return ResponseEntity.badRequest()
               .body(ErrorResponseDto.of(e.getCode(), e.getMessage()));

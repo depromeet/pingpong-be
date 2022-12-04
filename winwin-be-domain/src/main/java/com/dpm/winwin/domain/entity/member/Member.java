@@ -142,4 +142,19 @@ public class Member extends BaseEntity{
         setTakenTalents(takenTalents);
         setProfileLinks(memberUpdateDto.profileLinks());
     }
+
+    public void updateRank(Integer likesCount){
+        if (likesCount < Ranks.ROOKIE.getLikeCount()){
+            this.ranks = Ranks.ROOKIE;
+        }
+        else if (likesCount <= Ranks.BEGINNER.getLikeCount()) {
+            this.ranks = Ranks.BEGINNER;
+        }
+        else if (likesCount <= Ranks.JUNIOR.getLikeCount()) {
+            this.ranks = Ranks.JUNIOR;
+        }
+        else{
+            this.ranks = Ranks.PRO;
+        }
+    }
 }

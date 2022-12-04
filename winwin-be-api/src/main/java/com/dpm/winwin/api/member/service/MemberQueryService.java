@@ -31,18 +31,20 @@ public class MemberQueryService {
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
 
-    @Transactional(readOnly = true)
+    @Transactional
     public MemberRankReadResponse readMemberInfo(Long memberId){
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
 
-        MemberReadResponse memberReadResponse =  memberRepository.readMemberInfo(memberId)
-                .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
-
         Optional<Integer> likes = postRepository.getMemberLikeByMemberId(memberId);
 
         Integer memberLike = likes.stream().mapToInt(Integer::intValue).sum();
+
+        member.updateRank(memberLike);
+
+        MemberReadResponse memberReadResponse =  memberRepository.readMemberInfo(memberId)
+                .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
 
         MemberRankResponse rank = MemberRankResponse.of(memberReadResponse.ranks().getName(),
                 memberReadResponse.ranks().getImage(), memberLike);

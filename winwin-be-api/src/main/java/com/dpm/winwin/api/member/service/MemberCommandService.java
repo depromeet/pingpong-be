@@ -19,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import static com.dpm.winwin.api.common.error.enums.ErrorMessage.MEMBER_NOT_FOUND;
+import static com.dpm.winwin.domain.entity.member.enums.TalentType.GIVE;
+import static com.dpm.winwin.domain.entity.member.enums.TalentType.TAKE;
 
 @RequiredArgsConstructor
 @Service
@@ -39,10 +41,13 @@ public class MemberCommandService {
 
     public MemberUpdateResponse updateMember(Long memberId,
                                          MemberUpdateRequest memberUpdateRequest) {
+
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
+
         List<SubCategory> takenTalents = subCategoryRepository.findAllById(
                 memberUpdateRequest.takenTalents());
+
         List<SubCategory> givenTalents = subCategoryRepository.findAllById(
                 memberUpdateRequest.givenTalents());
 
@@ -52,19 +57,21 @@ public class MemberCommandService {
             link.setContent(linkRequest.content());
         }
 
-        member.update(memberUpdateRequest.toDto(), takenTalents, givenTalents);
+        member.update(memberUpdateRequest.toDto(), givenTalents, takenTalents);
 
         return new MemberUpdateResponse(
                 member.getNickname(),
                 member.getImage(),
                 member.getIntroduction(),
                 member.getProfileLinks().stream()
-                        .map(LinkResponse::of)
+                        .map(Link::getContent)
                         .toList(),
-                member.getGivenTalents().stream()
+                member.getTalents().stream()
+                        .filter(memberTalent -> memberTalent.getType().equals(GIVE))
                         .map(memberTalent -> memberTalent.getTalent().getName())
                         .toList(),
-                member.getTakenTalents().stream()
+                member.getTalents().stream()
+                        .filter(memberTalent -> memberTalent.getType().equals(TAKE))
                         .map(memberTalent -> memberTalent.getTalent().getName())
                         .toList()
         );

@@ -30,6 +30,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.dpm.winwin.domain.entity.member.enums.TalentType.GIVE;
+import static com.dpm.winwin.domain.entity.member.enums.TalentType.TAKE;
+
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -43,10 +46,7 @@ public class Member extends BaseEntity{
     private List<ChatRoom> chatRooms = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MemberTalent> givenTalents = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MemberTalent> takenTalents = new ArrayList<>();
+    private List<MemberTalent> talents = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
     private List<Post> posts = new ArrayList<>();
@@ -74,26 +74,26 @@ public class Member extends BaseEntity{
 
     public void setGivenTalents(List<SubCategory> afterGivenTalents) {
 
-        Set<Long> before = this.takenTalents.stream()
-                .map(takenTalent -> takenTalent.getTalent().getId())
+        Set<Long> before = this.talents.stream()
+                .map(givenTalent -> givenTalent.getTalent().getId())
                 .collect(Collectors.toSet());
 
         Set<Long> after = afterGivenTalents.stream()
                 .map(SubCategory::getId)
                 .collect(Collectors.toSet());
 
-        this.takenTalents.removeIf(takenTalent -> !after.contains(takenTalent.getTalent().getId()));
+        this.talents.removeIf(givenTalent -> (givenTalent.getType().equals(GIVE) && !after.contains(givenTalent.getTalent().getId())));
 
-        this.takenTalents.addAll(afterGivenTalents.stream()
+        this.talents.addAll(afterGivenTalents.stream()
                 .filter(category -> !before.contains(category.getId()))
-                .map(category -> MemberTalent.of(this, category, TalentType.GIVE))
+                .map(category -> MemberTalent.of(this, category, GIVE))
                 .toList());
 
     }
 
     public void setTakenTalents(List<SubCategory> afterTakenTalents) {
 
-        Set<Long> before = this.takenTalents.stream()
+        Set<Long> before = this.talents.stream()
                 .map(takenTalent -> takenTalent.getTalent().getId())
                 .collect(Collectors.toSet());
 
@@ -101,20 +101,17 @@ public class Member extends BaseEntity{
                 .map(SubCategory::getId)
                 .collect(Collectors.toSet());
 
-        this.takenTalents.removeIf(takenTalent -> !after.contains(takenTalent.getTalent().getId()));
+        this.talents.removeIf(takenTalent -> (takenTalent.getType().equals(TAKE) && !after.contains(takenTalent.getTalent().getId())));
 
-        this.takenTalents.addAll(afterTakenTalents.stream()
+        this.talents.addAll(afterTakenTalents.stream()
                 .filter(category -> !before.contains(category.getId()))
-                .map(category -> MemberTalent.of(this, category, TalentType.TAKE))
+                .map(category -> MemberTalent.of(this, category, TAKE))
                 .toList());
 
     }
 
-    public void setLink(List<Link> links) {
-        this.profileLinks = links;
-    }
+    public void setProfileLinks(List<LinkDto> afterLinks) {
 
-    public void setLinks(List<LinkDto> afterLinks) {
         if (this.profileLinks.isEmpty()) {
             return;
         }
@@ -129,20 +126,20 @@ public class Member extends BaseEntity{
 
         this.profileLinks.removeIf(
                 link -> !after.contains(link.getId()));
+
         this.profileLinks.addAll(afterLinks
                 .stream()
                 .filter(link -> !before.contains(link.id()))
                 .map(LinkDto::toEntity)
                 .toList());
-
     }
 
     public void update(MemberUpdateDto memberUpdateDto, List<SubCategory> givenTalents, List<SubCategory> takenTalents){
         this.nickname = memberUpdateDto.nickname();
         this.image = memberUpdateDto.image();
         this.introduction = memberUpdateDto.introduction();
-        setLinks(memberUpdateDto.profileLinks());
         setGivenTalents(givenTalents);
         setTakenTalents(takenTalents);
+        setProfileLinks(memberUpdateDto.profileLinks());
     }
 }

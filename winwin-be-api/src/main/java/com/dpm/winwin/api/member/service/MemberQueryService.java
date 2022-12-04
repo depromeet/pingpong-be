@@ -5,7 +5,9 @@ import com.dpm.winwin.api.member.dto.response.MemberRankReadResponse;
 import com.dpm.winwin.api.member.dto.response.MemberRankResponse;
 import com.dpm.winwin.api.member.dto.response.RanksListResponse;
 import com.dpm.winwin.api.member.dto.response.RanksResponse;
+import com.dpm.winwin.api.post.dto.response.LinkResponse;
 import com.dpm.winwin.domain.entity.member.Member;
+import com.dpm.winwin.domain.entity.member.MemberTalent;
 import com.dpm.winwin.domain.entity.member.enums.Ranks;
 import com.dpm.winwin.domain.entity.member.enums.TalentType;
 import com.dpm.winwin.domain.repository.member.MemberRepository;
@@ -20,6 +22,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.dpm.winwin.api.common.error.enums.ErrorMessage.MEMBER_NOT_FOUND;
+import static com.dpm.winwin.domain.entity.member.enums.TalentType.GIVE;
+import static com.dpm.winwin.domain.entity.member.enums.TalentType.TAKE;
 
 @RequiredArgsConstructor
 @Service
@@ -47,14 +51,14 @@ public class MemberQueryService {
                 memberReadResponse,
                 rank,
                 member.getProfileLinks().stream()
-                        .map(link -> link.getContent())
+                        .map(LinkResponse::of)
                         .toList(),
-                member.getGivenTalents().stream()
-                        .filter(memberTalent -> memberTalent.getType().equals(TalentType.GIVE))
+                member.getTalents().stream()
+                        .filter(memberTalent -> memberTalent.getType().equals(GIVE))
                         .map(memberTalent -> memberTalent.getTalent().getName())
                         .toList(),
-                member.getTakenTalents().stream()
-                        .filter(memberTalent -> memberTalent.getType().equals(TalentType.TAKE))
+                member.getTalents().stream()
+                        .filter(memberTalent -> memberTalent.getType().equals(TAKE))
                         .map(memberTalent -> memberTalent.getTalent().getName())
                         .toList()
         );

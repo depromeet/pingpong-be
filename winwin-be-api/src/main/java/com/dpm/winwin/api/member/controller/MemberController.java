@@ -9,7 +9,9 @@ import com.dpm.winwin.api.member.service.MemberCommandService;
 import com.dpm.winwin.api.member.service.MemberQueryService;
 import com.dpm.winwin.domain.repository.member.dto.request.MemberNicknameRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,7 +44,7 @@ public class MemberController {
     public BaseResponseDto<MemberUpdateResponse> updateMember(
             @PathVariable Long memberId,
             @RequestBody final  MemberUpdateRequest memberUpdateRequest) {
-        return BaseResponseDto.ok(memberCommandService.updateMember(memberId,memberUpdateRequest));
+        return BaseResponseDto.ok(memberCommandService.updateMember(memberId, memberUpdateRequest));
     }
 
     @GetMapping("/ranks")

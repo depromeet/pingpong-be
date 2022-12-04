@@ -8,5 +8,6 @@ public record MemberUpdateDto(
         String nickname,
         String image,
         String introduction,
-        List<LinkDto> profileLinks) {
+        List<LinkDto> profileLinks
+) {
 }

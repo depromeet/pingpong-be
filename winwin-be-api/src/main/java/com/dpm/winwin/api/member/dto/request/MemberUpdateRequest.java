@@ -6,10 +6,9 @@ import com.dpm.winwin.domain.dto.member.MemberUpdateDto;
 import java.util.List;
 
 public record MemberUpdateRequest(
-        Long id,
         String nickname,
         String image,
-        String introductions,
+        String introduction,
         List<LinkRequest> profileLinks,
         List<Long> givenTalents,
         List<Long> takenTalents
@@ -18,7 +17,7 @@ public record MemberUpdateRequest(
         return new MemberUpdateDto(
                 this.nickname,
                 this.image,
-                this.introductions,
+                this.introduction,
                 this.profileLinks().stream().map(LinkRequest::toDto).toList()
         );
     }
@@ -29,4 +28,5 @@ public record MemberUpdateRequest(
                 .filter(link -> link.id() != null)
                 .toList();
     }
+
 }

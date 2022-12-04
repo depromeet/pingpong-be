@@ -8,7 +8,7 @@ public record MemberUpdateResponse(
         String nickname,
         String image,
         String introduction,
-        List<LinkResponse> profileLinks,
+        List<String> profileLinks,
         List<String> givenTalents,
         List<String> takenTalents
 ) {

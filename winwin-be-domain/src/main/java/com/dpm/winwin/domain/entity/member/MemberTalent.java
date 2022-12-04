@@ -49,13 +49,4 @@ public class MemberTalent extends BaseEntity {
         return new MemberTalent(member, talent, type);
     }
 
-    public MemberTalent(SubCategory talent, TalentType type){
-        this.talent = talent;
-        this.type = type;
-    }
-
-    public static MemberTalent of(SubCategory talent, TalentType type){
-        return new MemberTalent(talent, type);
-    }
-
 }

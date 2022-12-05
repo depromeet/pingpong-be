@@ -1,9 +1,9 @@
-package com.dpm.winwin.api.controller;
+package com.dpm.winwin.api.apple.controller;
 
 import com.dpm.winwin.api.common.error.enums.ErrorMessage;
 import com.dpm.winwin.api.common.error.exception.custom.LoginCancelException;
 import com.dpm.winwin.api.common.response.dto.BaseResponseDto;
-import com.dpm.winwin.api.service.AppleLoginService;
+import com.dpm.winwin.api.apple.service.AppleLoginService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.MultiValueMap;

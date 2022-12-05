@@ -1,4 +1,4 @@
-package com.dpm.winwin.api.record;
+package com.dpm.winwin.api.apple.record;
 
 public record MemberInfo(Name name, String email) {
 

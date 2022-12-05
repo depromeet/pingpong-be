@@ -1,13 +1,13 @@
-package com.dpm.winwin.api.service;
+package com.dpm.winwin.api.apple.service;
 
 import com.dpm.winwin.api.common.error.enums.ErrorMessage;
 import com.dpm.winwin.api.common.error.exception.custom.AppleTokenGenerateException;
 import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
 import com.dpm.winwin.api.common.error.exception.custom.InvalidIdTokenException;
 import com.dpm.winwin.api.jwt.TokenProvider;
-import com.dpm.winwin.api.record.ApplePublicKeys;
-import com.dpm.winwin.api.record.AppleToken;
-import com.dpm.winwin.api.record.MemberInfo;
+import com.dpm.winwin.api.apple.record.ApplePublicKeys;
+import com.dpm.winwin.api.apple.record.AppleToken;
+import com.dpm.winwin.api.apple.record.MemberInfo;
 import com.dpm.winwin.domain.entity.member.Member;
 import com.dpm.winwin.domain.entity.member.enums.ProviderType;
 import com.dpm.winwin.domain.repository.member.MemberRepository;

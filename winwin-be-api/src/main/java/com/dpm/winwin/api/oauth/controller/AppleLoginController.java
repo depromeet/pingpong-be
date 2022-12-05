@@ -60,7 +60,7 @@ public class AppleLoginController {
         log.info("error :: {} ", redirectInfo.get("error"));
 
         String code = redirectInfo.getFirst("code");
-        String token = appleLoginService.singInMember(code);
+        String token = appleLoginService.signInMember(code);
 
         return BaseResponseDto.ok(token);
     }

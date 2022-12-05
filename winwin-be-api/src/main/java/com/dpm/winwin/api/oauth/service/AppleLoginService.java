@@ -82,7 +82,7 @@ public class AppleLoginService {
 
         return token;
     }
-    public String singInMember(String code) throws ParseException, InvalidKeySpecException, NoSuchAlgorithmException {
+    public String signInMember(String code) throws ParseException, InvalidKeySpecException, NoSuchAlgorithmException {
         AppleToken appleToken = generatedToken(code);
         String idToken = appleToken.idToken();
         Claims claims = appleIdTokenParser(idToken);

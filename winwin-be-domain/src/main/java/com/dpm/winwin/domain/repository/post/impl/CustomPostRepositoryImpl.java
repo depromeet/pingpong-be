@@ -7,9 +7,14 @@ import static com.dpm.winwin.domain.entity.link.QLink.link;
 import static com.dpm.winwin.domain.entity.member.QMember.member;
 import static com.dpm.winwin.domain.entity.post.QLikes.likes;
 import static com.dpm.winwin.domain.entity.post.QPost.post;
+import static com.dpm.winwin.domain.entity.member.QMemberTalent.memberTalent;
 
+import com.dpm.winwin.domain.entity.category.SubCategory;
+import com.dpm.winwin.domain.entity.member.enums.TalentType;
 import com.dpm.winwin.domain.entity.post.Post;
+import com.dpm.winwin.domain.entity.member.MemberTalent;
 import com.dpm.winwin.domain.repository.post.CustomPostRepository;
+import com.dpm.winwin.domain.repository.post.dto.request.PostCustomizedConditionRequest;
 import com.dpm.winwin.domain.repository.post.dto.request.PostListConditionRequest;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -94,6 +99,45 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
                 .where(post.id.eq(postId))
                 .fetchOne()
         );
+    }
+
+    public Page<Post> getAllByMemberTalents(
+        Long memberId, PostCustomizedConditionRequest condition, Pageable pageable) {
+        List<SubCategory> subCategories = queryFactory.selectFrom(memberTalent)
+            .leftJoin(memberTalent.member, member).fetchJoin()
+            .where(
+                memberTalent.member.id.eq(memberId),
+                memberTalent.type.eq(TalentType.TAKE)
+            )
+            .fetch()
+            .stream().map(MemberTalent::getTalent)
+            .toList();
+
+        List<Post> posts = queryFactory.selectFrom(post)
+            .leftJoin(post.member, member).fetchJoin()
+            .leftJoin(post.likes, likes).fetchJoin()
+            .leftJoin(post.subCategory, subCategory).fetchJoin()
+            .where(
+                member.id.eq(memberId).not(),
+                post.subCategory.in(subCategories),
+                subCategoryEq(condition.subCategoryId())
+            )
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
+            .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory.select(post.count())
+            .from(post)
+            .leftJoin(post.member, member)
+            .leftJoin(post.likes, likes)
+            .leftJoin(post.subCategory, subCategory)
+            .where(
+                member.id.eq(memberId).not(),
+                post.subCategory.in(subCategories),
+                subCategoryEq(condition.subCategoryId())
+            );
+
+        return PageableExecutionUtils.getPage(posts, pageable, countQuery::fetchOne);
     }
 
     private BooleanExpression isShareEq(Boolean isShare) {

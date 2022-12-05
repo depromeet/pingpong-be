@@ -2,6 +2,8 @@ package com.dpm.winwin.domain.entity.member;
 
 import com.dpm.winwin.domain.entity.BaseEntity;
 import com.dpm.winwin.domain.entity.category.SubCategory;
+import com.dpm.winwin.domain.entity.category.SubCategory;
+import com.dpm.winwin.domain.entity.member.Member;
 import com.dpm.winwin.domain.entity.member.enums.TalentType;
 import lombok.AccessLevel;
 import lombok.Getter;

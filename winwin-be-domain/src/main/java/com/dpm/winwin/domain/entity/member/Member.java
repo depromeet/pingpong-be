@@ -6,20 +6,22 @@ import com.dpm.winwin.domain.entity.chat.ChatRoom;
 import com.dpm.winwin.domain.entity.category.SubCategory;
 import com.dpm.winwin.domain.entity.member.enums.Ranks;
 import com.dpm.winwin.domain.entity.post.Post;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,6 +31,7 @@ import java.util.stream.Collectors;
 import static com.dpm.winwin.domain.entity.member.enums.TalentType.GIVE;
 import static com.dpm.winwin.domain.entity.member.enums.TalentType.TAKE;
 
+@DynamicInsert
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -39,7 +42,7 @@ public class Member extends BaseEntity{
     private Long id;
 
     @OneToMany(mappedBy = "host")
-    private List<ChatRoom> chatRooms = new ArrayList<>();
+    private final List<ChatRoom> chatRooms = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MemberTalent> talents = new ArrayList<>();
@@ -63,6 +66,17 @@ public class Member extends BaseEntity{
     private Ranks ranks;
 
     private Integer totalPostLikes;
+
+    private String provider;
+
+    private String socialId;
+
+    @Builder
+    public Member(String nickname, String provider, String socialId) {
+        this.nickname = nickname;
+        this.provider = provider;
+        this.socialId = socialId;
+    }
 
     public void updateNickname(String nickname){
         this.nickname = nickname;

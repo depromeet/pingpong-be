@@ -11,7 +11,6 @@ spring:
     properties:
       hibernate:
         format_sql: true
-    defer-datasource-initialization: true
 
   datasource:
     driver-class-name: org.h2.Driver
@@ -26,10 +25,36 @@ spring:
   sql:
     init:
       mode: embedded
+  security:
+    oauth2:
+      client:
+        registration:
+          apple:
+            clientId: com.dpm.pingpong-login
+            clientSecret: spring-security-oauth
+            clientName: apple
+            authorizationGrantType: authorization_code
+            clientAuthenticationMethod: CLIENT_SECRET_JWT
+            redirect-uri: https://www.pingpongg.shop:8083/apple/redirect
+            scope:
+              - openid
+              - name
+              - email
+        provider:
+          apple:
+            authorization-uri: https://appleid.apple.com/auth/authorize?response_mode=form_post
+            token-uri: https://appleid.apple.com/auth/token
+            jwk-set-uri: https://appleid.apple.com/auth/keys
+
+jwt:
+  header: Authorization
+  issuer: potato
+  secret: springtestsecretspringtestsecretspringtestsecret
+  token-validity-in-seconds: 86400
 
 jasypt:
   encryptor:
     bean: jasyptStringEncryptor
     algorithm: PBEWithMD5AndDES
     iv-generator-classname: org.jasypt.iv.NoIvGenerator
-    password: jasyptEncryptorPassword
+    password: test1234

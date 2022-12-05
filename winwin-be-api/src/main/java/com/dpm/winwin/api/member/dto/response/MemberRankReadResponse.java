@@ -6,8 +6,8 @@ import com.dpm.winwin.domain.repository.member.dto.response.MemberReadResponse;
 import java.util.List;
 
 public record MemberRankReadResponse(
-        MemberReadResponse memberReadResponse,
-        MemberRankResponse memberRankResponse,
+        MemberReadResponse memberRead,
+        MemberRankResponse memberRank,
         List<LinkResponse> profileLinks,
         List<String> givenTalents,
         List<String> takenTalents

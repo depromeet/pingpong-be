@@ -129,7 +129,7 @@ public class AppleLoginService {
         KeyFactory keyFactory = KeyFactory.getInstance(keyInfo.kty());
         PublicKey publicKey = keyFactory.generatePublic(publicKeySpec);
 
-        Claims body = Jwts.parser().setSigningKey(publicKey).parseClaimsJws(idToken).getBody();
+        Claims body = Jwts.parserBuilder().setSigningKey(publicKey).build().parseClaimsJws(idToken).getBody();
         return body;
     }
 

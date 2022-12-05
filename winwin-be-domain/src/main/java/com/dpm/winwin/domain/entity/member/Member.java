@@ -8,7 +8,6 @@ import com.dpm.winwin.domain.entity.category.SubCategory;
 import com.dpm.winwin.domain.entity.link.Link;
 import com.dpm.winwin.domain.entity.member.enums.Ranks;
 import com.dpm.winwin.domain.entity.post.Post;
-import com.dpm.winwin.domain.entity.member.enums.TalentType;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,7 +21,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.util.ArrayList;
@@ -30,7 +28,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.dpm.winwin.domain.entity.member.enums.TalentType.GIVE;
 import static com.dpm.winwin.domain.entity.member.enums.TalentType.TAKE;
@@ -74,9 +71,10 @@ public class Member extends BaseEntity{
         this.nickname = nickname;
     }
 
-    public void setGivenTalents(List<SubCategory> afterGivenTalents) {
+    private void setGivenTalents(List<SubCategory> afterGivenTalents) {
 
         Set<Long> before = this.talents.stream()
+                .filter(givenTalent -> givenTalent.getType().equals(GIVE))
                 .map(givenTalent -> givenTalent.getTalent().getId())
                 .collect(Collectors.toSet());
 
@@ -93,9 +91,10 @@ public class Member extends BaseEntity{
 
     }
 
-    public void setTakenTalents(List<SubCategory> afterTakenTalents) {
+    private void setTakenTalents(List<SubCategory> afterTakenTalents) {
 
         Set<Long> before = this.talents.stream()
+                .filter(takenTalent -> takenTalent.getType().equals(TAKE))
                 .map(takenTalent -> takenTalent.getTalent().getId())
                 .collect(Collectors.toSet());
 
@@ -112,7 +111,7 @@ public class Member extends BaseEntity{
 
     }
 
-    public void setProfileLinks(List<LinkDto> afterLinks) {
+    private void setProfileLinks(List<LinkDto> afterLinks) {
 
         if (this.profileLinks.isEmpty()) {
             return;

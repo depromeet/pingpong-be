@@ -32,7 +32,7 @@ spring:
         registration:
           apple:
             clientId: com.dpm.pingpong-login
-            clientSecret: ENC(d+fNAivHiQcwF4bM0kI3CUj0Qn8mhWU+zysRTrfBPb9T1hhlEP8dVVdkCagBVBjW5k+faZ6wb0vzeBP6bf+7Blpb0bXp6wdPcRVYKmnGOClYI7WorVbty8lbeWRcIRLNfc4btAD2PPrTWVjQpfIqo0X+ZgXAG4kE3su6KQSPEYEqDAVmv0qHDVmfRdbGiYra1UzRC4M86bcpf5kqqezFo1CYZ7b1h8ReoR8bO6KR0yaHOVhL12u4nwQn3FDbjH4fxOWYem0C+NFquqd8FRaqzPXqZa/EI1uhXb1xCskO3wsoUHPKYjELCLTvtCjFIZbXMvB5OyPutEJmEW0EuSF7f8FqylV8jUaZzZAYUgzHlHuShHxbZUREKYQ4CG/+Yt2sZcZtgvfKxX8HNco9fqMR5w==)
+            clientSecret: spring-security-oauth
             clientName: apple
             authorizationGrantType: authorization_code
             clientAuthenticationMethod: CLIENT_SECRET_JWT
@@ -50,7 +50,7 @@ spring:
 jwt:
   header: Authorization
   issuer: potato
-  secret: ENC(vtXQqpFzmMOU0LEzZAtvTclmTvMLzhfmOaL4g9nK+Q0/40Ja4ZhlmabPN6GqNbnnhfw/IDdr0nMT1zRVhUlzIT3Qn2B6S3BGAre61WLcHvPhaHJXYijicCy11npKMfzhnSXmWixqUgU=)
+  secret: springtestsecretspringtestsecretspringtestsecret
   token-validity-in-seconds: 86400
 
 jasypt:
@@ -58,4 +58,4 @@ jasypt:
     bean: jasyptStringEncryptor
     algorithm: PBEWithMD5AndDES
     iv-generator-classname: org.jasypt.iv.NoIvGenerator
-    password: ${ENCRYPT_KEY}
+    password: test1234

@@ -1,6 +1,7 @@
 package com.dpm.winwin.domain.entity.talent;
 
 import com.dpm.winwin.domain.entity.BaseEntity;
+import com.dpm.winwin.domain.entity.category.SubCategory;
 import com.dpm.winwin.domain.entity.member.Member;
 import com.dpm.winwin.domain.entity.member.enums.TalentType;
 import lombok.AccessLevel;
@@ -33,7 +34,7 @@ public class MemberTalent extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "talent_id")
-    private Talent talent;
+    private SubCategory talent;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

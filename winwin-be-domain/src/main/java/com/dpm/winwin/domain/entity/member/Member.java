@@ -1,11 +1,9 @@
 package com.dpm.winwin.domain.entity.member;
 
-import com.dpm.winwin.domain.dto.link.LinkDto;
 import com.dpm.winwin.domain.entity.BaseEntity;
 import com.dpm.winwin.domain.dto.member.MemberUpdateDto;
 import com.dpm.winwin.domain.entity.chat.ChatRoom;
 import com.dpm.winwin.domain.entity.category.SubCategory;
-import com.dpm.winwin.domain.entity.link.Link;
 import com.dpm.winwin.domain.entity.member.enums.Ranks;
 import com.dpm.winwin.domain.entity.post.Post;
 
@@ -17,7 +15,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 import lombok.AccessLevel;
@@ -50,16 +47,14 @@ public class Member extends BaseEntity{
     @OneToMany(mappedBy = "member")
     private List<Post> posts = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "member_id")
-    private List<Link> profileLinks = new ArrayList<>();
-
     @Column(nullable = false)
     private String nickname;
 
     private String image;
 
     private String introduction;
+
+    private String profileLink;
 
     private int exchangeCount;
 
@@ -111,37 +106,13 @@ public class Member extends BaseEntity{
 
     }
 
-    private void setProfileLinks(List<LinkDto> afterLinks) {
-
-        if (this.profileLinks.isEmpty()) {
-            return;
-        }
-
-        Set<Long> before = this.profileLinks.stream()
-                .map(Link::getId)
-                .collect(Collectors.toSet());
-
-        Set<Long> after = afterLinks.stream()
-                .map(LinkDto::id)
-                .collect(Collectors.toSet());
-
-        this.profileLinks.removeIf(
-                link -> !after.contains(link.getId()));
-
-        this.profileLinks.addAll(afterLinks
-                .stream()
-                .filter(link -> !before.contains(link.id()))
-                .map(LinkDto::toEntity)
-                .toList());
-    }
-
     public void update(MemberUpdateDto memberUpdateDto, List<SubCategory> givenTalents, List<SubCategory> takenTalents){
         this.nickname = memberUpdateDto.nickname();
         this.image = memberUpdateDto.image();
         this.introduction = memberUpdateDto.introduction();
+        this.profileLink = memberUpdateDto.profileLink();
         setGivenTalents(givenTalents);
         setTakenTalents(takenTalents);
-        setProfileLinks(memberUpdateDto.profileLinks());
     }
 
     public void updateRank(Integer likesCount){

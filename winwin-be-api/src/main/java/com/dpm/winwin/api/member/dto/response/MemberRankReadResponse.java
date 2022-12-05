@@ -1,8 +1,5 @@
 package com.dpm.winwin.api.member.dto.response;
 
-import com.dpm.winwin.api.post.dto.response.LinkResponse;
-
-
 import java.util.List;
 
 public record MemberRankReadResponse(
@@ -13,7 +10,7 @@ public record MemberRankReadResponse(
         String rankName,
         String rankImage,
         Integer rankLikeCount,
-        List<LinkResponse> profileLinks,
+        String profileLink,
         List<String> givenTalents,
         List<String> takenTalents
 ) {

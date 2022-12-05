@@ -8,11 +8,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-    env :
-      working-directory: ./
-      APPLICATION: ${{ secrets.APPLICATION }}
 
     steps:
       - uses: actions/checkout@v3

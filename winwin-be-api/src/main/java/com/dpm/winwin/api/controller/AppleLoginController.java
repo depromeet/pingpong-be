@@ -44,7 +44,7 @@ public class AppleLoginController {
             String code = redirectInfo.getFirst("code");
 
             log.info("memberInfo:: {}", memberInfo);
-            String jwtToken = appleLoginService.singUpMember(memberInfo, code);
+            String jwtToken = appleLoginService.signUpMember(memberInfo, code);
 
             log.info("jwtToken : {}", jwtToken);
             return BaseResponseDto.ok(jwtToken);

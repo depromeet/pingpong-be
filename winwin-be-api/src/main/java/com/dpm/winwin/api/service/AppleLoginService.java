@@ -66,7 +66,7 @@ public class AppleLoginService {
         return body;
     }
 
-    public String singUpMember(String memberInfo, String code) throws ParseException, NoSuchAlgorithmException, InvalidKeySpecException, JsonProcessingException {
+    public String signUpMember(String memberInfo, String code) throws ParseException, NoSuchAlgorithmException, InvalidKeySpecException, JsonProcessingException {
         AppleToken appleToken = generatedToken(code);
         String idToken = appleToken.idToken();
         Claims claims = appleIdTokenParser(idToken);

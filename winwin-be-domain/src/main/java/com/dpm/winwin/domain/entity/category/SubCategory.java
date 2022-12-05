@@ -29,9 +29,6 @@ public class SubCategory extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private String image;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mid_category_id")
     private MidCategory midCategory;

@@ -92,7 +92,7 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
 
     @Override
     public Page<MyPagePostDto> getAllByMemberId(Long memberId, Pageable pageable) {
-        List<MyPagePostDto> result = queryFactory.select(
+        List<MyPagePostDto> posts = queryFactory.select(
                 new QMyPagePostDto(post.id,
                     post.title,
                     subCategory.name,
@@ -111,14 +111,14 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
             .limit(pageable.getPageSize())
             .fetch();
 
-        JPAQuery<Long> count = queryFactory.select(post.count())
+        JPAQuery<Long> countQuery = queryFactory.select(post.count())
             .from(post)
             .leftJoin(post.likes, likes)
             .leftJoin(post.subCategory, subCategory)
             .leftJoin(post.member, member)
             .where(post.member.id.eq(memberId));
 
-        return PageableExecutionUtils.getPage(result, pageable, count::fetchOne);
+        return PageableExecutionUtils.getPage(posts, pageable, countQuery::fetchOne);
     }
 
     private BooleanExpression isShareEq(Boolean isShare) {

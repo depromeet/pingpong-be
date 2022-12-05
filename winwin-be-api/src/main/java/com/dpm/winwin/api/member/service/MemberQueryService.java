@@ -13,8 +13,10 @@ import com.dpm.winwin.domain.entity.member.enums.TalentType;
 import com.dpm.winwin.domain.repository.member.MemberRepository;
 import com.dpm.winwin.domain.repository.member.dto.response.MemberReadResponse;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.dpm.winwin.domain.repository.post.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,14 +26,15 @@ import org.springframework.transaction.annotation.Transactional;
 import static com.dpm.winwin.api.common.error.enums.ErrorMessage.MEMBER_NOT_FOUND;
 import static com.dpm.winwin.domain.entity.member.enums.TalentType.GIVE;
 import static com.dpm.winwin.domain.entity.member.enums.TalentType.TAKE;
+import static java.util.Collections.reverse;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class MemberQueryService {
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
 
-    @Transactional
     public MemberRankReadResponse readMemberInfo(Long memberId){
 
         Member member = memberRepository.findById(memberId)
@@ -69,8 +72,9 @@ public class MemberQueryService {
     @Transactional(readOnly = true)
     public RanksListResponse getRankList() {
         List<RanksResponse> ranks = Arrays.stream(Ranks.values())
-            .map(rank -> RanksResponse.of(rank.getName(), rank.getImage(), rank.getCondition()))
-            .toList();
+                .sorted(Collections.reverseOrder())
+                .map(rank -> RanksResponse.of(rank.getName(), rank.getImage(), rank.getCondition()))
+                .toList();
 
         return RanksListResponse.from(ranks);
     }

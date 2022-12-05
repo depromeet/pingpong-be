@@ -27,8 +27,6 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
                 jpaQueryFactory
                         .from(member)
                         .where(member.id.eq(memberId))
-//                        .leftJoin(memberTalent).on(memberTalent.member.id.eq(memberId))
-//                        .fetchJoin()
                         .transform(
                                 groupBy(member.id).as(
                                         Projections.constructor(

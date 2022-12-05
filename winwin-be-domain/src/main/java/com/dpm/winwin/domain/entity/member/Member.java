@@ -26,9 +26,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.dpm.winwin.domain.entity.member.enums.TalentType.GIVE;
 import static com.dpm.winwin.domain.entity.member.enums.TalentType.TAKE;
@@ -144,17 +146,16 @@ public class Member extends BaseEntity{
     }
 
     public void updateRank(Integer likesCount){
-        if (likesCount < Ranks.ROOKIE.getLikeCount()){
-            this.ranks = Ranks.ROOKIE;
-        }
-        else if (likesCount <= Ranks.BEGINNER.getLikeCount()) {
-            this.ranks = Ranks.BEGINNER;
-        }
-        else if (likesCount <= Ranks.JUNIOR.getLikeCount()) {
-            this.ranks = Ranks.JUNIOR;
-        }
-        else{
-            this.ranks = Ranks.PRO;
-        }
+
+        Ranks rank = Arrays.stream(Ranks.values())
+                .filter( value -> likesCount >= value.getLikeCount())
+                .findFirst().get();
+
+        updateMemberRank(rank);
+
+    }
+
+    private void updateMemberRank(Ranks rank){
+        this.ranks = rank;
     }
 }

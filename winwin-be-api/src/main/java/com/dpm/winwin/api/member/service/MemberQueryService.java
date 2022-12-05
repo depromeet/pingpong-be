@@ -25,36 +25,26 @@ import static com.dpm.winwin.domain.entity.member.enums.TalentType.TAKE;
 
 @RequiredArgsConstructor
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class MemberQueryService {
     private final MemberRepository memberRepository;
-    private final PostRepository postRepository;
 
     public MemberRankReadResponse readMemberInfo(Long memberId){
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
 
-        Optional<Integer> likes = postRepository.getMemberLikeByMemberId(memberId);
-
-        Integer memberLike = likes.stream().mapToInt(Integer::intValue).sum();
-
-        member.updateRank(memberLike);
-
         MemberReadResponse memberReadResponse =  memberRepository.readMemberInfo(memberId)
                 .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
-
-        MemberRankResponse rank = MemberRankResponse.of(memberReadResponse.ranks().getName(),
-                memberReadResponse.ranks().getImage(), memberLike);
 
         return new MemberRankReadResponse(
                 memberReadResponse.memberId(),
                 memberReadResponse.nickname(),
                 memberReadResponse.image(),
                 memberReadResponse.introduction(),
-                rank.name(),
-                rank.image(),
-                rank.likes(),
+                member.getRanks().getName(),
+                member.getRanks().getImage(),
+                member.getRanks().getLikeCount(),
                 member.getProfileLink(),
                 member.getTalents().stream()
                         .filter(memberTalent -> memberTalent.getType().equals(GIVE))
@@ -67,7 +57,6 @@ public class MemberQueryService {
         );
     }
 
-    @Transactional(readOnly = true)
     public RanksListResponse getRankList() {
         List<RanksResponse> ranks = Arrays.stream(Ranks.values())
                 .sorted(Collections.reverseOrder())

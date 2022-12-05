@@ -6,7 +6,6 @@ public record MemberReadResponse(Long memberId,
                                  String nickname,
                                  String image,
                                  String introduction,
-                                 int exchangeCount,
                                  Ranks ranks
 ) {
 

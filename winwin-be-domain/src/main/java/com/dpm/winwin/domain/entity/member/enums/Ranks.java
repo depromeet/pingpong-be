@@ -5,10 +5,10 @@ import lombok.Getter;
 @Getter
 public enum Ranks {
 
-    PRO("프로", "rank/pro.png", "좋아요 10k 이상",10000),
-    JUNIOR("주니어", "rank/junior.png", "좋아요 1k 이상",1000),
-    BEGINNER("비기너", "rank/beginner.png", "좋아요 100개 이상",100),
-    ROOKIE("루키", "rank/rookie.png", "좋아요 100개 미만",0);
+    PRO("프로", "rank/pro.png", "좋아요 10k 이상", 10000),
+    JUNIOR("주니어", "rank/junior.png", "좋아요 1k 이상", 1000),
+    BEGINNER("비기너", "rank/beginner.png", "좋아요 100개 이상", 100),
+    ROOKIE("루키", "rank/rookie.png", "좋아요 100개 미만", 0);
 
     private final String name;
     private final String image;

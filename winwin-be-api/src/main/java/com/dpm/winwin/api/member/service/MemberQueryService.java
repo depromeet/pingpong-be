@@ -7,16 +7,13 @@ import com.dpm.winwin.api.member.dto.response.RanksListResponse;
 import com.dpm.winwin.api.member.dto.response.RanksResponse;
 import com.dpm.winwin.api.post.dto.response.LinkResponse;
 import com.dpm.winwin.domain.entity.member.Member;
-import com.dpm.winwin.domain.entity.member.MemberTalent;
 import com.dpm.winwin.domain.entity.member.enums.Ranks;
-import com.dpm.winwin.domain.entity.member.enums.TalentType;
 import com.dpm.winwin.domain.repository.member.MemberRepository;
 import com.dpm.winwin.domain.repository.member.dto.response.MemberReadResponse;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import com.dpm.winwin.domain.repository.post.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import static com.dpm.winwin.api.common.error.enums.ErrorMessage.MEMBER_NOT_FOUND;
 import static com.dpm.winwin.domain.entity.member.enums.TalentType.GIVE;
 import static com.dpm.winwin.domain.entity.member.enums.TalentType.TAKE;
-import static java.util.Collections.reverse;
 
 @RequiredArgsConstructor
 @Service
@@ -53,8 +49,13 @@ public class MemberQueryService {
                 memberReadResponse.ranks().getImage(), memberLike);
 
         return new MemberRankReadResponse(
-                memberReadResponse,
-                rank,
+                memberReadResponse.memberId(),
+                memberReadResponse.nickname(),
+                memberReadResponse.image(),
+                memberReadResponse.introduction(),
+                rank.name(),
+                rank.image(),
+                rank.likes(),
                 member.getProfileLinks().stream()
                         .map(LinkResponse::of)
                         .toList(),

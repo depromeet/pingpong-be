@@ -18,7 +18,7 @@ import org.springframework.web.filter.GenericFilterBean;
 public class JwtFilter extends GenericFilterBean {
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
-    public static final String BEARER = "Bearer";
+    public static final String BEARER = "Bearer ";
     private final TokenProvider tokenProvider;
 
     public JwtFilter(TokenProvider tokenProvider) {
@@ -47,7 +47,7 @@ public class JwtFilter extends GenericFilterBean {
     private String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER)) {
-            return bearerToken.substring(7);
+            return bearerToken.substring(BEARER.length());
         }
         return null;
     }

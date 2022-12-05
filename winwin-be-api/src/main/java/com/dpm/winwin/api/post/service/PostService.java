@@ -4,11 +4,11 @@ import com.dpm.winwin.api.common.error.enums.ErrorMessage;
 import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
 import com.dpm.winwin.api.post.dto.request.LinkRequest;
 import com.dpm.winwin.api.post.dto.request.PostAddRequest;
-import com.dpm.winwin.domain.repository.post.dto.request.PostCustomizedConditionRequest;
 import com.dpm.winwin.api.post.dto.request.PostUpdateRequest;
 import com.dpm.winwin.api.post.dto.response.LinkResponse;
 import com.dpm.winwin.api.post.dto.response.PostAddResponse;
 import com.dpm.winwin.api.post.dto.response.PostCustomizedListResponse;
+import com.dpm.winwin.api.post.dto.response.PostCustomizedResponse;
 import com.dpm.winwin.api.post.dto.response.PostListResponse;
 import com.dpm.winwin.api.post.dto.response.PostMethodResponse;
 import com.dpm.winwin.api.post.dto.response.PostMethodsResponse;
@@ -30,6 +30,7 @@ import com.dpm.winwin.domain.repository.category.SubCategoryRepository;
 import com.dpm.winwin.domain.repository.link.LinkRepository;
 import com.dpm.winwin.domain.repository.member.MemberRepository;
 import com.dpm.winwin.domain.repository.post.PostRepository;
+import com.dpm.winwin.domain.repository.post.dto.request.PostCustomizedConditionRequest;
 import com.dpm.winwin.domain.repository.post.dto.request.PostListConditionRequest;
 import java.util.Arrays;
 import java.util.List;
@@ -56,10 +57,12 @@ public class PostService {
         return posts.map(PostListResponse::of);
     }
 
-    public Page<PostCustomizedListResponse> getPostsCustomized(
+    public PostCustomizedListResponse getPostsCustomized(
         Long memberId, PostCustomizedConditionRequest condition, Pageable pageable) {
-        Page<Post> posts = postRepository.getAllByMemberTalents(memberId, condition, pageable);
-        return posts.map(PostCustomizedListResponse::of);
+        Page<PostCustomizedResponse> page = postRepository
+            .getAllByMemberTalents(memberId, condition, pageable)
+            .map(PostCustomizedResponse::of);
+        return PostCustomizedListResponse.of(page);
     }
 
     public PostAddResponse save(long memberId, PostAddRequest request) {

@@ -15,7 +15,6 @@ import com.dpm.winwin.domain.repository.post.dto.request.PostListConditionReques
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -43,10 +41,10 @@ public class PostController {
   }
 
   @GetMapping("/custom")
-  public BaseResponseDto<Page<PostCustomizedListResponse>> getCustomPostList(
+  public BaseResponseDto<PostCustomizedListResponse> getCustomPostList(
       PostCustomizedConditionRequest condition, Pageable pageable) {
     Long tempMemberId = 1L;
-    Page<PostCustomizedListResponse> response = postService
+    PostCustomizedListResponse response = postService
         .getPostsCustomized(tempMemberId, condition, pageable);
     return BaseResponseDto.ok(response);
   }

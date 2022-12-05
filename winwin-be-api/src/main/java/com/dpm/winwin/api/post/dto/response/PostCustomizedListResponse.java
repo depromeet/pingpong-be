@@ -1,27 +1,22 @@
 package com.dpm.winwin.api.post.dto.response;
 
-import com.dpm.winwin.domain.entity.post.Post;
+import java.util.List;
+import org.springframework.data.domain.Page;
 
 public record PostCustomizedListResponse(
-    Long postId,
-    String title,
-    String subCategory,
-    Integer likes,
-    Long memberId,
-    String nickname,
-    String image,
-    String ranks
+    List<PostCustomizedResponse> content,
+    long totalElements,
+    int totalPages,
+    boolean hasNextPages
 ) {
 
-    public static PostCustomizedListResponse of(Post post) {
+    public static PostCustomizedListResponse of(Page page) {
         return new PostCustomizedListResponse(
-            post.getId(),
-            post.getTitle(),
-            post.getSubCategory().getName(),
-            post.getLikes().size(),
-            post.getMember().getId(),
-            post.getMember().getNickname(),
-            post.getMember().getImage(),
-            post.getMember().getRanks().getName());
+            page.getContent(),
+            page.getTotalElements(),
+            page.getTotalPages(),
+            page.hasNext()
+        );
     }
+
 }

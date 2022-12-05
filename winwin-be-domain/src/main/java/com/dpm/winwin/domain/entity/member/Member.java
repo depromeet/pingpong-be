@@ -2,6 +2,7 @@ package com.dpm.winwin.domain.entity.member;
 
 import com.dpm.winwin.domain.entity.BaseEntity;
 import com.dpm.winwin.domain.entity.chat.ChatRoom;
+import com.dpm.winwin.domain.entity.member.enums.Ranks;
 import com.dpm.winwin.domain.entity.post.Post;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;

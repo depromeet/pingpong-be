@@ -87,7 +87,7 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public PostReadResponse get(Long id) {
-        Post post = postRepository.findById(id)
+        Post post = postRepository.getByIdFetchJoin(id)
             .orElseThrow(() -> new BusinessException(ErrorMessage.POST_NOT_FOUND));
         return PostReadResponse.from(
             post.getId(),
@@ -102,7 +102,11 @@ public class PostService {
             post.getLikes().size(),
             post.getExchangeType().getMessage(),
             post.getExchangePeriod().getMessage(),
-            post.getExchangeTime().getMessage());
+            post.getExchangeTime().getMessage(),
+            post.getMember().getId(),
+            post.getMember().getNickname(),
+            post.getMember().getImage(),
+            post.getMember().getRanks());
     }
 
     public Long delete(Long id) {
@@ -114,7 +118,8 @@ public class PostService {
     }
 
     public Post getPostByMemberId(long memberId, Long id) {
-        return postRepository.getPostByMemberId(memberId, id);
+        return postRepository.getPostByMemberId(memberId, id)
+            .orElseThrow(() -> new BusinessException(ErrorMessage.POST_NOT_FOUND));
     }
 
     public PostUpdateResponse updatePost(Long memberId, Long postId,
@@ -129,7 +134,7 @@ public class PostService {
         List<SubCategory> savedTalents = subCategoryRepository.findAllById(
             updateRequest.takenTalents());
 
-        post.update(updateRequest.toDto(),mainCategory, midCategory, subCategory, savedTalents);
+        post.update(updateRequest.toDto(), mainCategory, midCategory, subCategory, savedTalents);
 
         for (LinkRequest linkRequest : updateRequest.getExistentLinks()) {
             Link link = linkRepository.findById(linkRequest.id())

@@ -62,6 +62,8 @@ public class Member extends BaseEntity{
     @Column(nullable = false)
     private Ranks ranks;
 
+    private Integer totalPostLikes;
+
     public void updateNickname(String nickname){
         this.nickname = nickname;
     }
@@ -115,7 +117,12 @@ public class Member extends BaseEntity{
         setTakenTalents(takenTalents);
     }
 
-    public void updateRank(Integer likesCount){
+    public void updateTotalPostLike(){
+        this.totalPostLikes += 1;
+        updateRank(this.totalPostLikes);
+    }
+
+    private void updateRank(Integer likesCount){
 
         Ranks rank = Arrays.stream(Ranks.values())
                 .filter( value -> likesCount >= value.getLikeCount())

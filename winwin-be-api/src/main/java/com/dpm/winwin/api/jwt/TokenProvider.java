@@ -45,6 +45,7 @@ public class TokenProvider implements InitializingBean {
         byte[] keyBytes = Decoders.BASE64.decode(secret);
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
+
     public String createToken(Long memberId, String memberName) {
         long now = new Date().getTime();
         Date expiredDate = new Date(now + this.tokenValidityInMilliseconds);

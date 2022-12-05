@@ -1,4 +1,4 @@
-package com.dpm.winwin.api.apple.record;
+package com.dpm.winwin.api.oauth.record;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -6,6 +6,8 @@ import com.dpm.winwin.api.post.dto.request.LinkRequest;
 import com.dpm.winwin.api.post.dto.request.PostAddRequest;
 import com.dpm.winwin.api.post.dto.request.PostUpdateRequest;
 import com.dpm.winwin.api.post.dto.response.LinkResponse;
+import com.dpm.winwin.api.post.dto.response.MyPagePostListResponse;
+import com.dpm.winwin.api.post.dto.response.MyPagePostResponse;
 import com.dpm.winwin.api.post.dto.response.PostAddResponse;
 import com.dpm.winwin.api.post.dto.response.PostListResponse;
 import com.dpm.winwin.api.post.dto.response.PostMethodResponse;
@@ -178,5 +180,12 @@ public class PostService {
             .toList();
 
         return PostMethodsResponse.of(exchangeTypes, exchangePeriods, exchangeTimes);
+    }
+
+    public MyPagePostListResponse getAllByMemberId(Long memberId, Pageable pageable) {
+        Page<MyPagePostResponse> page = postRepository.getAllByMemberId(memberId, pageable)
+            .map(MyPagePostResponse::of);
+
+        return MyPagePostListResponse.of(page);
     }
 }

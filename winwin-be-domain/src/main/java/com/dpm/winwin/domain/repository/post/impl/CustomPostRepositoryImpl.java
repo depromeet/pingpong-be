@@ -8,10 +8,14 @@ import static com.dpm.winwin.domain.entity.member.QMember.member;
 import static com.dpm.winwin.domain.entity.post.QLikes.likes;
 import static com.dpm.winwin.domain.entity.post.QPost.post;
 
+import com.dpm.winwin.domain.dto.post.MyPagePostDto;
+import com.dpm.winwin.domain.dto.post.QMyPagePostDto;
 import com.dpm.winwin.domain.entity.post.Post;
 import com.dpm.winwin.domain.repository.post.CustomPostRepository;
 import com.dpm.winwin.domain.repository.post.dto.request.PostListConditionRequest;
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
@@ -84,6 +88,37 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
                 .where(post.id.eq(postId))
                 .fetchOne()
         );
+    }
+
+    @Override
+    public Page<MyPagePostDto> getAllByMemberId(Long memberId, Pageable pageable) {
+        List<MyPagePostDto> result = queryFactory.select(
+                new QMyPagePostDto(post.id,
+                    post.title,
+                    subCategory.name,
+                    post.isShare,
+                    ExpressionUtils.as(
+                        JPAExpressions.select(likes.count())
+                            .from(likes)
+                            .where(likes.post.eq(post)), "likes")
+                ))
+            .from(post)
+            .leftJoin(post.likes, likes)
+            .leftJoin(post.subCategory, subCategory)
+            .leftJoin(post.member, member)
+            .where(post.member.id.eq(memberId))
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
+            .fetch();
+
+        JPAQuery<Long> count = queryFactory.select(post.count())
+            .from(post)
+            .leftJoin(post.likes, likes)
+            .leftJoin(post.subCategory, subCategory)
+            .leftJoin(post.member, member)
+            .where(post.member.id.eq(memberId));
+
+        return PageableExecutionUtils.getPage(result, pageable, count::fetchOne);
     }
 
     private BooleanExpression isShareEq(Boolean isShare) {

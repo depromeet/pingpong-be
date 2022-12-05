@@ -11,7 +11,6 @@ spring:
     properties:
       hibernate:
         format_sql: true
-    defer-datasource-initialization: true
 
   datasource:
     driver-class-name: org.h2.Driver
@@ -22,11 +21,6 @@ spring:
   h2:
     console:
       enabled: true
-
-  sql:
-    init:
-      mode: embedded
-
 jasypt:
   encryptor:
     bean: jasyptStringEncryptor

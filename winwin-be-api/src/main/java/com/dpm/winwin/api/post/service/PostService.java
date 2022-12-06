@@ -5,9 +5,9 @@ import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
 import com.dpm.winwin.api.post.dto.request.LinkRequest;
 import com.dpm.winwin.api.post.dto.request.PostAddRequest;
 import com.dpm.winwin.api.post.dto.request.PostUpdateRequest;
+import com.dpm.winwin.api.common.response.dto.GlobalPageResponseDto;
 import com.dpm.winwin.api.post.dto.response.LinkResponse;
 import com.dpm.winwin.api.post.dto.response.PostAddResponse;
-import com.dpm.winwin.api.post.dto.response.PostCustomizedListResponse;
 import com.dpm.winwin.api.post.dto.response.PostCustomizedResponse;
 import com.dpm.winwin.api.post.dto.response.PostListResponse;
 import com.dpm.winwin.api.post.dto.response.PostMethodResponse;
@@ -52,17 +52,19 @@ public class PostService {
     private final PostRepository postRepository;
     private final LinkRepository linkRepository;
 
-    public Page<PostListResponse> getPosts(PostListConditionRequest condition, Pageable pageable) {
-        Page<Post> posts = postRepository.getAllByIsShareAndMidCategory(condition, pageable);
-        return posts.map(PostListResponse::of);
+    public GlobalPageResponseDto<PostListResponse> getPosts(PostListConditionRequest condition, Pageable pageable) {
+        Page<PostListResponse> page = postRepository
+            .getAllByIsShareAndMidCategory(condition, pageable)
+            .map(PostListResponse::of);
+        return GlobalPageResponseDto.of(page);
     }
 
-    public PostCustomizedListResponse getPostsCustomized(
+    public GlobalPageResponseDto<PostCustomizedResponse> getPostsCustomized(
         Long memberId, PostCustomizedConditionRequest condition, Pageable pageable) {
         Page<PostCustomizedResponse> page = postRepository
             .getAllByMemberTalents(memberId, condition, pageable)
             .map(PostCustomizedResponse::of);
-        return PostCustomizedListResponse.of(page);
+        return GlobalPageResponseDto.of(page);
     }
 
     public PostAddResponse save(long memberId, PostAddRequest request) {

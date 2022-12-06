@@ -20,7 +20,7 @@ public class ReportController {
 
     private final ReportService reportService;
 
-    @PostMapping("post/{postId}")
+    @PostMapping("/post/{postId}")
     public BaseResponseDto<ReportResponse> reportPost(
             @PathVariable Long postId,
             @RequestBody ReportRequest reportRequest){

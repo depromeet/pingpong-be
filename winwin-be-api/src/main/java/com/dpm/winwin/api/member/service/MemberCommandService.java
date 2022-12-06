@@ -62,12 +62,4 @@ public class MemberCommandService {
         );
     }
 
-    public Long deleteMember(Long memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
-
-        memberRepository.deleteById(memberId);
-        return member.getId();
-    }
-
 }

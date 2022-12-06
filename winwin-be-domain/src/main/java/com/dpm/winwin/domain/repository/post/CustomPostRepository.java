@@ -1,5 +1,6 @@
 package com.dpm.winwin.domain.repository.post;
 
+import com.dpm.winwin.domain.dto.post.MyPagePostDto;
 import com.dpm.winwin.domain.entity.post.Post;
 import com.dpm.winwin.domain.repository.post.dto.request.PostCustomizedConditionRequest;
 import com.dpm.winwin.domain.repository.post.dto.request.PostListConditionRequest;
@@ -10,7 +11,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface CustomPostRepository {
 
-    Optional<Post> getPostByMemberId(Long memberId, Long postId);
+    Optional<Post> getByIdAndMemberId(Long memberId, Long postId);
 
     Page<Post> getAllByIsShareAndMidCategory(PostListConditionRequest condition, Pageable pageable);
 
@@ -18,5 +19,7 @@ public interface CustomPostRepository {
 
     Optional<Post> getByIdFetchJoin(Long postId);
 
+    Page<MyPagePostDto> getAllByMemberId(Long memberId, Pageable pageable);
+  
     Optional<Integer> getMemberLikeByMemberId(Long memberId);
 }

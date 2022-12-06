@@ -5,8 +5,12 @@ import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
 import com.dpm.winwin.api.post.dto.request.LinkRequest;
 import com.dpm.winwin.api.post.dto.request.PostAddRequest;
 import com.dpm.winwin.api.post.dto.request.PostUpdateRequest;
+import com.dpm.winwin.api.common.response.dto.GlobalPageResponseDto;
 import com.dpm.winwin.api.post.dto.response.LinkResponse;
+import com.dpm.winwin.api.post.dto.response.MyPagePostListResponse;
+import com.dpm.winwin.api.post.dto.response.MyPagePostResponse;
 import com.dpm.winwin.api.post.dto.response.PostAddResponse;
+import com.dpm.winwin.api.post.dto.response.PostCustomizedResponse;
 import com.dpm.winwin.api.post.dto.response.PostListResponse;
 import com.dpm.winwin.api.post.dto.response.PostMethodResponse;
 import com.dpm.winwin.api.post.dto.response.PostMethodsResponse;
@@ -28,6 +32,7 @@ import com.dpm.winwin.domain.repository.category.SubCategoryRepository;
 import com.dpm.winwin.domain.repository.link.LinkRepository;
 import com.dpm.winwin.domain.repository.member.MemberRepository;
 import com.dpm.winwin.domain.repository.post.PostRepository;
+import com.dpm.winwin.domain.repository.post.dto.request.PostCustomizedConditionRequest;
 import com.dpm.winwin.domain.repository.post.dto.request.PostListConditionRequest;
 import java.util.Arrays;
 import java.util.List;
@@ -49,9 +54,19 @@ public class PostService {
     private final PostRepository postRepository;
     private final LinkRepository linkRepository;
 
-    public Page<PostListResponse> getPosts(PostListConditionRequest condition, Pageable pageable) {
-        Page<Post> posts = postRepository.getAllByIsShareAndMidCategory(condition, pageable);
-        return posts.map(PostListResponse::of);
+    public GlobalPageResponseDto<PostListResponse> getPosts(PostListConditionRequest condition, Pageable pageable) {
+        Page<PostListResponse> page = postRepository
+            .getAllByIsShareAndMidCategory(condition, pageable)
+            .map(PostListResponse::of);
+        return GlobalPageResponseDto.of(page);
+    }
+
+    public GlobalPageResponseDto<PostCustomizedResponse> getPostsCustomized(
+        Long memberId, PostCustomizedConditionRequest condition, Pageable pageable) {
+        Page<PostCustomizedResponse> page = postRepository
+            .getAllByMemberTalents(memberId, condition, pageable)
+            .map(PostCustomizedResponse::of);
+        return GlobalPageResponseDto.of(page);
     }
 
     public PostAddResponse save(long memberId, PostAddRequest request) {
@@ -87,7 +102,7 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public PostReadResponse get(Long id) {
-        Post post = postRepository.findById(id)
+        Post post = postRepository.getByIdFetchJoin(id)
             .orElseThrow(() -> new BusinessException(ErrorMessage.POST_NOT_FOUND));
         return PostReadResponse.from(
             post.getId(),
@@ -102,7 +117,11 @@ public class PostService {
             post.getLikes().size(),
             post.getExchangeType().getMessage(),
             post.getExchangePeriod().getMessage(),
-            post.getExchangeTime().getMessage());
+            post.getExchangeTime().getMessage(),
+            post.getMember().getId(),
+            post.getMember().getNickname(),
+            post.getMember().getImage(),
+            post.getMember().getRanks());
     }
 
     public Long delete(Long id) {
@@ -113,13 +132,14 @@ public class PostService {
         return post.getId();
     }
 
-    public Post getPostByMemberId(long memberId, Long id) {
-        return postRepository.getPostByMemberId(memberId, id);
+    public Post getByIdAndMemberId(long memberId, Long id) {
+        return postRepository.getByIdAndMemberId(memberId, id)
+            .orElseThrow(() -> new BusinessException(ErrorMessage.POST_NOT_FOUND));
     }
 
-    public PostUpdateResponse updatePost(Long memberId, Long postId,
+    public PostUpdateResponse update(Long memberId, Long postId,
         PostUpdateRequest updateRequest) {
-        Post post = getPostByMemberId(memberId, postId);
+        Post post = getByIdAndMemberId(memberId, postId);
         MainCategory mainCategory = mainCategoryRepository.findById(updateRequest.mainCategoryId())
             .orElseThrow(() -> new BusinessException(ErrorMessage.MAIN_CATEGORY_NOT_FOUND));
         MidCategory midCategory = midCategoryRepository.findById(updateRequest.midCategoryId())
@@ -129,7 +149,7 @@ public class PostService {
         List<SubCategory> savedTalents = subCategoryRepository.findAllById(
             updateRequest.takenTalents());
 
-        post.update(updateRequest.toDto(),mainCategory, midCategory, subCategory, savedTalents);
+        post.update(updateRequest.toDto(), mainCategory, midCategory, subCategory, savedTalents);
 
         for (LinkRequest linkRequest : updateRequest.getExistentLinks()) {
             Link link = linkRepository.findById(linkRequest.id())
@@ -173,5 +193,12 @@ public class PostService {
             .toList();
 
         return PostMethodsResponse.of(exchangeTypes, exchangePeriods, exchangeTimes);
+    }
+
+    public MyPagePostListResponse getAllByMemberId(Long memberId, Pageable pageable) {
+        Page<MyPagePostResponse> page = postRepository.getAllByMemberId(memberId, pageable)
+            .map(MyPagePostResponse::of);
+
+        return MyPagePostListResponse.of(page);
     }
 }

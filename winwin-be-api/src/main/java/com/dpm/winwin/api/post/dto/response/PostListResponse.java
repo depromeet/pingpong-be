@@ -22,7 +22,7 @@ public record PostListResponse(
             post.getLikes().size(),
             post.getMember().getNickname(),
             post.getMember().getImage(),
-            post.getMember().getRanks().getMessage(),
+            post.getMember().getRanks().getName(),
             post.getTakenTalents().stream()
                 .map(postTalent -> postTalent.getTalent().getName())
                 .toList());

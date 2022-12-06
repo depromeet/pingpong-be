@@ -1,6 +1,7 @@
-package com.dpm.winwin.domain.entity.talent;
+package com.dpm.winwin.domain.entity.member;
 
 import com.dpm.winwin.domain.entity.BaseEntity;
+import com.dpm.winwin.domain.entity.category.SubCategory;
 import com.dpm.winwin.domain.entity.category.SubCategory;
 import com.dpm.winwin.domain.entity.member.Member;
 import com.dpm.winwin.domain.entity.member.enums.TalentType;
@@ -39,4 +40,15 @@ public class MemberTalent extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TalentType type;
+
+    public MemberTalent(Member member, SubCategory talent, TalentType type){
+        this.member = member;
+        this.talent = talent;
+        this.type = type;
+    }
+
+    public static MemberTalent of(Member member, SubCategory talent, TalentType type){
+        return new MemberTalent(member, talent, type);
+    }
+
 }

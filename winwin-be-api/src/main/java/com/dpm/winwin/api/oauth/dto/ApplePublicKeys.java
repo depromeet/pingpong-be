@@ -1,4 +1,4 @@
-package com.dpm.winwin.api.oauth.record;
+package com.dpm.winwin.api.oauth.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;

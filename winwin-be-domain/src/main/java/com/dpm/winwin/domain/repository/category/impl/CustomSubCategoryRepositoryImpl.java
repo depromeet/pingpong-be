@@ -29,7 +29,7 @@ public class CustomSubCategoryRepositoryImpl implements CustomSubCategoryReposit
     }
 
     @Override
-    public List<SubCategory> getTakenTalentsByMemberId(long memberId) {
+    public List<SubCategory> getTakenTalentsByMemberId(Long memberId) {
        return queryFactory.selectFrom(memberTalent)
             .leftJoin(memberTalent.member, member).fetchJoin()
             .where(

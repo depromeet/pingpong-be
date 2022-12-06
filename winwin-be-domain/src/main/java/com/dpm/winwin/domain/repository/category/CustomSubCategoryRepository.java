@@ -7,5 +7,5 @@ public interface CustomSubCategoryRepository {
 
     List<SubCategory> getAll(Long midCategoryId);
 
-    List<SubCategory> getTakenTalentsByMemberId(long memberId);
+    List<SubCategory> getTakenTalentsByMemberId(Long memberId);
 }

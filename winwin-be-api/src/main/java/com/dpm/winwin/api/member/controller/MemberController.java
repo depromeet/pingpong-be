@@ -28,7 +28,7 @@ public class MemberController {
     private final MemberQueryService memberQueryService;
     private final MemberCommandService memberCommandService;
 
-    @PutMapping("/nickname")
+    @PatchMapping("/nickname")
     public BaseResponseDto<String> updateMemberNickname(
             @Validated @RequestBody MemberNicknameRequest memberNicknameRequest, BindingResult bindingResult){
         Long memberId = 1L; //임시로 특정 회원 고정

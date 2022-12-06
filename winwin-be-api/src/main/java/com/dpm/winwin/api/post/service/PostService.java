@@ -9,6 +9,8 @@ import com.dpm.winwin.api.post.dto.response.LinkResponse;
 import com.dpm.winwin.api.post.dto.response.MyPagePostListResponse;
 import com.dpm.winwin.api.post.dto.response.MyPagePostResponse;
 import com.dpm.winwin.api.post.dto.response.PostAddResponse;
+import com.dpm.winwin.api.post.dto.response.PostCustomizedListResponse;
+import com.dpm.winwin.api.post.dto.response.PostCustomizedResponse;
 import com.dpm.winwin.api.post.dto.response.PostListResponse;
 import com.dpm.winwin.api.post.dto.response.PostMethodResponse;
 import com.dpm.winwin.api.post.dto.response.PostMethodsResponse;
@@ -30,6 +32,7 @@ import com.dpm.winwin.domain.repository.category.SubCategoryRepository;
 import com.dpm.winwin.domain.repository.link.LinkRepository;
 import com.dpm.winwin.domain.repository.member.MemberRepository;
 import com.dpm.winwin.domain.repository.post.PostRepository;
+import com.dpm.winwin.domain.repository.post.dto.request.PostCustomizedConditionRequest;
 import com.dpm.winwin.domain.repository.post.dto.request.PostListConditionRequest;
 import java.util.Arrays;
 import java.util.List;
@@ -54,6 +57,14 @@ public class PostService {
     public Page<PostListResponse> getPosts(PostListConditionRequest condition, Pageable pageable) {
         Page<Post> posts = postRepository.getAllByIsShareAndMidCategory(condition, pageable);
         return posts.map(PostListResponse::of);
+    }
+
+    public PostCustomizedListResponse getPostsCustomized(
+        Long memberId, PostCustomizedConditionRequest condition, Pageable pageable) {
+        Page<PostCustomizedResponse> page = postRepository
+            .getAllByMemberTalents(memberId, condition, pageable)
+            .map(PostCustomizedResponse::of);
+        return PostCustomizedListResponse.of(page);
     }
 
     public PostAddResponse save(long memberId, PostAddRequest request) {

@@ -25,12 +25,12 @@ public class MemberCommandService {
     private final MemberRepository memberRepository;
     private final SubCategoryRepository subCategoryRepository;
 
-    public Long updateMemberNickname(Long memberId,
+    public String updateMemberNickname(Long memberId,
                                      MemberNicknameRequest memberNicknameRequest) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
         member.updateNickname(memberNicknameRequest.nickname());
-        return member.getId();
+        return member.getNickname();
     }
 
     public MemberUpdateResponse updateMember(Long memberId,

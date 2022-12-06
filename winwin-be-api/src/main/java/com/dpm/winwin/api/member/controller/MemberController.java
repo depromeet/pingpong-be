@@ -9,6 +9,8 @@ import com.dpm.winwin.api.member.service.MemberCommandService;
 import com.dpm.winwin.api.member.service.MemberQueryService;
 import com.dpm.winwin.domain.repository.member.dto.request.MemberNicknameRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -27,11 +29,13 @@ public class MemberController {
     private final MemberCommandService memberCommandService;
 
     @PutMapping("/nickname")
-    public BaseResponseDto<Long> updateMemberNickname(
-            @RequestBody MemberNicknameRequest memberNicknameRequest){
+    public BaseResponseDto<String> updateMemberNickname(
+            @Validated @RequestBody MemberNicknameRequest memberNicknameRequest, BindingResult bindingResult){
         Long memberId = 1L; //임시로 특정 회원 고정
-        Long id = memberCommandService.updateMemberNickname(memberId, memberNicknameRequest);
-        return BaseResponseDto.ok(id);
+        if (bindingResult.hasErrors()){
+            return BaseResponseDto.error(bindingResult.getFieldError().getDefaultMessage());
+        }
+        return BaseResponseDto.ok(memberCommandService.updateMemberNickname(memberId, memberNicknameRequest));
     }
 
     @GetMapping("/{memberId}")

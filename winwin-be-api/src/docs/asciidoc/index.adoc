@@ -28,9 +28,6 @@ include::{snippets}/test-controller-test/restdocs-test/response-fields.adoc[]
 [[재능-게시물-생성]]
 == 재능 게시물 생성
 
-=== HTTP-headers
-include::{snippets}/post-controller-test/post가_생성된다/request-headers.adoc[]
-
 === HTTP-request
 include::{snippets}/post-controller-test/post가_생성된다/http-request.adoc[]
 

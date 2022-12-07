@@ -3,7 +3,7 @@ package com.dpm.winwin.api.post.dto.response;
 import com.dpm.winwin.domain.dto.post.MyPagePostDto;
 import java.util.List;
 
-public record MyPagePostResponse(Long id, String title, String subCategory, boolean isShare, List<String> takenTalent,
+public record MyPagePostResponse(Long id, String title, String subCategory, boolean isShare, List<String> takenTalents,
                                  Long likes) {
 
     public static MyPagePostResponse of(MyPagePostDto myPagePostDto) {

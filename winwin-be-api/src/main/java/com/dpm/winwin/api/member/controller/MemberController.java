@@ -36,7 +36,7 @@ public class MemberController {
     @PatchMapping("/nickname")
     public BaseResponseDto<MemberNicknameResponse> updateMemberNickname(
             @Valid @RequestBody MemberNicknameRequest memberNicknameRequest, BindingResult bindingResult){
-        Long memberId = 1L; //임시로 특정 회원 고정
+        Long memberId = 1L;
         if (bindingResult.hasErrors()){
             throw new BusinessException(INVALID_NICKNAME);
         }
@@ -49,10 +49,10 @@ public class MemberController {
         return BaseResponseDto.ok(memberQueryService.readMemberInfo(memberId));
     }
 
-    @PutMapping("/{memberId}")
+    @PutMapping
     public BaseResponseDto<MemberUpdateResponse> updateMember(
-            @PathVariable Long memberId,
             @RequestBody final  MemberUpdateRequest memberUpdateRequest) {
+        Long memberId = 1L;
         return BaseResponseDto.ok(memberCommandService.updateMember(memberId, memberUpdateRequest));
     }
 

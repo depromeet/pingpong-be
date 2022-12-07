@@ -5,6 +5,7 @@ import com.dpm.winwin.api.common.response.dto.GlobalPageResponseDto;
 import com.dpm.winwin.api.post.dto.request.PostAddRequest;
 import com.dpm.winwin.api.post.dto.request.PostUpdateRequest;
 import com.dpm.winwin.api.post.dto.response.MyPagePostListResponse;
+import com.dpm.winwin.api.post.dto.response.MyPagePostResponse;
 import com.dpm.winwin.api.post.dto.response.PostAddResponse;
 import com.dpm.winwin.api.post.dto.response.PostCustomizedResponse;
 import com.dpm.winwin.api.post.dto.response.PostListResponse;
@@ -83,7 +84,7 @@ public class PostController {
     }
 
     @GetMapping("/members/{memberId}")
-    public BaseResponseDto<MyPagePostListResponse> getAllByMemberId(@PathVariable Long memberId,
+    public BaseResponseDto<GlobalPageResponseDto<MyPagePostResponse>> getAllByMemberId(@PathVariable Long memberId,
         Pageable pageable) {
         return BaseResponseDto.ok(postService.getAllByMemberId(memberId, pageable));
     }

@@ -201,10 +201,10 @@ public class PostService {
         return PostMethodsResponse.of(exchangeTypes, exchangePeriods, exchangeTimes);
     }
 
-    public MyPagePostListResponse getAllByMemberId(Long memberId, Pageable pageable) {
+    public GlobalPageResponseDto<MyPagePostResponse> getAllByMemberId(Long memberId, Pageable pageable) {
         Page<MyPagePostResponse> page = postRepository.getAllByMemberId(memberId, pageable)
             .map(MyPagePostResponse::of);
 
-        return MyPagePostListResponse.of(page);
+        return GlobalPageResponseDto.of(page);
     }
 }

@@ -34,7 +34,7 @@ public class MemberQueryService {
         MemberReadResponse memberReadResponse =  memberRepository.readMemberInfo(memberId)
                 .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
 
-        Integer likeCount = member.getTotalPostLikes();
+        Integer likeCount = member.getLikeCount();
         if (likeCount == null)
             likeCount = 0;
 

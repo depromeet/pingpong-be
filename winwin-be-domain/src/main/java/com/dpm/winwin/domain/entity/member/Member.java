@@ -65,7 +65,7 @@ public class Member extends BaseEntity{
     @Column(nullable = false)
     private Ranks ranks;
 
-    private Integer totalPostLikes;
+    private Integer likeCount;
 
     private String provider;
 
@@ -132,8 +132,8 @@ public class Member extends BaseEntity{
     }
 
     public void updateTotalPostLike(){
-        this.totalPostLikes += 1;
-        updateRank(this.totalPostLikes);
+        this.likeCount += 1;
+        updateRank(this.likeCount);
     }
 
     private void updateRank(Integer likesCount){

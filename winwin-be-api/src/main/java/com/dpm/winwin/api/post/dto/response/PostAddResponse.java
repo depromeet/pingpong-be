@@ -1,6 +1,9 @@
 package com.dpm.winwin.api.post.dto.response;
 
 import com.dpm.winwin.domain.entity.post.Post;
+import com.dpm.winwin.domain.entity.post.enums.ExchangePeriod;
+import com.dpm.winwin.domain.entity.post.enums.ExchangeTime;
+import com.dpm.winwin.domain.entity.post.enums.ExchangeType;
 import java.util.List;
 
 public record PostAddResponse(
@@ -15,9 +18,9 @@ public record PostAddResponse(
         String chatLink,
         List<String> takenTalents,
         String takenContent,
-        String exchangeType,
-        String exchangePeriod,
-        String exchangeTime
+        ExchangeType exchangeType,
+        ExchangePeriod exchangePeriod,
+        ExchangeTime exchangeTime
 ) {
     public static PostAddResponse from(Post savePost) {
         return new PostAddResponse(
@@ -36,9 +39,9 @@ public record PostAddResponse(
                         .map(postTalent -> postTalent.getTalent().getName())
                         .toList(),
                 savePost.getTakenContent(),
-                savePost.getExchangeType().getMessage(),
-                savePost.getExchangePeriod().getMessage(),
-                savePost.getExchangeTime().getMessage()
+                savePost.getExchangeType(),
+                savePost.getExchangePeriod(),
+                savePost.getExchangeTime()
         );
     }
 }

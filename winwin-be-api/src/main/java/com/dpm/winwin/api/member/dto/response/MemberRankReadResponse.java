@@ -7,9 +7,9 @@ public record MemberRankReadResponse(
         String nickname,
         String image,
         String introduction,
-        String rankName,
-        String rankImage,
-        Integer rankLikeCount,
+        String ranks,
+        String ranksImage,
+        Integer likeCount,
         String profileLink,
         List<String> givenTalents,
         List<String> takenTalents

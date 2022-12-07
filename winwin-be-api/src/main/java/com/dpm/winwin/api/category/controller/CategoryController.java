@@ -35,4 +35,9 @@ public class CategoryController {
         @RequestParam(required = false) Long midCategoryId) {
         return BaseResponseDto.ok(categoryService.getAllSubCategories(midCategoryId));
     }
+
+    @GetMapping("/custom")
+    public BaseResponseDto<List<SubCategoryResponse>> getCustomCategories(){
+        return BaseResponseDto.ok(categoryService.getTakenTalentsByMemberId(1L));
+    }
 }

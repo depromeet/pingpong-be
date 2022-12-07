@@ -1,7 +1,9 @@
 package com.dpm.winwin.api.member.controller;
 
+import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
 import com.dpm.winwin.api.common.response.dto.BaseResponseDto;
 import com.dpm.winwin.api.member.dto.request.MemberUpdateRequest;
+import com.dpm.winwin.api.member.dto.response.MemberNicknameResponse;
 import com.dpm.winwin.api.member.dto.response.MemberRankReadResponse;
 import com.dpm.winwin.api.member.dto.response.MemberUpdateResponse;
 import com.dpm.winwin.api.member.dto.response.RanksListResponse;
@@ -9,6 +11,7 @@ import com.dpm.winwin.api.member.service.MemberCommandService;
 import com.dpm.winwin.api.member.service.MemberQueryService;
 import com.dpm.winwin.domain.repository.member.dto.request.MemberNicknameRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -18,6 +21,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
+import static com.dpm.winwin.api.common.error.enums.ErrorMessage.INVALID_NICKNAME;
+
 
 @RequiredArgsConstructor
 @RestController
@@ -26,12 +33,14 @@ public class MemberController {
     private final MemberQueryService memberQueryService;
     private final MemberCommandService memberCommandService;
 
-    @PutMapping("/nickname")
-    public BaseResponseDto<Long> updateMemberNickname(
-            @RequestBody MemberNicknameRequest memberNicknameRequest){
-        Long memberId = 1L; //임시로 특정 회원 고정
-        Long id = memberCommandService.updateMemberNickname(memberId, memberNicknameRequest);
-        return BaseResponseDto.ok(id);
+    @PatchMapping("/nickname")
+    public BaseResponseDto<MemberNicknameResponse> updateMemberNickname(
+            @Valid @RequestBody MemberNicknameRequest memberNicknameRequest, BindingResult bindingResult){
+        Long memberId = 1L;
+        if (bindingResult.hasErrors()){
+            throw new BusinessException(INVALID_NICKNAME);
+        }
+        return BaseResponseDto.ok(memberCommandService.updateMemberNickname(memberId, memberNicknameRequest));
     }
 
     @GetMapping("/{memberId}")
@@ -40,10 +49,10 @@ public class MemberController {
         return BaseResponseDto.ok(memberQueryService.readMemberInfo(memberId));
     }
 
-    @PutMapping("/{memberId}")
+    @PutMapping
     public BaseResponseDto<MemberUpdateResponse> updateMember(
-            @PathVariable Long memberId,
             @RequestBody final  MemberUpdateRequest memberUpdateRequest) {
+        Long memberId = 1L;
         return BaseResponseDto.ok(memberCommandService.updateMember(memberId, memberUpdateRequest));
     }
 

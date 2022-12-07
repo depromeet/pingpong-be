@@ -60,7 +60,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         JwtFilter jwtFilter = new JwtFilter(tokenProvider);
-        //@formatter:off
         http
                 .cors().configurationSource(corsConfigurationSource())
                 .and()

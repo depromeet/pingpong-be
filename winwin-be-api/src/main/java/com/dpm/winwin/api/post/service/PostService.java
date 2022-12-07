@@ -93,27 +93,33 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public PostReadResponse get(Long id) {
-        Post post = postRepository.getByIdFetchJoin(id)
+    public PostReadResponse get(Long postId, Long memberId) {
+        Post post = postRepository.getByIdFetchJoin(postId)
             .orElseThrow(() -> new BusinessException(ErrorMessage.POST_NOT_FOUND));
+
+        Boolean isLike = postRepository.hasLikeByMemberId(postId, memberId);
+
         return PostReadResponse.from(
             post.getId(),
             post.getTitle(),
             post.getContent(),
             post.isShare(),
-            post.getMainCategory().getName(),
-            post.getMidCategory().getName(),
             post.getSubCategory().getName(),
             post.getLinks().stream().map(LinkResponse::of).toList(),
             post.getChatLink(),
             post.getLikes().size(),
-            post.getExchangeType(),
-            post.getExchangePeriod(),
-            post.getExchangeTime(),
+            post.getExchangeType().getMessage(),
+            post.getExchangePeriod().getMessage(),
+            post.getExchangeTime().getMessage(),
+            post.getTakenContent(),
+            post.getTakenTalents().stream()
+                .map(postTalent -> postTalent.getTalent().getName())
+                .toList(),
             post.getMember().getId(),
             post.getMember().getNickname(),
             post.getMember().getImage(),
-            post.getMember().getRanks());
+            post.getMember().getRanks().getName(),
+            isLike);
     }
 
     public Long delete(Long id) {
@@ -184,10 +190,10 @@ public class PostService {
         return PostMethodsResponse.of(exchangeTypes, exchangePeriods, exchangeTimes);
     }
 
-    public MyPagePostListResponse getAllByMemberId(Long memberId, Pageable pageable) {
+    public GlobalPageResponseDto<MyPagePostResponse> getAllByMemberId(Long memberId, Pageable pageable) {
         Page<MyPagePostResponse> page = postRepository.getAllByMemberId(memberId, pageable)
             .map(MyPagePostResponse::of);
 
-        return MyPagePostListResponse.of(page);
+        return GlobalPageResponseDto.of(page);
     }
 }

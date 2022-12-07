@@ -68,7 +68,7 @@ public class Post extends BaseEntity {
     private List<PostTalent> takenTalents = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Likes> likes;
+    private List<Likes> likes = new ArrayList<>();
 
     @Column(nullable = false)
     private String title;

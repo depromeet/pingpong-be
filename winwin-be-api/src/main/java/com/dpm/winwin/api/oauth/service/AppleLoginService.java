@@ -5,9 +5,9 @@ import com.dpm.winwin.api.common.error.exception.custom.AppleTokenGenerateExcept
 import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
 import com.dpm.winwin.api.common.error.exception.custom.InvalidIdTokenException;
 import com.dpm.winwin.api.jwt.TokenProvider;
-import com.dpm.winwin.api.oauth.record.ApplePublicKeys;
-import com.dpm.winwin.api.oauth.record.AppleToken;
-import com.dpm.winwin.api.oauth.record.MemberInfo;
+import com.dpm.winwin.api.oauth.dto.ApplePublicKeys;
+import com.dpm.winwin.api.oauth.dto.AppleToken;
+import com.dpm.winwin.api.oauth.dto.MemberInfo;
 import com.dpm.winwin.domain.entity.member.Member;
 import com.dpm.winwin.domain.entity.member.enums.ProviderType;
 import com.dpm.winwin.domain.repository.member.MemberRepository;

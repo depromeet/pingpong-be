@@ -77,8 +77,7 @@ public class PostService {
 
         Post post = request.toEntity();
         post.writeBy(member);
-        post.setAllCategory(subCategory.getMidCategory().getMainCategory(),
-            subCategory.getMidCategory(), subCategory);
+        post.setAllCategoriesBySubCategory(subCategory);
         post.setLink(links);
         post.setTakenContent(request.takenContent());
 
@@ -139,8 +138,7 @@ public class PostService {
         List<SubCategory> savedTalents = subCategoryRepository.findAllById(
             updateRequest.takenTalents());
 
-        post.update(updateRequest.toDto(), subCategory.getMidCategory().getMainCategory(),
-            subCategory.getMidCategory(), subCategory, savedTalents);
+        post.update(updateRequest.toDto(), subCategory, savedTalents);
 
         for (LinkRequest linkRequest : updateRequest.getExistentLinks()) {
             Link link = linkRepository.findById(linkRequest.id())

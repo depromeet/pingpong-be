@@ -24,6 +24,7 @@ public enum ErrorMessage {
     INVALID_ISSUER_VALUE(BAD_REQUEST, "ISSUER 값이 잘못되었습니다."),
     INVALID_CLIENT_ID(BAD_REQUEST, "클라이언트 아이디가 잘못되었습니다."),
     APPLE_TOKEN_GENERATE_FAIL(BAD_REQUEST, "잘못된 액세스 토큰입니다."),
+    INVALID_NICKNAME(BAD_REQUEST, "닉네임 입력이 올바르지 않습니다."),
 
     LOGIN_CANCEL(UNAUTHORIZED, "사용자가 로그인을 취소하였습니다.");
 

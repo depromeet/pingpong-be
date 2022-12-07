@@ -44,6 +44,7 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
                 .fetchOne());
     }
 
+    @Override
     public Optional<Integer> getMemberLikeByMemberId(Long memberId) {
         return Optional.ofNullable(
             queryFactory
@@ -61,6 +62,7 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
             .fetchOne() != null;
     }
 
+    @Override
     public Page<Post> getAllByIsShareAndMidCategory(
         PostListConditionRequest condition, Pageable pageable
     ) {
@@ -141,7 +143,8 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
 
         return PageableExecutionUtils.getPage(results, pageable, countQuery::fetchOne);
     }
-
+  
+    @Override
     public Page<Post> getAllByMemberTalents(
         Long memberId, PostCustomizedConditionRequest condition, Pageable pageable) {
         List<SubCategory> subCategories = queryFactory.selectFrom(memberTalent)

@@ -2,6 +2,7 @@ package com.dpm.winwin.api.member.service;
 
 import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
 import com.dpm.winwin.api.member.dto.request.MemberUpdateRequest;
+import com.dpm.winwin.api.member.dto.response.MemberNicknameResponse;
 import com.dpm.winwin.api.member.dto.response.MemberUpdateResponse;
 import com.dpm.winwin.domain.entity.category.SubCategory;
 import com.dpm.winwin.domain.entity.member.Member;
@@ -25,12 +26,12 @@ public class MemberCommandService {
     private final MemberRepository memberRepository;
     private final SubCategoryRepository subCategoryRepository;
 
-    public Long updateMemberNickname(Long memberId,
-                                     MemberNicknameRequest memberNicknameRequest) {
+    public MemberNicknameResponse updateMemberNickname(Long memberId,
+                                                       MemberNicknameRequest memberNicknameRequest) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
         member.updateNickname(memberNicknameRequest.nickname());
-        return member.getId();
+        return new MemberNicknameResponse(member.getNickname());
     }
 
     public MemberUpdateResponse updateMember(Long memberId,

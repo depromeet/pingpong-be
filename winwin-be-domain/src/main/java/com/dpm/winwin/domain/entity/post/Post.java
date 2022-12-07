@@ -116,10 +116,9 @@ public class Post extends BaseEntity {
         this.member = member;
     }
 
-    public void setAllCategory(MainCategory mainCategory, MidCategory midCategory,
-        SubCategory subCategory) {
-        this.mainCategory = mainCategory;
-        this.midCategory = midCategory;
+    public void setAllCategoriesBySubCategory(SubCategory subCategory) {
+        this.mainCategory = subCategory.getMidCategory().getMainCategory();
+        this.midCategory = subCategory.getMidCategory();
         this.subCategory = subCategory;
     }
 
@@ -177,8 +176,7 @@ public class Post extends BaseEntity {
 
     }
 
-    public void update(PostUpdateDto updateDto, MainCategory mainCategory, MidCategory midCategory,
-        SubCategory subCategory, List<SubCategory> savedTalents) {
+    public void update(PostUpdateDto updateDto, SubCategory subCategory, List<SubCategory> savedTalents) {
         this.title = updateDto.title();
         this.content = updateDto.content();
         this.isShare = updateDto.isShare();
@@ -187,7 +185,7 @@ public class Post extends BaseEntity {
         this.exchangeType = updateDto.exchangeType();
         this.exchangePeriod = updateDto.exchangePeriod();
         this.exchangeTime = updateDto.exchangeTime();
-        setAllCategory(mainCategory, midCategory, subCategory);
+        setAllCategoriesBySubCategory(subCategory);
         setTakenTalents(savedTalents);
         setLinks(updateDto.links());
     }

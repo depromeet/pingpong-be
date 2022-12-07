@@ -10,8 +10,6 @@ public record PostAddRequest(
     String title,
     String content,
     boolean isShare,
-    Long mainCategoryId,
-    Long midCategoryId,
     Long subCategoryId,
     List<String> links,
     String chatLink,

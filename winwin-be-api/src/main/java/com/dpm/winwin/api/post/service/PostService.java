@@ -16,8 +16,6 @@ import com.dpm.winwin.api.post.dto.response.PostMethodResponse;
 import com.dpm.winwin.api.post.dto.response.PostMethodsResponse;
 import com.dpm.winwin.api.post.dto.response.PostReadResponse;
 import com.dpm.winwin.api.post.dto.response.PostUpdateResponse;
-import com.dpm.winwin.domain.entity.category.MainCategory;
-import com.dpm.winwin.domain.entity.category.MidCategory;
 import com.dpm.winwin.domain.entity.category.SubCategory;
 import com.dpm.winwin.domain.entity.link.Link;
 import com.dpm.winwin.domain.entity.member.Member;
@@ -26,8 +24,6 @@ import com.dpm.winwin.domain.entity.post.PostTalent;
 import com.dpm.winwin.domain.entity.post.enums.ExchangePeriod;
 import com.dpm.winwin.domain.entity.post.enums.ExchangeTime;
 import com.dpm.winwin.domain.entity.post.enums.ExchangeType;
-import com.dpm.winwin.domain.repository.category.MainCategoryRepository;
-import com.dpm.winwin.domain.repository.category.MidCategoryRepository;
 import com.dpm.winwin.domain.repository.category.SubCategoryRepository;
 import com.dpm.winwin.domain.repository.link.LinkRepository;
 import com.dpm.winwin.domain.repository.member.MemberRepository;
@@ -48,13 +44,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class PostService {
 
     private final MemberRepository memberRepository;
-    private final MainCategoryRepository mainCategoryRepository;
-    private final MidCategoryRepository midCategoryRepository;
     private final SubCategoryRepository subCategoryRepository;
     private final PostRepository postRepository;
     private final LinkRepository linkRepository;
 
-    public GlobalPageResponseDto<PostListResponse> getPosts(PostListConditionRequest condition, Pageable pageable) {
+    public GlobalPageResponseDto<PostListResponse> getPosts(
+        PostListConditionRequest condition, Pageable pageable) {
         Page<PostListResponse> page = postRepository
             .getAllByIsShareAndMidCategory(condition, pageable)
             .map(PostListResponse::of);
@@ -69,14 +64,11 @@ public class PostService {
         return GlobalPageResponseDto.of(page);
     }
 
-    public PostAddResponse save(long memberId, PostAddRequest request) {
+    public PostAddResponse save(Long memberId, PostAddRequest request) {
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new BusinessException(ErrorMessage.MEMBER_NOT_FOUND));
-        MainCategory mainCategory = mainCategoryRepository.findById(request.mainCategoryId())
-            .orElseThrow(() -> new BusinessException(ErrorMessage.MAIN_CATEGORY_NOT_FOUND));
-        MidCategory midCategory = midCategoryRepository.findById(request.midCategoryId())
-            .orElseThrow(() -> new BusinessException(ErrorMessage.MID_CATEGORY_NOT_FOUND));
-        SubCategory subCategory = subCategoryRepository.findById(request.subCategoryId())
+        SubCategory subCategory = subCategoryRepository
+            .getByIdWithMainCategoryAndMidCategory(request.subCategoryId())
             .orElseThrow(() -> new BusinessException(ErrorMessage.SUB_CATEGORY_NOT_FOUND));
 
         List<Link> links = request.links().stream()
@@ -85,7 +77,7 @@ public class PostService {
 
         Post post = request.toEntity();
         post.writeBy(member);
-        post.setAllCategory(mainCategory, midCategory, subCategory);
+        post.setAllCategoriesBySubCategory(subCategory);
         post.setLink(links);
         post.setTakenContent(request.takenContent());
 
@@ -146,16 +138,13 @@ public class PostService {
     public PostUpdateResponse update(Long memberId, Long postId,
         PostUpdateRequest updateRequest) {
         Post post = getByIdAndMemberId(memberId, postId);
-        MainCategory mainCategory = mainCategoryRepository.findById(updateRequest.mainCategoryId())
-            .orElseThrow(() -> new BusinessException(ErrorMessage.MAIN_CATEGORY_NOT_FOUND));
-        MidCategory midCategory = midCategoryRepository.findById(updateRequest.midCategoryId())
-            .orElseThrow(() -> new BusinessException(ErrorMessage.MID_CATEGORY_NOT_FOUND));
-        SubCategory subCategory = subCategoryRepository.findById(updateRequest.subCategoryId())
+        SubCategory subCategory = subCategoryRepository
+            .getByIdWithMainCategoryAndMidCategory(updateRequest.subCategoryId())
             .orElseThrow(() -> new BusinessException(ErrorMessage.SUB_CATEGORY_NOT_FOUND));
         List<SubCategory> savedTalents = subCategoryRepository.findAllById(
             updateRequest.takenTalents());
 
-        post.update(updateRequest.toDto(), mainCategory, midCategory, subCategory, savedTalents);
+        post.update(updateRequest.toDto(), subCategory, savedTalents);
 
         for (LinkRequest linkRequest : updateRequest.getExistentLinks()) {
             Link link = linkRepository.findById(linkRequest.id())
@@ -179,9 +168,9 @@ public class PostService {
                 .map(postTalent -> postTalent.getTalent().getName())
                 .toList(),
             post.getTakenContent(),
-            post.getExchangeType().getMessage(),
-            post.getExchangePeriod().getMessage(),
-            post.getExchangeTime().getMessage()
+            post.getExchangeType(),
+            post.getExchangePeriod(),
+            post.getExchangeTime()
         );
     }
 

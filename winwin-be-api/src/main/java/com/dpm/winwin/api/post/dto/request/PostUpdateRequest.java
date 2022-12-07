@@ -10,8 +10,6 @@ public record PostUpdateRequest(
     String title,
     String content,
     boolean isShare,
-    Long mainCategoryId,
-    Long midCategoryId,
     Long subCategoryId,
     List<LinkRequest> links,
     List<Long> takenTalents,

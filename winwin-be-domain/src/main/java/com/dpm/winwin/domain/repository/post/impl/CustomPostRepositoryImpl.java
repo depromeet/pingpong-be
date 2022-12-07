@@ -10,7 +10,6 @@ import static com.dpm.winwin.domain.entity.post.QLikes.likes;
 import static com.dpm.winwin.domain.entity.post.QPost.post;
 
 import com.dpm.winwin.domain.dto.post.MyPagePostDto;
-import com.dpm.winwin.domain.dto.post.QMyPagePostDto;
 import com.dpm.winwin.domain.entity.category.SubCategory;
 import com.dpm.winwin.domain.entity.member.MemberTalent;
 import com.dpm.winwin.domain.entity.member.enums.TalentType;
@@ -18,9 +17,7 @@ import com.dpm.winwin.domain.entity.post.Post;
 import com.dpm.winwin.domain.repository.post.CustomPostRepository;
 import com.dpm.winwin.domain.repository.post.dto.request.PostCustomizedConditionRequest;
 import com.dpm.winwin.domain.repository.post.dto.request.PostListConditionRequest;
-import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
@@ -114,33 +111,35 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
 
     @Override
     public Page<MyPagePostDto> getAllByMemberId(Long memberId, Pageable pageable) {
-        List<MyPagePostDto> posts = queryFactory.select(
-                new QMyPagePostDto(post.id,
-                    post.title,
-                    subCategory.name,
-                    post.isShare,
-                    ExpressionUtils.as(
-                        JPAExpressions.select(likes.count())
-                            .from(likes)
-                            .where(likes.post.eq(post)), "likes")
-                ))
-            .from(post)
-            .leftJoin(post.likes, likes)
-            .leftJoin(post.subCategory, subCategory)
-            .leftJoin(post.member, member)
+        List<Post> posts = queryFactory.selectFrom(post)
+            .leftJoin(post.likes, likes).fetchJoin()
+            .leftJoin(post.subCategory, subCategory).fetchJoin()
+            .leftJoin(post.member, member).fetchJoin()
             .where(post.member.id.eq(memberId))
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .fetch();
 
+        List<MyPagePostDto> results = posts.stream().map(
+                post -> new MyPagePostDto(
+                    post.getId(),
+                    post.getTitle(),
+                    post.getSubCategory().getName(),
+                    post.isShare(),
+                    post.getTakenTalents().stream()
+                        .map(takenTalent -> takenTalent.getTalent().getName())
+                        .toList(),
+                    (long) post.getLikes().size()))
+            .toList();
+
         JPAQuery<Long> countQuery = queryFactory.select(post.count())
             .from(post)
-            .leftJoin(post.likes, likes)
-            .leftJoin(post.subCategory, subCategory)
-            .leftJoin(post.member, member)
+            .leftJoin(post.likes, likes).fetchJoin()
+            .leftJoin(post.subCategory, subCategory).fetchJoin()
+            .leftJoin(post.member, member).fetchJoin()
             .where(post.member.id.eq(memberId));
 
-        return PageableExecutionUtils.getPage(posts, pageable, countQuery::fetchOne);
+        return PageableExecutionUtils.getPage(results, pageable, countQuery::fetchOne);
     }
 
     public Page<Post> getAllByMemberTalents(

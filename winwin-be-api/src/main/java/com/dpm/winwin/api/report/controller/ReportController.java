@@ -8,7 +8,6 @@ import com.dpm.winwin.domain.entity.report.enums.ReportType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,15 +19,12 @@ public class ReportController {
 
     private final ReportService reportService;
 
-    @PostMapping("/post/{postId}")
+    @PostMapping("/posts/{postId}")
     public BaseResponseDto<ReportResponse> reportPost(
             @PathVariable Long postId,
             @RequestBody ReportRequest reportRequest){
-
-        Long memberId = 1L; //임시 회원
-
-        ReportResponse reportResponse = reportService.reportPost(memberId, postId, ReportType.POST, reportRequest);
+        Long reporterId = 1L; //임시 회원
+        ReportResponse reportResponse = reportService.reportPost(reporterId, postId, ReportType.POST, reportRequest);
         return BaseResponseDto.ok(reportResponse);
     }
-
 }

@@ -7,7 +7,6 @@ import com.dpm.winwin.api.post.dto.request.LinkRequest;
 import com.dpm.winwin.api.post.dto.request.PostAddRequest;
 import com.dpm.winwin.api.post.dto.request.PostUpdateRequest;
 import com.dpm.winwin.api.post.dto.response.LinkResponse;
-import com.dpm.winwin.api.post.dto.response.MyPagePostListResponse;
 import com.dpm.winwin.api.post.dto.response.MyPagePostResponse;
 import com.dpm.winwin.api.post.dto.response.PostAddResponse;
 import com.dpm.winwin.api.post.dto.response.PostCustomizedResponse;
@@ -97,7 +96,7 @@ public class PostService {
         Post post = postRepository.getByIdFetchJoin(postId)
             .orElseThrow(() -> new BusinessException(ErrorMessage.POST_NOT_FOUND));
 
-        Boolean isLike = postRepository.hasLikeByMemberId(postId, memberId);
+        Boolean hasLike = postRepository.hasLikeByMemberId(postId, memberId);
 
         return PostReadResponse.from(
             post.getId(),
@@ -108,9 +107,9 @@ public class PostService {
             post.getLinks().stream().map(LinkResponse::of).toList(),
             post.getChatLink(),
             post.getLikes().size(),
-            post.getExchangeType().getMessage(),
-            post.getExchangePeriod().getMessage(),
-            post.getExchangeTime().getMessage(),
+            post.getExchangeType(),
+            post.getExchangePeriod(),
+            post.getExchangeTime(),
             post.getTakenContent(),
             post.getTakenTalents().stream()
                 .map(postTalent -> postTalent.getTalent().getName())
@@ -119,7 +118,7 @@ public class PostService {
             post.getMember().getNickname(),
             post.getMember().getImage(),
             post.getMember().getRanks().getName(),
-            isLike);
+            hasLike);
     }
 
     public Long delete(Long id) {

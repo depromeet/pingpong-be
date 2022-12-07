@@ -2,10 +2,10 @@ package com.dpm.winwin.api.post.service;
 
 import com.dpm.winwin.api.common.error.enums.ErrorMessage;
 import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
+import com.dpm.winwin.api.common.response.dto.GlobalPageResponseDto;
 import com.dpm.winwin.api.post.dto.request.LinkRequest;
 import com.dpm.winwin.api.post.dto.request.PostAddRequest;
 import com.dpm.winwin.api.post.dto.request.PostUpdateRequest;
-import com.dpm.winwin.api.common.response.dto.GlobalPageResponseDto;
 import com.dpm.winwin.api.post.dto.response.LinkResponse;
 import com.dpm.winwin.api.post.dto.response.MyPagePostListResponse;
 import com.dpm.winwin.api.post.dto.response.MyPagePostResponse;
@@ -101,16 +101,17 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public PostReadResponse get(Long id) {
-        Post post = postRepository.getByIdFetchJoin(id)
+    public PostReadResponse get(Long postId, Long memberId) {
+        Post post = postRepository.getByIdFetchJoin(postId)
             .orElseThrow(() -> new BusinessException(ErrorMessage.POST_NOT_FOUND));
+
+        Boolean isLike = postRepository.hasLikeByMemberId(postId, memberId);
+
         return PostReadResponse.from(
             post.getId(),
             post.getTitle(),
             post.getContent(),
             post.isShare(),
-            post.getMainCategory().getName(),
-            post.getMidCategory().getName(),
             post.getSubCategory().getName(),
             post.getLinks().stream().map(LinkResponse::of).toList(),
             post.getChatLink(),
@@ -118,10 +119,15 @@ public class PostService {
             post.getExchangeType().getMessage(),
             post.getExchangePeriod().getMessage(),
             post.getExchangeTime().getMessage(),
+            post.getTakenContent(),
+            post.getTakenTalents().stream()
+                .map(postTalent -> postTalent.getTalent().getName())
+                .toList(),
             post.getMember().getId(),
             post.getMember().getNickname(),
             post.getMember().getImage(),
-            post.getMember().getRanks());
+            post.getMember().getRanks().getName(),
+            isLike);
     }
 
     public Long delete(Long id) {

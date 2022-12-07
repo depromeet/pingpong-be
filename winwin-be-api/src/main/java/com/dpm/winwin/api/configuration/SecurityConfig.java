@@ -4,10 +4,8 @@ import com.dpm.winwin.api.jwt.JwtAccessDeniedHandler;
 import com.dpm.winwin.api.jwt.JwtAuthenticationEntryPoint;
 import com.dpm.winwin.api.jwt.JwtFilter;
 import com.dpm.winwin.api.jwt.TokenProvider;
-import com.dpm.winwin.domain.entity.member.enums.RoleType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -21,7 +19,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
-@Configuration
 public class SecurityConfig {
 
     private final TokenProvider tokenProvider;
@@ -31,10 +28,10 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer configure() {
         return (web) -> web.ignoring().mvcMatchers(
-                "/h2-console/**",
-                "oauth2/**",
-                "login/**",
-                "/favicon.ico"
+            "/h2-console/**",
+            "oauth2/**",
+            "login/**",
+            "/favicon.ico"
         );
     }
 
@@ -53,8 +50,8 @@ public class SecurityConfig {
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration(
-                "/**",
-                configuration
+            "/**",
+            configuration
         );
 
         return source;
@@ -63,15 +60,17 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         JwtFilter jwtFilter = new JwtFilter(tokenProvider);
-
+        //@formatter:off
         http
                 .cors().configurationSource(corsConfigurationSource())
                 .and()
                     .authorizeRequests()
                     .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                    .antMatchers("/apple/redirect").permitAll()
-                    .antMatchers("/api/**").hasAnyAuthority(RoleType.USER.getCode())
-                    .anyRequest().authenticated()
+                    .antMatchers("/test").authenticated()
+                    .anyRequest().permitAll()
+//                    .antMatchers("/apple/redirect").permitAll()
+//                    .antMatchers("/api/**").hasAnyAuthority(RoleType.USER.getCode())
+//                    .anyRequest().authenticated()
                 .and()
                     .formLogin()
                     .disable()

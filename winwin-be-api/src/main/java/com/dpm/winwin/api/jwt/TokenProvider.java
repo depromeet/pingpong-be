@@ -46,16 +46,30 @@ public class TokenProvider implements InitializingBean {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String createToken(Long memberId, String memberName) {
+    public String createAccessToken(Long memberId, String memberName) {
         long now = new Date().getTime();
         Date expiredDate = new Date(now + this.tokenValidityInMilliseconds);
 
         return Jwts.builder()
+                .setIssuedAt(new Date())
                 .setSubject(memberName)
                 .claim("memberId", memberId)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .setExpiration(expiredDate)
                 .compact();
+    }
+
+    public String createRefreshToken(Long memberId) {
+        long now = new Date().getTime();
+        long expired = this.tokenValidityInMilliseconds * 30;
+        Date expiredDate = new Date(now + expired);
+
+        return Jwts.builder()
+            .setIssuedAt(new Date())
+            .claim("memberId", memberId)
+            .signWith(key, SignatureAlgorithm.HS512)
+            .setExpiration(expiredDate)
+            .compact();
     }
 
     public Authentication getAuthentication(String token) {

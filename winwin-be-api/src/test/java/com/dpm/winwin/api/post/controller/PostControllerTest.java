@@ -44,8 +44,6 @@ class PostControllerTest extends RestDocsTestSupport {
             "내용",
             false,
             1L,
-            2L,
-            1L,
             links,
             "www.chatLink.com",
             Arrays.asList(1L, 2L, 3L),
@@ -74,9 +72,9 @@ class PostControllerTest extends RestDocsTestSupport {
             "www.chatLink.com",
             takeCategoriesResponse,
             "받고 싶은 재능 내용",
-            ExchangeType.ONLINE.getMessage(),
-            ExchangePeriod.A_WEEK.getMessage(),
-            ExchangeTime.NOON.getMessage()
+            ExchangeType.ONLINE,
+            ExchangePeriod.A_WEEK,
+            ExchangeTime.NOON
         );
 
         // when
@@ -87,27 +85,16 @@ class PostControllerTest extends RestDocsTestSupport {
             post("/api/v1/posts")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .header(
-                    "memberId",
-                    1
-                )
                 .content(createJson(request))
         );
 
         // then
         result.andExpect(status().is2xxSuccessful())
             .andDo(restDocs.document(
-                requestHeaders(
-                    headerWithName("memberId").description("회원 id")
-                ),
                 requestFields(
                     fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
                     fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
                     fieldWithPath("isShare").type(JsonFieldType.BOOLEAN).description("나눔 여부"),
-                    fieldWithPath("mainCategoryId").type(JsonFieldType.NUMBER)
-                        .description("대분류 카테고리 id"),
-                    fieldWithPath("midCategoryId").type(JsonFieldType.NUMBER)
-                        .description("중분류 카테고리 id"),
                     fieldWithPath("subCategoryId").type(JsonFieldType.NUMBER)
                         .description("소분류 카테고리 id"),
                     fieldWithPath("links").type(JsonFieldType.ARRAY).description("링크"),

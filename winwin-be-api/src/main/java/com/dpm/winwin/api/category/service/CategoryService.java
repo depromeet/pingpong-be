@@ -38,4 +38,9 @@ public class CategoryService {
             .map(CategoryMapper::toSubResponse)
             .toList();
     }
+
+    public List<SubCategoryResponse> getTakenTalentsByMemberId(Long memberId) {
+        return subCategoryRepository.getTakenTalentsByMemberId(memberId).stream()
+            .map(CategoryMapper::toSubResponse).toList();
+    }
 }

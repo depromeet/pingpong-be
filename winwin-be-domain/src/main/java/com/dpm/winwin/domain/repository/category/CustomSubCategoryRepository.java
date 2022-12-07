@@ -6,4 +6,6 @@ import java.util.List;
 public interface CustomSubCategoryRepository {
 
     List<SubCategory> getAll(Long midCategoryId);
+
+    List<SubCategory> getTakenTalentsByMemberId(Long memberId);
 }

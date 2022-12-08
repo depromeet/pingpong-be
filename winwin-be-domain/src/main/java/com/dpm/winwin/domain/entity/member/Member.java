@@ -76,6 +76,7 @@ public class Member extends BaseEntity{
         this.nickname = nickname;
         this.provider = provider;
         this.socialId = socialId;
+        this.likeCount = 0;
     }
 
     public void updateNickname(String nickname){
@@ -129,6 +130,13 @@ public class Member extends BaseEntity{
         this.profileLink = memberUpdateDto.profileLink();
         setGivenTalents(givenTalents);
         setTakenTalents(takenTalents);
+    }
+
+    public Integer getLikeCount(){
+        if (this.likeCount == null){
+            this.likeCount = 0;
+        }
+        return this.likeCount;
     }
 
     public void updateTotalPostLike(){

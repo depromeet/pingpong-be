@@ -30,13 +30,15 @@ public class MemberQueryService {
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
-
         MemberReadResponse memberReadResponse =  memberRepository.readMemberInfo(memberId)
                 .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
 
         Integer likeCount = member.getLikeCount();
-        if (likeCount == null)
-            likeCount = 0;
+        String likeCounts = likeCount.toString();
+
+        if (likeCount >= 1000) {
+            likeCounts = Double.toString((likeCount * 10 / 1000) / 10.0) + 'k';
+        }
 
         return new MemberRankReadResponse(
                 memberReadResponse.memberId(),
@@ -45,7 +47,7 @@ public class MemberQueryService {
                 memberReadResponse.introduction(),
                 member.getRanks().getName(),
                 member.getRanks().getImage(),
-                likeCount,
+                likeCounts,
                 member.getProfileLink(),
                 member.getTalents().stream()
                         .filter(memberTalent -> memberTalent.getType().equals(GIVE))

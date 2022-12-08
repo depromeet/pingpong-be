@@ -1,5 +1,6 @@
 plugins {
     id 'org.asciidoctor.jvm.convert' version '3.3.2'
+    id 'com.epages.restdocs-api-spec' version '0.16.0'
     id 'java'
 }
 
@@ -27,10 +28,20 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    testImplementation 'com.epages:restdocs-api-spec-mockmvc:0.15.3'
     testRuntimeOnly 'com.h2database:h2'
     implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
+}
+
+openapi3 {
+    server = "https://www.pingpongg.shop:8080"
+    server = "http://localhost:8080"
+    title = "My API"
+    description = "My API description"
+    version = "0.1.0"
+    format = "yaml" // or json
 }
 
 test {

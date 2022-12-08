@@ -3,7 +3,10 @@ package com.dpm.winwin.api.oauth.controller;
 import com.dpm.winwin.api.common.error.enums.ErrorMessage;
 import com.dpm.winwin.api.common.error.exception.custom.LoginCancelException;
 import com.dpm.winwin.api.common.response.dto.BaseResponseDto;
+import com.dpm.winwin.api.common.utils.CookieUtil;
+import com.dpm.winwin.api.jwt.TokenResponse;
 import com.dpm.winwin.api.oauth.service.AppleLoginService;
+import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.MultiValueMap;
@@ -23,10 +26,13 @@ import java.text.ParseException;
 @RestController
 public class AppleLoginController {
 
+
+    private static final String ACCESS_TOKEN = "accessToken";
+    private static final String REFRESH_TOKEN = "refreshToken";
     private final AppleLoginService appleLoginService;
 
     @PostMapping(value = "/apple/redirect", consumes = "application/x-www-form-urlencoded;charset=UTF-8")
-    public BaseResponseDto<String> appleRedirect(@RequestBody MultiValueMap<String, String> redirectInfo) throws IOException, ParseException, NoSuchAlgorithmException, InvalidKeySpecException, URISyntaxException {
+    public BaseResponseDto<TokenResponse> appleRedirect(@RequestBody MultiValueMap<String, String> redirectInfo, HttpServletResponse response) throws IOException, ParseException, NoSuchAlgorithmException, InvalidKeySpecException, URISyntaxException {
         log.info("----> {}", redirectInfo);
 
         /**
@@ -44,10 +50,9 @@ public class AppleLoginController {
             String code = redirectInfo.getFirst("code");
 
             log.info("memberInfo:: {}", memberInfo);
-            String jwtToken = appleLoginService.signUpMember(memberInfo, code);
-
-            log.info("jwtToken : {}", jwtToken);
-            return BaseResponseDto.ok(jwtToken);
+            TokenResponse token = appleLoginService.signUpMember(memberInfo, code);
+            setTokenCookie(response, token);
+            return BaseResponseDto.ok(token);
         }
 
         /**
@@ -60,8 +65,14 @@ public class AppleLoginController {
         log.info("error :: {} ", redirectInfo.get("error"));
 
         String code = redirectInfo.getFirst("code");
-        String token = appleLoginService.signInMember(code);
+        TokenResponse token = appleLoginService.signInMember(code);
 
+        setTokenCookie(response, token);
         return BaseResponseDto.ok(token);
+    }
+
+    private void setTokenCookie(HttpServletResponse response, TokenResponse token) {
+        CookieUtil.addCookie(response, ACCESS_TOKEN, token.accessToken(), 86400);
+        CookieUtil.addCookie(response, REFRESH_TOKEN, token.refreshToken(), 86400 * 30);
     }
 }

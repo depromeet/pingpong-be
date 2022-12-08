@@ -58,3 +58,11 @@ jasypt:
     algorithm: PBEWithMD5AndDES
     iv-generator-classname: org.jasypt.iv.NoIvGenerator
     password: ${ENCRYPT_KEY}
+
+springdoc:
+  swagger-ui:
+    path: swagger-ui.html
+  version: v1
+  paths-to-match:
+    - /bear/**
+    - /dog/**

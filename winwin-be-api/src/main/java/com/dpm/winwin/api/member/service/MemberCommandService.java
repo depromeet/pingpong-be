@@ -106,7 +106,6 @@ public class MemberCommandService {
 
         if (response.getStatusCode().equals(HttpStatus.OK)) {
             memberRepository.delete(member);
-            oauthRepository.delete(oauthToken);
             return memberId;
         }
 

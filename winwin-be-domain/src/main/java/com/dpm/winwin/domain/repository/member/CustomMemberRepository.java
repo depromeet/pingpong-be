@@ -10,7 +10,7 @@ public interface CustomMemberRepository {
 
     Optional<MemberReadResponse> readMemberInfo(Long memberId);
 
-    Optional<Member> findMemberWithOauthToken(Long memberId);
+    Optional<Member> findMemberWithToken(Long memberId);
 
     Optional<Member> findByMemberByOauthProviderAndSocialId(ProviderType provider, String socialId);
 }

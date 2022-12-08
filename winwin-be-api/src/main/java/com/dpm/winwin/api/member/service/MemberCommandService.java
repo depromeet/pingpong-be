@@ -90,7 +90,7 @@ public class MemberCommandService {
 
     public Long deleteMember(Long memberId) {
 
-        Member member = memberRepository.findMemberWithOauthToken(memberId)
+        Member member = memberRepository.findMemberWithToken(memberId)
             .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
 
         Long jwtMemberId = getJwtMemberId();

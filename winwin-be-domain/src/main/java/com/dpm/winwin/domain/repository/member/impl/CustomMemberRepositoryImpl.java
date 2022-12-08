@@ -43,7 +43,7 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
     }
 
     @Override
-    public Optional<Member> findMemberWithOauthToken(Long memberId) {
+    public Optional<Member> findMemberWithToken(Long memberId) {
         Member findMember = jpaQueryFactory.selectFrom(member)
             .where(member.id.eq(memberId))
             .join(member.oauthToken, oauthToken)

@@ -1,35 +1,35 @@
 package com.dpm.winwin.domain.entity.member;
 
-import com.dpm.winwin.domain.entity.BaseEntity;
+import static com.dpm.winwin.domain.entity.member.enums.TalentType.GIVE;
+import static com.dpm.winwin.domain.entity.member.enums.TalentType.TAKE;
+
 import com.dpm.winwin.domain.dto.member.MemberUpdateDto;
-import com.dpm.winwin.domain.entity.chat.ChatRoom;
+import com.dpm.winwin.domain.entity.BaseEntity;
 import com.dpm.winwin.domain.entity.category.SubCategory;
+import com.dpm.winwin.domain.entity.chat.ChatRoom;
 import com.dpm.winwin.domain.entity.member.enums.Ranks;
+import com.dpm.winwin.domain.entity.oauth.OauthToken;
 import com.dpm.winwin.domain.entity.post.Post;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.DynamicInsert;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static com.dpm.winwin.domain.entity.member.enums.TalentType.GIVE;
-import static com.dpm.winwin.domain.entity.member.enums.TalentType.TAKE;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
 
 @DynamicInsert
 @Getter
@@ -67,17 +67,25 @@ public class Member extends BaseEntity{
 
     private Integer totalPostLikes;
 
-    private String provider;
+    // TODO: one to one 연관관계 편의 메서드?
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "member")
+    private OauthToken oauthToken;
 
-    private String socialId;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
+    private final List<RefreshToken> refreshTokens = new ArrayList<>();
 
-    @Builder
-    public Member(String nickname, String provider, String socialId) {
+    public Member(String nickname) {
         this.nickname = nickname;
-        this.provider = provider;
-        this.socialId = socialId;
     }
 
+    public Member(String nickname, Ranks ranks) {
+        this.nickname = nickname;
+        this.ranks = ranks;
+    }
+
+    public void updateOauthToken(OauthToken oauthToken){
+        this.oauthToken = oauthToken;
+    }
     public void updateNickname(String nickname){
         this.nickname = nickname;
     }

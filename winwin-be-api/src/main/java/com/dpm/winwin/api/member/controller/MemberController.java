@@ -11,7 +11,6 @@ import com.dpm.winwin.domain.repository.member.dto.request.MemberNicknameRequest
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +27,7 @@ public class MemberController {
 
     @PutMapping("/nickname")
     public BaseResponseDto<Long> updateMemberNickname(
-            @RequestBody MemberNicknameRequest memberNicknameRequest){
+            @RequestBody MemberNicknameRequest memberNicknameRequest) {
         Long memberId = 1L; //임시로 특정 회원 고정
         Long id = memberCommandService.updateMemberNickname(memberId, memberNicknameRequest);
         return BaseResponseDto.ok(id);
@@ -36,14 +35,14 @@ public class MemberController {
 
     @GetMapping("/{memberId}")
     public BaseResponseDto<MemberRankReadResponse> readMemberInfo(
-            @PathVariable Long memberId){
+            @PathVariable Long memberId) {
         return BaseResponseDto.ok(memberQueryService.readMemberInfo(memberId));
     }
 
     @PutMapping("/{memberId}")
     public BaseResponseDto<MemberUpdateResponse> updateMember(
             @PathVariable Long memberId,
-            @RequestBody final  MemberUpdateRequest memberUpdateRequest) {
+            @RequestBody final MemberUpdateRequest memberUpdateRequest) {
         return BaseResponseDto.ok(memberCommandService.updateMember(memberId, memberUpdateRequest));
     }
 
@@ -51,5 +50,12 @@ public class MemberController {
     public BaseResponseDto<RanksListResponse> getRankList() {
         RanksListResponse response = memberQueryService.getRankList();
         return BaseResponseDto.ok(response);
+    }
+
+    @DeleteMapping("/{memberId}")
+    public BaseResponseDto<Long> deleteMember(@PathVariable Long memberId) {
+        Long deleteMemberId = memberCommandService.deleteMember(memberId);
+
+        return BaseResponseDto.ok(deleteMemberId);
     }
 }

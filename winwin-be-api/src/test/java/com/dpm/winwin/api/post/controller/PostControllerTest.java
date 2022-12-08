@@ -3,6 +3,7 @@ package com.dpm.winwin.api.post.controller;
 import static com.dpm.winwin.api.utils.RestDocsConfig.field;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -63,12 +64,18 @@ class PostControllerTest extends RestDocsTestSupport {
         result.andExpect(status().isOk())
             .andDo(restDocs.document(
                 pathParameters(
-                    parameterWithName("isShare").optional().description("재능 나눔 여부").attributes(field("type", "Boolean")),
-                    parameterWithName("mainCategory").optional().description("대분류 카테고리 id").attributes(field("type", "Number")),
-                    parameterWithName("midCategory").optional().description("중분류 카테고리 id").attributes(field("type", "Number")),
-                    parameterWithName("subCategory").optional().description("소분류 카테고리 id").attributes(field("type", "Number")),
-                    parameterWithName("size").optional().description("페이지 번호 (0부터 시작)").attributes(field("type", "Number")),
-                    parameterWithName("page").optional().description("한 페이지에서 보여줄 데이터 개수").attributes(field("type", "Number"))
+                    parameterWithName("isShare").optional().description("재능 나눔 여부")
+                        .attributes(field("type", "Boolean")),
+                    parameterWithName("mainCategory").optional().description("대분류 카테고리 id")
+                        .attributes(field("type", "Number")),
+                    parameterWithName("midCategory").optional().description("중분류 카테고리 id")
+                        .attributes(field("type", "Number")),
+                    parameterWithName("subCategory").optional().description("소분류 카테고리 id")
+                        .attributes(field("type", "Number")),
+                    parameterWithName("size").optional().description("페이지 번호 (0부터 시작)")
+                        .attributes(field("type", "Number")),
+                    parameterWithName("page").optional().description("한 페이지에서 보여줄 데이터 개수")
+                        .attributes(field("type", "Number"))
                 ),
                 responseFields(
                     fieldWithPath("message").type(JsonFieldType.STRING).description("성공 여부"),
@@ -215,6 +222,34 @@ class PostControllerTest extends RestDocsTestSupport {
                         .description("교환 기간"),
                     fieldWithPath("data.exchangeTime").type(JsonFieldType.STRING)
                         .description("교환 시간")
+                )
+            ));
+    }
+
+    @Test
+    public void post가_삭제된다() throws Exception {
+        // given
+        Long postId = 1L;
+
+        //when
+        given(postService.delete(postId))
+            .willReturn(postId);
+
+        ResultActions result = mockMvc.perform(
+            delete("/api/v1/posts/{id}", postId)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        //then
+        result.andExpect(status().isOk())
+            .andDo(restDocs.document(
+                pathParameters(
+                    parameterWithName("id").description("삭제할 게시물 id")
+                ),
+                responseFields(
+                    fieldWithPath("message").type(JsonFieldType.STRING).description("성공 여부"),
+                    fieldWithPath("data").type(JsonFieldType.NUMBER).description("삭제된 게시물 id")
                 )
             ));
     }

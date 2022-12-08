@@ -51,3 +51,16 @@ include::{snippets}/post-controller-test/post가_생성된다/http-response.adoc
 
 === Response-fields
 include::{snippets}/post-controller-test/post가_생성된다/response-fields.adoc[]
+
+[[게시물-삭제]]
+== 게시물 삭제
+
+=== Path-parameters
+include::{snippets}/post-controller-test/post가_삭제된다/path-parameters.adoc[]
+
+=== HTTP-response
+include::{snippets}/post-controller-test/post가_삭제된다/http-response.adoc[]
+
+=== Response-fields
+include::{snippets}/post-controller-test/post가_삭제된다/response-fields.adoc[]
+

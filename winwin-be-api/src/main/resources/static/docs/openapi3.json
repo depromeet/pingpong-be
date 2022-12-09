@@ -84,29 +84,6 @@
       }
     },
     "/api/v1/members/nickname" : {
-      "post" : {
-        "tags" : [ "api" ],
-        "operationId" : "member-controller-test/닉네임을_설정한다",
-        "requestBody" : {
-          "content" : {
-            "application/json;charset=UTF-8" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/api-v1-members-nickname486549215"
-              },
-              "examples" : {
-                "member-controller-test/닉네임을_설정한다" : {
-                  "value" : "{\n  \"nickname\" : \"김감자\"\n}"
-                }
-              }
-            }
-          }
-        },
-        "responses" : {
-          "500" : {
-            "description" : "500"
-          }
-        }
-      },
       "patch" : {
         "tags" : [ "api" ],
         "operationId" : "member-controller-test/member_닉네임을_설정한다",

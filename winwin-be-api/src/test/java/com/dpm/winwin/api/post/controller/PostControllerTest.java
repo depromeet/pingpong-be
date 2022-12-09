@@ -11,6 +11,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.requestF
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.dpm.winwin.api.common.response.dto.GlobalPageResponseDto;
@@ -63,7 +64,7 @@ class PostControllerTest extends RestDocsTestSupport {
         // then
         result.andExpect(status().isOk())
             .andDo(restDocs.document(
-                pathParameters(
+                requestParameters(
                     parameterWithName("isShare").optional().description("재능 나눔 여부")
                         .attributes(field("type", "Boolean")),
                     parameterWithName("mainCategory").optional().description("대분류 카테고리 id")

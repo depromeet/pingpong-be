@@ -34,7 +34,11 @@ public class SecurityConfig {
                 "/h2-console/**",
                 "oauth2/**",
                 "login/**",
-                "/favicon.ico"
+                "/favicon.ico",
+                "/error",
+                "/swagger-ui/**",
+                "/api-docs/**",
+                "/docs/**"
         );
     }
 

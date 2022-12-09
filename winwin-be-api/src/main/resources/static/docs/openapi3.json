@@ -17,7 +17,7 @@
           "content" : {
             "application/json;charset=UTF-8" : {
               "schema" : {
-                "$ref" : "#/components/schemas/api-v1-posts486549215"
+                "$ref" : "#/components/schemas/api-v1-members-nickname486549215"
               },
               "examples" : {
                 "post-controller-test/post가_생성된다" : {
@@ -33,11 +33,71 @@
             "content" : {
               "application/json;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-v1-posts486549215"
+                  "$ref" : "#/components/schemas/api-v1-members-nickname486549215"
                 },
                 "examples" : {
                   "post-controller-test/post가_생성된다" : {
                     "value" : "{\n  \"message\" : \"success\",\n  \"data\" : {\n    \"id\" : 1,\n    \"title\" : \"제목\",\n    \"content\" : \"내용\",\n    \"isShare\" : false,\n    \"mainCategory\" : \"대분류 카테고리 이름\",\n    \"midCategory\" : \"중분류 카테고리 이름\",\n    \"subCategory\" : \"소분류 카테고리 이름\",\n    \"links\" : [ {\n      \"id\" : 1,\n      \"content\" : \"www.depromeet.com\"\n    }, {\n      \"id\" : 2,\n      \"content\" : \"www.pingpong.com\"\n    } ],\n    \"chatLink\" : \"www.chatLink.com\",\n    \"takenTalents\" : [ \"www.depromeet.com\", \"www.pingpong.com\" ],\n    \"takenContent\" : \"받고 싶은 재능 내용\",\n    \"exchangeType\" : \"ONLINE\",\n    \"exchangePeriod\" : \"A_WEEK\",\n    \"exchangeTime\" : \"NOON\"\n  }\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/members/nickname" : {
+      "post" : {
+        "tags" : [ "api" ],
+        "operationId" : "member-controller-test/닉네임을_설정한다",
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/api-v1-members-nickname486549215"
+              },
+              "examples" : {
+                "member-controller-test/닉네임을_설정한다" : {
+                  "value" : "{\n  \"nickname\" : \"김감자\"\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "500" : {
+            "description" : "500"
+          }
+        }
+      },
+      "patch" : {
+        "tags" : [ "api" ],
+        "operationId" : "member-controller-test/member_닉네임을_설정한다",
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/api-v1-members-nickname486549215"
+              },
+              "examples" : {
+                "member-controller-test/member_닉네임을_설정한다" : {
+                  "value" : "{\n  \"nickname\" : \"김감자\"\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/api-v1-members-nickname486549215"
+                },
+                "examples" : {
+                  "member-controller-test/member_닉네임을_설정한다" : {
+                    "value" : "{\n  \"message\" : \"success\",\n  \"data\" : {\n    \"nickname\" : \"김감자\"\n  }\n}"
                   }
                 }
               }
@@ -65,7 +125,7 @@
             "content" : {
               "application/json;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-v1-posts486549215"
+                  "$ref" : "#/components/schemas/api-v1-members-nickname486549215"
                 },
                 "examples" : {
                   "member-controller-test/member를_조회한다" : {
@@ -95,7 +155,7 @@
           "content" : {
             "application/json;charset=UTF-8" : {
               "schema" : {
-                "$ref" : "#/components/schemas/api-v1-posts486549215"
+                "$ref" : "#/components/schemas/api-v1-members-nickname486549215"
               },
               "examples" : {
                 "report-controller-test/게시물에서_신고한다" : {
@@ -111,7 +171,7 @@
             "content" : {
               "application/json;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-v1-posts486549215"
+                  "$ref" : "#/components/schemas/api-v1-members-nickname486549215"
                 },
                 "examples" : {
                   "report-controller-test/게시물에서_신고한다" : {
@@ -134,7 +194,7 @@
             "content" : {
               "application/json;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-v1-posts486549215"
+                  "$ref" : "#/components/schemas/api-v1-members-nickname486549215"
                 },
                 "examples" : {
                   "test-controller-test/restdocs-test" : {
@@ -150,7 +210,7 @@
   },
   "components" : {
     "schemas" : {
-      "api-v1-posts486549215" : {
+      "api-v1-members-nickname486549215" : {
         "type" : "object"
       }
     }

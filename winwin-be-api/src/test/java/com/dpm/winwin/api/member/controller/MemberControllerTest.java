@@ -1,20 +1,27 @@
 package com.dpm.winwin.api.member.controller;
 
+import com.dpm.winwin.api.member.dto.response.MemberNicknameResponse;
 import com.dpm.winwin.api.member.dto.response.MemberRankReadResponse;
+import com.dpm.winwin.api.member.service.MemberCommandService;
 import com.dpm.winwin.api.member.service.MemberQueryService;
 import com.dpm.winwin.api.utils.RestDocsTestSupport;
+import com.dpm.winwin.domain.repository.member.dto.request.MemberNicknameRequest;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.test.web.servlet.ResultActions;
 
 import static java.util.Collections.emptyList;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
@@ -24,6 +31,51 @@ public class MemberControllerTest extends RestDocsTestSupport {
 
     @MockBean
     private MemberQueryService memberQueryService;
+
+    @MockBean
+    private MemberCommandService memberCommandService;
+
+    @Test
+    @DisplayName("닉네임을 설정하는 테스트")
+    void member_닉네임을_설정한다() throws Exception {
+
+        Long memberId = 1L;
+        String nickname = "김감자";
+
+        MemberNicknameRequest request = new MemberNicknameRequest(
+                nickname
+        );
+
+        MemberNicknameResponse response = new MemberNicknameResponse(
+                nickname
+        );
+
+        // when
+        given(memberCommandService.updateMemberNickname(memberId, request))
+                .willReturn(response);
+
+        ResultActions result = mockMvc.perform(
+                patch("/api/v1/members/nickname")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(createJson(request))
+        );
+
+        // then
+        result.andExpect(status().is2xxSuccessful())
+                .andDo(restDocs.document(
+                        requestFields(
+                                fieldWithPath("nickname").type(JsonFieldType.STRING)
+                                        .description("수정하려는 닉네임")
+                        ),
+                        responseFields(
+                                fieldWithPath("message").type(JsonFieldType.STRING)
+                                        .description("성공 여부"),
+                                fieldWithPath("data.nickname").type(JsonFieldType.STRING)
+                                        .description("수정된 닉네임")
+                        )
+                ));
+    }
 
     @Test
     @DisplayName("회원을 조회하는 테스트")

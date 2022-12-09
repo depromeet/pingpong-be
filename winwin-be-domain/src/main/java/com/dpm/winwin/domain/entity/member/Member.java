@@ -22,6 +22,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -65,7 +66,7 @@ public class Member extends BaseEntity{
     @Column(nullable = false)
     private Ranks ranks;
 
-    private Integer likeCount;
+    private BigDecimal likeCount;
 
     private String provider;
 
@@ -76,6 +77,7 @@ public class Member extends BaseEntity{
         this.nickname = nickname;
         this.provider = provider;
         this.socialId = socialId;
+        this.likeCount = BigDecimal.valueOf(0);
     }
 
     public void updateNickname(String nickname){
@@ -131,15 +133,22 @@ public class Member extends BaseEntity{
         setTakenTalents(takenTalents);
     }
 
+    public BigDecimal getLikeCount(){
+        if (this.likeCount == null){
+            this.likeCount = BigDecimal.valueOf(0);
+        }
+        return this.likeCount;
+    }
+
     public void updateTotalPostLike(){
-        this.likeCount += 1;
+        this.likeCount.add(BigDecimal.valueOf(1));
         updateRank(this.likeCount);
     }
 
-    private void updateRank(Integer likesCount){
+    private void updateRank(BigDecimal likesCount){
 
         Ranks rank = Arrays.stream(Ranks.values())
-                .filter( value -> likesCount >= value.getLikeCount())
+                .filter( value -> likesCount.compareTo(value.getLikeCount()) >= 0 )
                 .findFirst().get();
 
         updateMemberRank(rank);

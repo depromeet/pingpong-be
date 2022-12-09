@@ -39,7 +39,6 @@ public class MemberControllerTest extends RestDocsTestSupport {
     private MemberCommandService memberCommandService;
 
     @Test
-    @DisplayName("닉네임을 설정하는 테스트")
     void member_닉네임을_설정한다() throws Exception {
 
         Long memberId = 1L;
@@ -81,7 +80,6 @@ public class MemberControllerTest extends RestDocsTestSupport {
     }
 
     @Test
-    @DisplayName("회원을 수정하는 테스트")
     void member를_수정한다() throws Exception {
 
         Long memberId = 1L;
@@ -153,7 +151,6 @@ public class MemberControllerTest extends RestDocsTestSupport {
     }
 
     @Test
-    @DisplayName("회원을 조회하는 테스트")
     void member를_조회한다() throws Exception {
 
         when(memberQueryService.readMemberInfo(any())).thenReturn(new MemberRankReadResponse(

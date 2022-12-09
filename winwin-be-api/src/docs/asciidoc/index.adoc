@@ -39,3 +39,15 @@ include::{snippets}/post-controller-test/post가_생성된다/http-response.adoc
 
 === Response-fields
 include::{snippets}/post-controller-test/post가_생성된다/response-fields.adoc[]
+
+[[회원-조회]]
+== 회원 조회
+
+=== HTTP-request
+include::{snippets}/member-controller-test/member를_조회한다/http-request.adoc[]
+
+=== HTTP-response
+include::{snippets}/member-controller-test/member를_조회한다/http-response.adoc[]
+
+=== Response-fields
+include::{snippets}/member-controller-test/member를_조회한다/response-fields.adoc[]

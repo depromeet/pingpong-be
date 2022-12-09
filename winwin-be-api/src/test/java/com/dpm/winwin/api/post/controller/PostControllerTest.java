@@ -21,7 +21,6 @@ import com.dpm.winwin.api.utils.RestDocsTestSupport;
 import com.dpm.winwin.domain.entity.post.enums.ExchangePeriod;
 import com.dpm.winwin.domain.entity.post.enums.ExchangeTime;
 import com.dpm.winwin.domain.entity.post.enums.ExchangeType;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,7 +30,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 class PostControllerTest extends RestDocsTestSupport {
 
@@ -154,25 +152,23 @@ class PostControllerTest extends RestDocsTestSupport {
         // given
         Long memberId = 1L;
         List<LinkRequest> links = new ArrayList<>();
-        links.add(new LinkRequest(1L,"www.naver.com"));
-        links.add(new LinkRequest(2L,"www.google.com"));
+        links.add(new LinkRequest(1L, "www.naver.com"));
+        links.add(new LinkRequest(2L, "www.google.com"));
 
-        List<Long> longs = new ArrayList<>();
-        longs.add(1L);
-        longs.add(2L);
-        longs.add(3L);
+        List<Long> takenTalents = new ArrayList<>();
+        takenTalents.add(1L);
+        takenTalents.add(2L);
+        takenTalents.add(3L);
 
-         PostUpdateRequest request= new PostUpdateRequest(
+        PostUpdateRequest request = new PostUpdateRequest(
             "제목",
             "내용",
             false,
             1L,
-            2L,
-            1L,
-             links,
-             longs,
-             "www.chatLink.com",
-             "받고 싶은 재능 내용",
+            links,
+            takenTalents,
+            "www.chatLink.com",
+            "받고 싶은 재능 내용",
             ExchangeType.ONLINE,
             ExchangePeriod.A_WEEK,
             ExchangeTime.NOON
@@ -198,9 +194,9 @@ class PostControllerTest extends RestDocsTestSupport {
             "www.chatLink.com",
             takeCategoriesResponse,
             "받고 싶은 재능 내용",
-            ExchangeType.ONLINE.getMessage(),
-            ExchangePeriod.A_WEEK.getMessage(),
-            ExchangeTime.NOON.getMessage()
+            ExchangeType.ONLINE,
+            ExchangePeriod.A_WEEK,
+            ExchangeTime.NOON
         );
 
         // when
@@ -228,10 +224,6 @@ class PostControllerTest extends RestDocsTestSupport {
                     fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
                     fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
                     fieldWithPath("isShare").type(JsonFieldType.BOOLEAN).description("나눔 여부"),
-                    fieldWithPath("mainCategoryId").type(JsonFieldType.NUMBER)
-                        .description("대분류 카테고리 id"),
-                    fieldWithPath("midCategoryId").type(JsonFieldType.NUMBER)
-                        .description("중분류 카테고리 id"),
                     fieldWithPath("subCategoryId").type(JsonFieldType.NUMBER)
                         .description("소분류 카테고리 id"),
                     fieldWithPath("links").type(JsonFieldType.ARRAY).description("링크"),

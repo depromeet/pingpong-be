@@ -9,6 +9,43 @@
   } ],
   "tags" : [ ],
   "paths" : {
+    "/api/v1/members" : {
+      "put" : {
+        "tags" : [ "api" ],
+        "operationId" : "member-controller-test/member를_수정한다",
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/api-v1-members-nickname486549215"
+              },
+              "examples" : {
+                "member-controller-test/member를_수정한다" : {
+                  "value" : "{\n  \"nickname\" : \"김감자\",\n  \"image\" : \"depromeet/team2.png\",\n  \"introduction\" : \"안녕하세요 김감자입니다.\",\n  \"profileLink\" : \"www.depromeet.com\",\n  \"givenTalents\" : [ ],\n  \"takenTalents\" : [ ]\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/api-v1-members-nickname486549215"
+                },
+                "examples" : {
+                  "member-controller-test/member를_수정한다" : {
+                    "value" : "{\n  \"message\" : \"success\",\n  \"data\" : {\n    \"nickname\" : \"김감자\",\n    \"image\" : \"depromeet/team2.png\",\n    \"introduction\" : \"안녕하세요 김감자입니다.\",\n    \"profileLink\" : \"www.depromeet.com\",\n    \"givenTalents\" : [ ],\n    \"takenTalents\" : [ ]\n  }\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/posts" : {
       "post" : {
         "tags" : [ "api" ],

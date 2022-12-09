@@ -1,7 +1,9 @@
 package com.dpm.winwin.api.member.controller;
 
+import com.dpm.winwin.api.member.dto.request.MemberUpdateRequest;
 import com.dpm.winwin.api.member.dto.response.MemberNicknameResponse;
 import com.dpm.winwin.api.member.dto.response.MemberRankReadResponse;
+import com.dpm.winwin.api.member.dto.response.MemberUpdateResponse;
 import com.dpm.winwin.api.member.service.MemberCommandService;
 import com.dpm.winwin.api.member.service.MemberQueryService;
 import com.dpm.winwin.api.utils.RestDocsTestSupport;
@@ -20,6 +22,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -73,6 +76,78 @@ public class MemberControllerTest extends RestDocsTestSupport {
                                         .description("성공 여부"),
                                 fieldWithPath("data.nickname").type(JsonFieldType.STRING)
                                         .description("수정된 닉네임")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("회원을 수정하는 테스트")
+    void member를_수정한다() throws Exception {
+
+        Long memberId = 1L;
+        String nickname = "김감자";
+
+        MemberUpdateRequest request = new MemberUpdateRequest(
+                nickname,
+                "depromeet/team2.png",
+                "안녕하세요 김감자입니다.",
+                "www.depromeet.com",
+                emptyList(),
+                emptyList()
+        );
+
+        MemberUpdateResponse response = new MemberUpdateResponse(
+                nickname,
+                "depromeet/team2.png",
+                "안녕하세요 김감자입니다.",
+                "www.depromeet.com",
+                emptyList(),
+                emptyList()
+        );
+
+        // when
+        given(memberCommandService.updateMember(memberId, request))
+                .willReturn(response);
+
+        ResultActions result = mockMvc.perform(
+                put("/api/v1/members")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(createJson(request))
+        );
+
+        // then
+        result.andExpect(status().is2xxSuccessful())
+                .andDo(restDocs.document(
+                        requestFields(
+                                fieldWithPath("nickname").type(JsonFieldType.STRING)
+                                        .description("수정하려는 닉네임"),
+                                fieldWithPath("image").type(JsonFieldType.STRING)
+                                        .description("수정할 회원 프로필 사진"),
+                                fieldWithPath("introduction").type(JsonFieldType.STRING)
+                                        .description("수정할 회원 소개"),
+                                fieldWithPath("profileLink").type(JsonFieldType.STRING)
+                                        .description("수정할 회원의 프로필 링크"),
+                                fieldWithPath("givenTalents").type(JsonFieldType.ARRAY)
+                                        .description("수정할 회원이 가진 재능"),
+                                fieldWithPath("takenTalents").type(JsonFieldType.ARRAY)
+                                        .description("수정할 회원이 줄 수 있는 재능")
+                        ),
+                        responseFields(
+                                fieldWithPath("message").type(JsonFieldType.STRING)
+                                        .description("성공 여부"),
+                                fieldWithPath("data.nickname").type(JsonFieldType.STRING)
+                                        .description("닉네임"),
+                                fieldWithPath("data.image").type(JsonFieldType.STRING)
+                                        .description("회원 프로필 사진"),
+                                fieldWithPath("data.introduction").type(JsonFieldType.STRING)
+                                        .description("회원 소개"),
+                                fieldWithPath("data.profileLink").type(JsonFieldType.STRING)
+                                        .description("회원의 프로필 링크"),
+                                fieldWithPath("data.givenTalents").type(JsonFieldType.ARRAY)
+                                        .description("회원이 가진 재능"),
+                                fieldWithPath("data.takenTalents").type(JsonFieldType.ARRAY)
+                                        .description("회원이 줄 수 있는 재능")
                         )
                 ));
     }

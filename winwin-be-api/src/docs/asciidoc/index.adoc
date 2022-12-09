@@ -55,6 +55,21 @@ include::{snippets}/member-controller-test/member_닉네임을_설정한다/http
 === Response-fields
 include::{snippets}/member-controller-test/member_닉네임을_설정한다/response-fields.adoc[]
 
+[[화원-수정]]
+== 회원 수정
+
+=== HTTP-request
+include::{snippets}/member-controller-test/member를_수정한다/http-request.adoc[]
+
+=== Request-fields
+include::{snippets}/member-controller-test/member를_수정한다/request-fields.adoc[]
+
+=== HTTP-response
+include::{snippets}/member-controller-test/member를_수정한다/http-response.adoc[]
+
+=== Response-fields
+include::{snippets}/member-controller-test/member를_수정한다/response-fields.adoc[]
+
 [[회원-조회]]
 == 회원 조회
 

@@ -36,8 +36,8 @@ public class MemberControllerTest extends RestDocsTestSupport {
                 "안녕하세요 김감자입니다.",
                 "루키",
                 "ranksImage",
-                1000,
-                "profileLink",
+                "1000",
+                "www.depromeet.com",
                 emptyList(),
                 emptyList()
         ));
@@ -68,7 +68,7 @@ public class MemberControllerTest extends RestDocsTestSupport {
                                                 .description("회원 등급"),
                                         fieldWithPath("data.ranksImage").type(JsonFieldType.STRING)
                                                 .description("회원 등급의 사진"),
-                                        fieldWithPath("data.likeCount").type(JsonFieldType.NUMBER)
+                                        fieldWithPath("data.likeCount").type(JsonFieldType.STRING)
                                                 .description("회원이 보유한 총 좋아요"),
                                         fieldWithPath("data.profileLink").type(JsonFieldType.STRING)
                                                 .description("회원의 프로필 링크"),

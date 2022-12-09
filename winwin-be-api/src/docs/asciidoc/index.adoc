@@ -51,3 +51,18 @@ include::{snippets}/member-controller-test/member를_조회한다/http-response.
 
 === Response-fields
 include::{snippets}/member-controller-test/member를_조회한다/response-fields.adoc[]
+
+[[신고하기]]
+== 게시물에서 신고하기
+
+=== HTTP-request
+include::{snippets}/report-controller-test/게시물에서_신고한다/http-request.adoc[]
+
+=== Request-fields
+include::{snippets}/report-controller-test/게시물에서_신고한다/request-fields.adoc[]
+
+=== HTTP-response
+include::{snippets}/report-controller-test/게시물에서_신고한다/http-response.adoc[]
+
+=== Response-fields
+include::{snippets}/report-controller-test/게시물에서_신고한다/response-fields.adoc[]

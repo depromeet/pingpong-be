@@ -69,7 +69,53 @@
                 },
                 "examples" : {
                   "member-controller-test/member를_조회한다" : {
-                    "value" : "{\n  \"message\" : \"success\",\n  \"data\" : {\n    \"memberId\" : 1,\n    \"nickname\" : \"김감자\",\n    \"image\" : \"depromeet/team2.png\",\n    \"introduction\" : \"안녕하세요 김감자입니다.\",\n    \"ranks\" : \"루키\",\n    \"ranksImage\" : \"ranksImage\",\n    \"likeCount\" : 1000,\n    \"profileLink\" : \"profileLink\",\n    \"givenTalents\" : [ ],\n    \"takenTalents\" : [ ]\n  }\n}"
+                    "value" : "{\n  \"message\" : \"success\",\n  \"data\" : {\n    \"memberId\" : 1,\n    \"nickname\" : \"김감자\",\n    \"image\" : \"depromeet/team2.png\",\n    \"introduction\" : \"안녕하세요 김감자입니다.\",\n    \"ranks\" : \"루키\",\n    \"ranksImage\" : \"ranksImage\",\n    \"likeCount\" : \"1000\",\n    \"profileLink\" : \"www.depromeet.com\",\n    \"givenTalents\" : [ ],\n    \"takenTalents\" : [ ]\n  }\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/reports/posts/{postId}" : {
+      "post" : {
+        "tags" : [ "api" ],
+        "operationId" : "report-controller-test/게시물에서_신고한다",
+        "parameters" : [ {
+          "name" : "postId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/api-v1-posts486549215"
+              },
+              "examples" : {
+                "report-controller-test/게시물에서_신고한다" : {
+                  "value" : "{\n  \"content\" : \"사용자 정보가 부정확해요.\"\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/api-v1-posts486549215"
+                },
+                "examples" : {
+                  "report-controller-test/게시물에서_신고한다" : {
+                    "value" : "{\n  \"message\" : \"success\",\n  \"data\" : {\n    \"reporterId\" : 1,\n    \"reportType\" : \"POST\",\n    \"typeId\" : 10\n  }\n}"
                   }
                 }
               }

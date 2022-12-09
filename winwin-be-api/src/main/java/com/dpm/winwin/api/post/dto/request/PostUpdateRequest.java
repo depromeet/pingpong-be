@@ -26,7 +26,7 @@ public record PostUpdateRequest(
             this.chatLink, this.exchangeType, this.exchangePeriod, this.exchangeTime);
     }
 
-    public List<LinkRequest> getExistentLinks() {
+    public List<LinkRequest> filterExistentLinks() {
         return this.links()
             .stream()
             .filter(link -> link.id() != null)

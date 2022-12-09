@@ -18,6 +18,7 @@ import com.dpm.winwin.api.common.response.dto.GlobalPageResponseDto;
 import com.dpm.winwin.api.post.dto.request.PostAddRequest;
 import com.dpm.winwin.api.post.dto.response.LinkResponse;
 import com.dpm.winwin.api.post.dto.response.PostAddResponse;
+import com.dpm.winwin.api.post.dto.response.PostCustomizedResponse;
 import com.dpm.winwin.api.post.dto.response.PostListResponse;
 import com.dpm.winwin.api.post.service.PostService;
 import com.dpm.winwin.api.utils.RestDocsTestSupport;
@@ -97,24 +98,52 @@ class PostControllerTest extends RestDocsTestSupport {
             ));
     }
 
-    private List<PostListResponse> setPosts() {
-        List<PostListResponse> posts = new ArrayList<>();
-        for (int i = 1; i <= 2; i++) {
-            PostListResponse postResponse = new PostListResponse(
-                (long) i,
-                "제목" + i,
-                "UX/UI 디자인",
-                false,
-                3,
-                1L,
-                "말하는 감자" + i,
-                "imageUrl" + i,
-                Ranks.BEGINNER.getName(),
-                Arrays.asList("그래픽 디자인", "글쓰기", "브랜드 디자인")
-            );
-            posts.add(postResponse);
-        }
-        return posts;
+    @Test
+    public void post가_memberTalent에_의해_목록_조회된다() throws Exception {
+        // given
+        List<PostCustomizedResponse> posts = setCustomPosts();
+        PageRequest pageable = PageRequest.of(0, 2);
+        int total = posts.size();
+        Page<PostCustomizedResponse> page = new PageImpl<>(posts, pageable, total);
+        GlobalPageResponseDto<PostCustomizedResponse> response = GlobalPageResponseDto.of(page);
+
+        // when
+        given(postService.getPostsCustomized(any(), any(), any()))
+            .willReturn(response);
+
+        ResultActions result = mockMvc.perform(
+            get("/api/v1/posts/custom")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        // then
+        result.andExpect(status().isOk())
+            .andDo(restDocs.document(
+                requestParameters(
+                    parameterWithName("subCategory").optional().description("소분류 카테고리 id")
+                        .attributes(field("type", "Number")),
+                    parameterWithName("size").optional().description("페이지 번호 (0부터 시작)")
+                        .attributes(field("type", "Number")),
+                    parameterWithName("page").optional().description("한 페이지에서 보여줄 데이터 개수")
+                        .attributes(field("type", "Number"))
+                ),
+                responseFields(
+                    fieldWithPath("message").type(JsonFieldType.STRING).description("성공 여부"),
+                    fieldWithPath("data.content[].postId").type(JsonFieldType.NUMBER).description("게시물 id"),
+                    fieldWithPath("data.content[].title").type(JsonFieldType.STRING).description("게시물 제목"),
+                    fieldWithPath("data.content[].subCategory").type(JsonFieldType.STRING).description("소분류 카테고리"),
+                    fieldWithPath("data.content[].isShare").type(JsonFieldType.BOOLEAN).description("재능 나눔 여부"),
+                    fieldWithPath("data.content[].likes").type(JsonFieldType.NUMBER).description("게시물 좋아요 수"),
+                    fieldWithPath("data.content[].memberId").type(JsonFieldType.NUMBER).description("작성자 id"),
+                    fieldWithPath("data.content[].nickname").type(JsonFieldType.STRING).description("작성자 닉네임"),
+                    fieldWithPath("data.content[].image").type(JsonFieldType.STRING).description("작성자 이미지 url"),
+                    fieldWithPath("data.content[].ranks").type(JsonFieldType.STRING).description("작성자 등급"),
+                    fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER).description("전체 데이터 수"),
+                    fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER).description("전체 페이지 수"),
+                    fieldWithPath("data.hasNextPages").type(JsonFieldType.BOOLEAN).description("다음 페이지 여부")
+                )
+            ));
     }
 
     @Test
@@ -253,5 +282,44 @@ class PostControllerTest extends RestDocsTestSupport {
                     fieldWithPath("data").type(JsonFieldType.NUMBER).description("삭제된 게시물 id")
                 )
             ));
+    }
+
+    private List<PostListResponse> setPosts() {
+        List<PostListResponse> posts = new ArrayList<>();
+        for (int i = 1; i <= 2; i++) {
+            PostListResponse postResponse = new PostListResponse(
+                (long) i,
+                "제목" + i,
+                "UX/UI 디자인",
+                false,
+                3,
+                1L,
+                "말하는 감자" + i,
+                "imageUrl" + i,
+                Ranks.BEGINNER.getName(),
+                Arrays.asList("그래픽 디자인", "글쓰기", "브랜드 디자인")
+            );
+            posts.add(postResponse);
+        }
+        return posts;
+    }
+
+    private List<PostCustomizedResponse> setCustomPosts() {
+        List<PostCustomizedResponse> posts = new ArrayList<>();
+        for (int i = 1; i <= 2; i++) {
+            PostCustomizedResponse postCustomResponse = new PostCustomizedResponse(
+                (long) i,
+                "제목" + i,
+                "UX/UI 디자인",
+                false,
+                3,
+                1L,
+                "말하는 감자" + i,
+                "imageUrl" + i,
+                Ranks.BEGINNER.getName()
+            );
+            posts.add(postCustomResponse);
+        }
+        return posts;
     }
 }

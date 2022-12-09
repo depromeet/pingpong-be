@@ -37,6 +37,19 @@ include::{snippets}/post-controller-test/post가_category에_의해_목록_조�
 === Response-fields
 include::{snippets}/post-controller-test/post가_category에_의해_목록_조회된다/response-fields.adoc[]
 
+[[내가-찾는-재능-게시물-목록-조회]]
+== 내가 찾는 재능 게시물 목록 조회
+
+=== Request-parameters
+include::{snippets}/post-controller-test/post가_member-talent에_의해_목록_조회된다/request-parameters.adoc[]
+
+=== HTTP-response
+include::{snippets}/post-controller-test/post가_member-talent에_의해_목록_조회된다/http-response.adoc[]
+
+=== Response-fields
+include::{snippets}/post-controller-test/post가_member-talent에_의해_목록_조회된다/response-fields.adoc[]
+
+
 [[게시물-생성]]
 == 재능 게시물 생성
 

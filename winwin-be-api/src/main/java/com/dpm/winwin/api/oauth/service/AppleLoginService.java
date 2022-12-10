@@ -89,12 +89,17 @@ public class AppleLoginService {
         String memberName = getName(memberInfo);
 
         log.info("memberName :: {}, socialId :: {}, provider :: {}", memberName, socialId, provider);
-        Member member = new Member(memberName, Ranks.ROOKIE);
-        Member savedMember = memberRepository.save(member);
+
+        Member member = saveMember(memberName);
         OauthToken oauthToken = new OauthToken(member, socialId, provider, appleToken.accessToken(), appleToken.refreshToken());
         oauthRepository.save(oauthToken);
 
-        return getTokenResponse(savedMember);
+        return getTokenResponse(member);
+    }
+
+    private Member saveMember(String memberName){
+        Member newMember = new Member(memberName, Ranks.ROOKIE);
+        return memberRepository.save(newMember);
     }
 
     private TokenResponse getTokenResponse(Member member) {

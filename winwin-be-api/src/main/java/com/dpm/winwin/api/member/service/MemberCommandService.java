@@ -93,11 +93,7 @@ public class MemberCommandService {
         Member member = memberRepository.findMemberWithToken(memberId)
             .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
 
-        Long jwtMemberId = getJwtMemberId();
-
-        if (!Objects.equals(jwtMemberId, memberId)) {
-            throw new BusinessException(DOES_NOT_MATCH_MEMBER_ID);
-        }
+        verifyMemberId(memberId);
 
         OauthToken oauthToken = member.getOauthToken();
         String refreshToken = oauthToken.getRefreshToken();
@@ -112,13 +108,20 @@ public class MemberCommandService {
         throw new BusinessException(APPLE_TOKEN_REVOKE_FAIL);
     }
 
+    private void verifyMemberId(Long memberId) {
+        Long jwtMemberId = getJwtMemberId();
+
+        if (!Objects.equals(jwtMemberId, memberId)) {
+            throw new BusinessException(DOES_NOT_MATCH_MEMBER_ID);
+        }
+    }
+
     private Long getJwtMemberId() {
         UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext()
             .getAuthentication();
         String jwt = (String) authentication.getCredentials();
         Claims claims = tokenProvider.getClaims(jwt);
-        Long jwtMemberId = (Long) claims.get("memberId");
-        return jwtMemberId;
+        return (Long) claims.get("memberId");
     }
 
     private ResponseEntity<Object> appleTokenRevokeRequest(String providerName, String refreshToken) {

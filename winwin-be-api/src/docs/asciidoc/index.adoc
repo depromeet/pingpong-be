@@ -105,3 +105,60 @@ include::{snippets}/category-controller-test/custom_category를_조회한다/htt
 
 === Response-fields
 include::{snippets}/category-controller-test/custom_category를_조회한다/response-fields.adoc[]
+=======
+[[닉네임-설정]]
+== 닉네임 설정
+
+=== HTTP-request
+include::{snippets}/member-controller-test/member_닉네임을_설정한다/http-request.adoc[]
+
+=== Request-fields
+include::{snippets}/member-controller-test/member_닉네임을_설정한다/request-fields.adoc[]
+
+=== HTTP-response
+include::{snippets}/member-controller-test/member_닉네임을_설정한다/http-response.adoc[]
+
+=== Response-fields
+include::{snippets}/member-controller-test/member_닉네임을_설정한다/response-fields.adoc[]
+
+[[화원-수정]]
+== 회원 수정
+
+=== HTTP-request
+include::{snippets}/member-controller-test/member를_수정한다/http-request.adoc[]
+
+=== Request-fields
+include::{snippets}/member-controller-test/member를_수정한다/request-fields.adoc[]
+
+=== HTTP-response
+include::{snippets}/member-controller-test/member를_수정한다/http-response.adoc[]
+
+=== Response-fields
+include::{snippets}/member-controller-test/member를_수정한다/response-fields.adoc[]
+
+[[회원-조회]]
+== 회원 조회
+
+=== HTTP-request
+include::{snippets}/member-controller-test/member를_조회한다/http-request.adoc[]
+
+=== HTTP-response
+include::{snippets}/member-controller-test/member를_조회한다/http-response.adoc[]
+
+=== Response-fields
+include::{snippets}/member-controller-test/member를_조회한다/response-fields.adoc[]
+
+[[신고하기]]
+== 게시물에서 신고하기
+
+=== HTTP-request
+include::{snippets}/report-controller-test/게시물에서_신고한다/http-request.adoc[]
+
+=== Request-fields
+include::{snippets}/report-controller-test/게시물에서_신고한다/request-fields.adoc[]
+
+=== HTTP-response
+include::{snippets}/report-controller-test/게시물에서_신고한다/http-response.adoc[]
+
+=== Response-fields
+include::{snippets}/report-controller-test/게시물에서_신고한다/response-fields.adoc[]

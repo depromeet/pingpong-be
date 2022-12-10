@@ -39,3 +39,69 @@ include::{snippets}/post-controller-test/post가_생성된다/http-response.adoc
 
 === Response-fields
 include::{snippets}/post-controller-test/post가_생성된다/response-fields.adoc[]
+
+[[재능-게시물-수정]]
+== 재능 게시물 수정
+
+=== HTTP-request
+include::{snippets}/post-controller-test/post를_수정한다/http-request.adoc[]
+
+=== Request-fields
+include::{snippets}/post-controller-test/post를_수정한다/request-fields.adoc[]
+
+=== HTTP-response
+include::{snippets}/post-controller-test/post를_수정한다/http-response.adoc[]
+
+=== Response-fields
+include::{snippets}/post-controller-test/post를_수정한다/response-fields.adoc[]
+
+[[대분류-카테고리-조회]]
+== 대분류 카테고리 조회
+
+=== HTTP-request
+include::{snippets}/category-controller-test/main_category를_조회한다/http-request.adoc[]
+
+=== HTTP-response
+include::{snippets}/category-controller-test/main_category를_조회한다/http-response.adoc[]
+
+=== Response-fields
+include::{snippets}/category-controller-test/main_category를_조회한다/response-fields.adoc[]
+
+[[중분류-카테고리-조회]]
+
+== 중분류 카테고리 조회
+
+=== HTTP-request
+include::{snippets}/category-controller-test/mid_category를_조회한다/http-request.adoc[]
+
+=== HTTP-response
+include::{snippets}/category-controller-test/mid_category를_조회한다/http-response.adoc[]
+
+=== Response-fields
+include::{snippets}/category-controller-test/mid_category를_조회한다/response-fields.adoc[]
+
+[[소분류-카테고리-조회]]
+
+== 소분류 카테고리 조회
+
+=== HTTP-request
+include::{snippets}/category-controller-test/sub_category를_조회한다/http-request.adoc[]
+
+=== HTTP-response
+include::{snippets}/category-controller-test/sub_category를_조회한다/http-response.adoc[]
+
+=== Response-fields
+include::{snippets}/category-controller-test/sub_category를_조회한다/response-fields.adoc[]
+
+[[받고-싶은-재능-카테고리-조회]]
+
+== 내가 받고 싶은 재능의 카테고리 조회
+
+=== HTTP-request
+include::{snippets}/category-controller-test/custom_category를_조회한다/http-request.adoc[]
+
+=== HTTP-response
+include::{snippets}/category-controller-test/custom_category를_조회한다/http-response.adoc[]
+
+=== Response-fields
+include::{snippets}/category-controller-test/custom_category를_조회한다/response-fields.adoc[]

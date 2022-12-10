@@ -44,7 +44,7 @@ class PostControllerTest extends RestDocsTestSupport {
     private PostService postService;
 
     @Test
-    public void post가_category에_의해_목록_조회된다() throws Exception {
+    void post가_category에_의해_목록_조회된다() throws Exception {
         // given
         List<PostListResponse> posts = setPosts();
         PageRequest pageable = PageRequest.of(0, 2);
@@ -99,7 +99,7 @@ class PostControllerTest extends RestDocsTestSupport {
     }
 
     @Test
-    public void post가_memberTalent에_의해_목록_조회된다() throws Exception {
+    void post가_memberTalent에_의해_목록_조회된다() throws Exception {
         // given
         List<PostCustomizedResponse> posts = setCustomPosts();
         PageRequest pageable = PageRequest.of(0, 2);
@@ -147,7 +147,7 @@ class PostControllerTest extends RestDocsTestSupport {
     }
 
     @Test
-    public void post가_생성된다() throws Exception {
+    void post가_생성된다() throws Exception {
         // given
         Long memberId = 1L;
         List<String> links = Arrays.asList(
@@ -257,7 +257,7 @@ class PostControllerTest extends RestDocsTestSupport {
     }
 
     @Test
-    public void post가_삭제된다() throws Exception {
+    void post가_삭제된다() throws Exception {
         // given
         Long postId = 1L;
 

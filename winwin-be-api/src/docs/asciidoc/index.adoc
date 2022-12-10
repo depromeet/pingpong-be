@@ -40,6 +40,9 @@ include::{snippets}/post-controller-test/post가_category에_의해_목록_조�
 [[내가-찾는-재능-게시물-목록-조회]]
 == 내가 찾는 재능 게시물 목록 조회
 
+=== HTTP-request
+include::{snippets}/post-controller-test/post가_member-talent에_의해_목록_조회된다/http-request.adoc[]
+
 === Request-parameters
 include::{snippets}/post-controller-test/post가_member-talent에_의해_목록_조회된다/request-parameters.adoc[]
 
@@ -68,6 +71,9 @@ include::{snippets}/post-controller-test/post가_생성된다/response-fields.ad
 [[게시물-삭제]]
 == 게시물 삭제
 
+=== HTTP-request
+include::{snippets}/post-controller-test/post가_삭제된다/http-request.adoc[]
+
 === Path-parameters
 include::{snippets}/post-controller-test/post가_삭제된다/path-parameters.adoc[]
 
@@ -77,3 +83,14 @@ include::{snippets}/post-controller-test/post가_삭제된다/http-response.adoc
 === Response-fields
 include::{snippets}/post-controller-test/post가_삭제된다/response-fields.adoc[]
 
+[[등급-목록-조회]]
+== 등급 목록 조회
+
+=== HTTP-request
+include::{snippets}/member-controller-test/랭크_목록을_조회한다/http-request.adoc[]
+
+=== HTTP-response
+include::{snippets}/member-controller-test/랭크_목록을_조회한다/http-response.adoc[]
+
+=== Response-fields
+include::{snippets}/member-controller-test/랭크_목록을_조회한다/response-fields.adoc[]

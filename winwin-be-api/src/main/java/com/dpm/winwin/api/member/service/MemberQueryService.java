@@ -8,6 +8,8 @@ import com.dpm.winwin.domain.entity.member.Member;
 import com.dpm.winwin.domain.entity.member.enums.Ranks;
 import com.dpm.winwin.domain.repository.member.MemberRepository;
 import com.dpm.winwin.domain.repository.member.dto.response.MemberReadResponse;
+
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -30,13 +32,16 @@ public class MemberQueryService {
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
-
         MemberReadResponse memberReadResponse =  memberRepository.readMemberInfo(memberId)
                 .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
 
-        Integer likeCount = member.getLikeCount();
-        if (likeCount == null)
-            likeCount = 0;
+        BigDecimal likeCount = member.getLikeCount();
+        String likeCounts = likeCount.toString();
+
+
+        if (likeCount.compareTo(BigDecimal.valueOf(1000)) >= 0) {
+            likeCounts = likeCount.divide(BigDecimal.valueOf(1000),1,BigDecimal.ROUND_DOWN).toPlainString() + 'k';
+        }
 
         return new MemberRankReadResponse(
                 memberReadResponse.memberId(),
@@ -45,7 +50,7 @@ public class MemberQueryService {
                 memberReadResponse.introduction(),
                 member.getRanks().getName(),
                 member.getRanks().getImage(),
-                likeCount,
+                likeCounts,
                 member.getProfileLink(),
                 member.getTalents().stream()
                         .filter(memberTalent -> memberTalent.getType().equals(GIVE))

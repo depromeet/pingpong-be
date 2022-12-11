@@ -37,7 +37,7 @@ spring:
             clientName: apple
             authorizationGrantType: authorization_code
             clientAuthenticationMethod: CLIENT_SECRET_JWT
-            redirect-uri: https://www.pingpongg.shop:8080/apple/redirect
+            redirect-uri: https://test.pingpongg.shop:8083/apple/redirect
             scope:
               - openid
               - name
@@ -58,3 +58,19 @@ jasypt:
     algorithm: PBEWithMD5AndDES
     iv-generator-classname: org.jasypt.iv.NoIvGenerator
     password: ${ENCRYPT_KEY}
+
+springdoc:
+  version: '@project.version@'
+  api-docs:
+    path: /api-docs
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  swagger-ui:
+    url: /docs/openapi3.json
+    operations-sorter: alpha
+    tags-sorter: alpha
+    path: /
+    disable-swagger-default-url: true
+    doc-expansion: none
+  paths-to-match:
+    - /api/**

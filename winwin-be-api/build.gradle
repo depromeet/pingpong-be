@@ -1,6 +1,7 @@
 plugins {
     id 'org.asciidoctor.jvm.convert' version '3.3.2'
     id 'java'
+    id "com.epages.restdocs-api-spec" version "0.16.2"
 }
 
 group 'com.dpm.winwin.api'
@@ -24,6 +25,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'com.epages:restdocs-api-spec:0.16.2'
+    implementation "org.springdoc:springdoc-openapi-ui:1.6.11"
+    implementation 'com.epages:restdocs-api-spec-mockmvc:0.16.2'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'

@@ -2,6 +2,7 @@ package com.dpm.winwin.api.member.controller;
 
 import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
 import com.dpm.winwin.api.common.response.dto.BaseResponseDto;
+import com.dpm.winwin.api.common.utils.SecurityUtil;
 import com.dpm.winwin.api.member.dto.request.MemberUpdateRequest;
 import com.dpm.winwin.api.member.dto.response.MemberNicknameResponse;
 import com.dpm.winwin.api.member.dto.response.MemberRankReadResponse;
@@ -35,8 +36,9 @@ public class MemberController {
 
     @PatchMapping("/nickname")
     public BaseResponseDto<MemberNicknameResponse> updateMemberNickname(
-            @Valid @RequestBody MemberNicknameRequest memberNicknameRequest, BindingResult bindingResult){
-        Long memberId = 1L;
+            @Valid @RequestBody MemberNicknameRequest memberNicknameRequest,
+            BindingResult bindingResult) {
+        Long memberId = SecurityUtil.getCurrentMemberId();
         if (bindingResult.hasErrors()){
             throw new BusinessException(INVALID_NICKNAME);
         }
@@ -52,7 +54,7 @@ public class MemberController {
     @PutMapping
     public BaseResponseDto<MemberUpdateResponse> updateMember(
             @RequestBody final  MemberUpdateRequest memberUpdateRequest) {
-        Long memberId = 1L;
+        Long memberId = SecurityUtil.getCurrentMemberId();
         return BaseResponseDto.ok(memberCommandService.updateMember(memberId, memberUpdateRequest));
     }
 

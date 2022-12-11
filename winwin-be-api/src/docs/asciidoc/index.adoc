@@ -6,15 +6,10 @@
 :toclevels: 4
 :sectlinks:
 
-[[RestDocs-Test]]
-== RestDocs Test
-operation::test-controller-test/restdocs-test[snippets='http-request,http-response,response-body,response-fields']
+[[Index]]
+== Index
 
-include::post-api.adoc[]
-
-include::category-api.adoc[]
-
-include::member-api.adoc[]
-
-include::report-api.adoc[]
-
+- link:post-api.html[Post API, window=_blank]
+- link:category-api.html[Category API, window=_blank]
+- link:member-api.html[Member API, window=_blank]
+- link:report-api.html[Report API, window=_blank]

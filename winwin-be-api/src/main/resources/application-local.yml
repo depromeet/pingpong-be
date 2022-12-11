@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8083
   # 임시로 https 사용하기 위함
   ssl:
     enabled: true
@@ -37,7 +37,8 @@ spring:
             clientName: apple
             authorizationGrantType: authorization_code
             clientAuthenticationMethod: CLIENT_SECRET_JWT
-            redirect-uri: https://www.pingpongg.shop:8080/apple/redirect
+            redirect-uri: https://test.pingpongg.shop:8083/apple/redirect
+#            redirect-uri: https://test.pingpongg.shop:8083/login/oauth2/code/apple
             scope:
               - openid
               - name

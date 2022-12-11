@@ -1,22 +1,44 @@
 package com.dpm.winwin.api.oauth.service;
 
-import com.dpm.winwin.api.common.error.enums.ErrorMessage;
+import static com.dpm.winwin.api.common.error.enums.ErrorMessage.APPLE_TOKEN_GENERATE_FAIL;
+import static com.dpm.winwin.api.common.error.enums.ErrorMessage.DOES_NOT_MATCH_NONCE;
+import static com.dpm.winwin.api.common.error.enums.ErrorMessage.INTERVAL_SERVER_ERROR;
+import static com.dpm.winwin.api.common.error.enums.ErrorMessage.INVALID_CLIENT_ID;
+import static com.dpm.winwin.api.common.error.enums.ErrorMessage.MEMBER_NOT_FOUND;
+
 import com.dpm.winwin.api.common.error.exception.custom.AppleTokenGenerateException;
 import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
 import com.dpm.winwin.api.common.error.exception.custom.InvalidIdTokenException;
 import com.dpm.winwin.api.jwt.TokenProvider;
-import com.dpm.winwin.api.oauth.record.ApplePublicKeys;
-import com.dpm.winwin.api.oauth.record.AppleToken;
-import com.dpm.winwin.api.oauth.record.MemberInfo;
+import com.dpm.winwin.api.jwt.TokenResponse;
+import com.dpm.winwin.api.oauth.dto.ApplePublicKeys;
+import com.dpm.winwin.api.oauth.dto.AppleToken;
+import com.dpm.winwin.api.oauth.dto.MemberInfo;
 import com.dpm.winwin.domain.entity.member.Member;
+import com.dpm.winwin.domain.entity.member.RefreshToken;
 import com.dpm.winwin.domain.entity.member.enums.ProviderType;
+import com.dpm.winwin.domain.entity.member.enums.Ranks;
+import com.dpm.winwin.domain.entity.oauth.OauthToken;
 import com.dpm.winwin.domain.repository.member.MemberRepository;
+import com.dpm.winwin.domain.repository.member.RefreshTokenRepository;
+import com.dpm.winwin.domain.repository.oauth.OauthRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jwt.SignedJWT;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import java.math.BigInteger;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.RSAPublicKeySpec;
+import java.text.ParseException;
+import java.util.Base64;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
@@ -32,17 +54,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.math.BigInteger;
-import java.security.KeyFactory;
-import java.security.NoSuchAlgorithmException;
-import java.security.PublicKey;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.RSAPublicKeySpec;
-import java.text.ParseException;
-import java.util.Base64;
-import java.util.Date;
-import java.util.List;
-
 @Slf4j
 @Service
 @Transactional
@@ -54,6 +65,8 @@ public class AppleLoginService {
     private final ClientRegistrationRepository clientRegistrationRepository;
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
+    private final OauthRepository oauthRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
     private static final String APPLE_BASE_URL = "https://appleid.apple.com";
     private static final String APPLE_TOKEN_REQUEST_URL = APPLE_BASE_URL + "/auth/token";
 
@@ -66,35 +79,57 @@ public class AppleLoginService {
         return body;
     }
 
-    public String signUpMember(String memberInfo, String code) throws ParseException, NoSuchAlgorithmException, InvalidKeySpecException, JsonProcessingException {
+    public TokenResponse signUpMember(String memberInfo, String code) throws ParseException, NoSuchAlgorithmException, InvalidKeySpecException, JsonProcessingException {
         AppleToken appleToken = generatedToken(code);
         String idToken = appleToken.idToken();
         Claims claims = appleIdTokenParser(idToken);
 
         String socialId = (String) claims.get("sub");
-        String provider = ProviderType.APPLE.name();
+        ProviderType provider = ProviderType.APPLE;
         String memberName = getName(memberInfo);
 
         log.info("memberName :: {}, socialId :: {}, provider :: {}", memberName, socialId, provider);
-        Member member = Member.builder().nickname(memberName).socialId(socialId).provider(provider).build();
-        Member savedMember = memberRepository.save(member);
-        String token = tokenProvider.createToken(savedMember.getId(), memberName);
 
-        return token;
+        Member member = saveMember(memberName);
+        OauthToken oauthToken = new OauthToken(member, socialId, provider, appleToken.accessToken(), appleToken.refreshToken());
+        oauthRepository.save(oauthToken);
+
+        return getTokenResponse(member);
     }
-    public String singInMember(String code) throws ParseException, InvalidKeySpecException, NoSuchAlgorithmException {
+
+    private Member saveMember(String memberName){
+        Member newMember = new Member(memberName, Ranks.ROOKIE);
+        return memberRepository.save(newMember);
+    }
+
+    private TokenResponse getTokenResponse(Member member) {
+        String accessToken = tokenProvider.createToken(member.getId(), member.getNickname(), 1);
+        String refreshToken = tokenProvider.createToken(member.getId(), member.getNickname(), 30);
+
+        Optional<RefreshToken> optionalRefreshToken = refreshTokenRepository.findRefreshTokenByMemberId(member.getId());
+
+        optionalRefreshToken.ifPresentOrElse(
+            findRefreshToken -> findRefreshToken.changeRefreshToken(refreshToken),
+            () -> {
+            RefreshToken token = new RefreshToken(refreshToken, member);
+            refreshTokenRepository.save(token);
+        });
+
+        return new TokenResponse(member.getId(), accessToken, refreshToken);
+    }
+
+    public TokenResponse signInMember(String code) throws ParseException, InvalidKeySpecException, NoSuchAlgorithmException {
         AppleToken appleToken = generatedToken(code);
         String idToken = appleToken.idToken();
         Claims claims = appleIdTokenParser(idToken);
 
         String socialId = (String) claims.get("sub");
-        String provider = ProviderType.APPLE.name();
+        ProviderType provider = ProviderType.APPLE;
 
         log.info("socialId :: {}, provider :: {}", socialId, provider);
-        Member member = memberRepository.findByProviderAndSocialId(provider, socialId).orElseThrow();
-        String token = tokenProvider.createToken(member.getId(), member.getNickname());
+        Member member = memberRepository.findByMemberByOauthProviderAndSocialId(provider, socialId).orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
 
-        return token;
+        return getTokenResponse(member);
     }
 
 
@@ -172,12 +207,12 @@ public class AppleLoginService {
         if (tokenRequestStatus.equals(HttpStatus.BAD_REQUEST)) {
             AppleToken response = appleTokenResponseEntity.getBody();
             if (response.error().equals("invalid_client")) {
-                throw new AppleTokenGenerateException(ErrorMessage.APPLE_TOKEN_GENERATE_FAIL, "client 정보가 잘못되었습니다.");
+                throw new AppleTokenGenerateException(APPLE_TOKEN_GENERATE_FAIL, "client 정보가 잘못되었습니다.");
             }
-            throw new AppleTokenGenerateException(ErrorMessage.APPLE_TOKEN_GENERATE_FAIL, "[ " + code + " ] 코드가 잘못되었습니다.");
+            throw new AppleTokenGenerateException(APPLE_TOKEN_GENERATE_FAIL, "[ " + code + " ] 코드가 잘못되었습니다.");
         }
 
-        throw new BusinessException(ErrorMessage.INTERVAL_SERVER_ERROR);
+        throw new BusinessException(INTERVAL_SERVER_ERROR);
     }
 
     private void verifyIdtokenExpire(Claims body) {
@@ -196,7 +231,7 @@ public class AppleLoginService {
     private void verifyClientId(Claims body) {
         String clientId = body.getAudience();
         if (!clientId.equals("com.dpm.pingpong-login")) {
-            throw new InvalidIdTokenException(ErrorMessage.INVALID_CLIENT_ID);
+            throw new InvalidIdTokenException(INVALID_CLIENT_ID);
         }
     }
 
@@ -206,7 +241,7 @@ public class AppleLoginService {
     private void verifyIssuer(Claims body) {
         String issuer = body.getIssuer();
         if (!issuer.contains(APPLE_BASE_URL)) {
-            throw new InvalidIdTokenException(ErrorMessage.INTERVAL_SERVER_ERROR);
+            throw new InvalidIdTokenException(INTERVAL_SERVER_ERROR);
         }
     }
 
@@ -216,7 +251,7 @@ public class AppleLoginService {
     private void verifyNonce(Claims body) {
         String nonce = (String) body.get("nonce");
         if (!nonce.equals("nonce value")) {
-            throw new InvalidIdTokenException(ErrorMessage.DOES_NOT_MATCH_NONCE);
+            throw new InvalidIdTokenException(DOES_NOT_MATCH_NONCE);
         }
     }
 

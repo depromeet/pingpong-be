@@ -7,7 +7,6 @@ import com.dpm.winwin.api.jwt.TokenProvider;
 import com.dpm.winwin.domain.entity.member.enums.RoleType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -21,7 +20,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
-@Configuration
 public class SecurityConfig {
 
     private final TokenProvider tokenProvider;
@@ -31,14 +29,10 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer configure() {
         return (web) -> web.ignoring().mvcMatchers(
-                "/h2-console/**",
-                "oauth2/**",
-                "login/**",
-                "/favicon.ico",
-                "/error",
-                "/swagger-ui/**",
-                "/api-docs/**",
-                "/docs/**"
+            "/h2-console/**",
+            "oauth2/**",
+            "login/**",
+            "/favicon.ico"
         );
     }
 
@@ -57,25 +51,29 @@ public class SecurityConfig {
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration(
-                "/**",
-                configuration
+            "/**",
+            configuration
         );
 
         return source;
     }
 
     @Bean
+    public HttpCookieOAuth2AuthorizationRequestRepository authorizationRequestRepository() {
+        return new HttpCookieOAuth2AuthorizationRequestRepository();
+    }
+
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         JwtFilter jwtFilter = new JwtFilter(tokenProvider);
-
         http
                 .cors().configurationSource(corsConfigurationSource())
                 .and()
                     .authorizeRequests()
                     .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                    .antMatchers("/apple/redirect").permitAll()
-                    .antMatchers("/api/**").hasAnyAuthority(RoleType.USER.getCode())
-                    .anyRequest().authenticated()
+                    .antMatchers("/test").authenticated()
+                    // TODO : 개발 편의를 위한 임시 조치
+                    .anyRequest().permitAll()
                 .and()
                     .formLogin()
                     .disable()
@@ -95,7 +93,8 @@ public class SecurityConfig {
                     .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                     .oauth2Login()
                     .authorizationEndpoint()
-                    .baseUri("/oauth2/authorization");
+                    .baseUri("/oauth2/authorization")
+                    .authorizationRequestRepository(authorizationRequestRepository());
         return http.build();
     }
 }

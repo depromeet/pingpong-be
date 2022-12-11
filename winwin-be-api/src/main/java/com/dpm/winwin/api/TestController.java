@@ -13,4 +13,9 @@ public class TestController {
     public ResponseEntity<Map<String, String>> hello() {
         return ResponseEntity.ok(Map.of("key", "hello-winwin"));
     }
+
+    @GetMapping("/home")
+    public ResponseEntity<Map<String, String>> hello2() {
+        return ResponseEntity.ok(Map.of("home", "home"));
+    }
 }

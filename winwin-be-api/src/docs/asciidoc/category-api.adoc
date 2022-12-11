@@ -1,0 +1,18 @@
+[[category-api]]
+= CATEGORY-API
+
+[[대분류-카테고리-조회]]
+== 대분류 카테고리 조회
+operation::category-controller-test/main_category를_조회한다[snippets='http-request,http-response,response-fields']
+
+[[중분류-카테고리-조회]]
+== 중분류 카테고리 조회
+operation::category-controller-test/mid_category를_조회한다[snippets='http-request,request-parameters,http-response,response-fields']
+
+[[소분류-카테고리-조회]]
+== 소분류 카테고리 조회
+operation::category-controller-test/sub_category를_조회한다[snippets='http-request,request-parameters,http-response,response-fields']
+
+[[받고-싶은-재능-카테고리-조회]]
+== 받고 싶은 재능 카테고리 조회
+operation::category-controller-test/custom_category를_조회한다[snippets='http-request,http-response,response-fields']

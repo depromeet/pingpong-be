@@ -1,7 +1,3 @@
-ifndef::snippets[]
-:snippets: build/generated-snippets
-endif::[]
-
 = PingPong API
 :doctype: book
 :icons: font

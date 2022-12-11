@@ -1,11 +1,17 @@
 package com.dpm.winwin.api.oauth.controller;
 
+import static com.dpm.winwin.api.configuration.HttpCookieOAuth2AuthorizationRequestRepository.*;
+
 import com.dpm.winwin.api.common.error.enums.ErrorMessage;
 import com.dpm.winwin.api.common.error.exception.custom.LoginCancelException;
 import com.dpm.winwin.api.common.response.dto.BaseResponseDto;
 import com.dpm.winwin.api.common.utils.CookieUtil;
 import com.dpm.winwin.api.jwt.TokenResponse;
+import com.dpm.winwin.api.oauth.dto.LoginResponse;
 import com.dpm.winwin.api.oauth.service.AppleLoginService;
+import java.util.Optional;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,19 +32,24 @@ import java.text.ParseException;
 @RestController
 public class AppleLoginController {
 
-
-    private static final String ACCESS_TOKEN = "accessToken";
-    private static final String REFRESH_TOKEN = "refreshToken";
     private final AppleLoginService appleLoginService;
 
     @PostMapping(value = "/apple/redirect", consumes = "application/x-www-form-urlencoded;charset=UTF-8")
-    public BaseResponseDto<TokenResponse> appleRedirect(@RequestBody MultiValueMap<String, String> redirectInfo, HttpServletResponse response) throws IOException, ParseException, NoSuchAlgorithmException, InvalidKeySpecException, URISyntaxException {
+    public BaseResponseDto<LoginResponse> appleRedirect(@RequestBody MultiValueMap<String, String> redirectInfo, HttpServletRequest request, HttpServletResponse response) throws IOException, ParseException, NoSuchAlgorithmException, InvalidKeySpecException, URISyntaxException {
         log.info("----> {}", redirectInfo);
+
+        String redirectUri = getRedirectUri(request);
+
+        print(redirectInfo);
 
         /**
          * 로그인 후 취소한 경우
          */
         if (!ObjectUtils.isEmpty(redirectInfo.get("error"))) {
+            log.info("사용자가 로그인을 취소하였습니다.");
+
+            // 임시
+            response.sendRedirect(redirectUri);
             throw new LoginCancelException(ErrorMessage.LOGIN_CANCEL);
         }
 
@@ -51,28 +62,40 @@ public class AppleLoginController {
 
             log.info("memberInfo:: {}", memberInfo);
             TokenResponse token = appleLoginService.signUpMember(memberInfo, code);
-            setTokenCookie(response, token);
-            return BaseResponseDto.ok(token);
+            setResponse(response, redirectUri, token);
+            return BaseResponseDto.ok(new LoginResponse(token.memberId()));
         }
-
-        /**
-         * 기존 회원이 로그인 한 경우
-         */
-        log.info("authorization :: {}", redirectInfo.get("code"));
-        log.info("authorization :: {}", redirectInfo.get("state"));
-        log.info("authorization :: {}", redirectInfo.get("id_token"));
-        log.info("authorization :: {}", redirectInfo.get("user"));
-        log.info("error :: {} ", redirectInfo.get("error"));
 
         String code = redirectInfo.getFirst("code");
         TokenResponse token = appleLoginService.signInMember(code);
+        setResponse(response, redirectUri, token);
+        return BaseResponseDto.ok(new LoginResponse(token.memberId()));
+    }
 
+    private void print(MultiValueMap<String, String> redirectInfo) {
+        log.info("authorization code :: {}", redirectInfo.get("code"));
+        log.info("authorization state :: {}", redirectInfo.get("state"));
+        log.info("authorization id_token :: {}", redirectInfo.get("id_token"));
+        log.info("authorization user :: {}", redirectInfo.get("user"));
+        log.info("error :: {} ", redirectInfo.get("error"));
+    }
+
+    private void setResponse(HttpServletResponse response, String redirectUri, TokenResponse token) throws IOException {
         setTokenCookie(response, token);
-        return BaseResponseDto.ok(token);
+        response.sendRedirect(redirectUri);
+    }
+
+    private String getRedirectUri(HttpServletRequest request) {
+        Optional<Cookie> optional = CookieUtil.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME);
+        if (optional.isPresent()) {
+            Cookie cookie = optional.get();
+            return cookie.getValue();
+        }
+        return "/home";
     }
 
     private void setTokenCookie(HttpServletResponse response, TokenResponse token) {
-        CookieUtil.addCookie(response, ACCESS_TOKEN, token.accessToken(), 86400);
-        CookieUtil.addCookie(response, REFRESH_TOKEN, token.refreshToken(), 86400 * 30);
+        CookieUtil.addCookie(response, CookieUtil.ACCESS_TOKEN, token.accessToken(), 86400);
+        CookieUtil.addCookie(response, CookieUtil.REFRESH_TOKEN, token.refreshToken(), 86400 * 30);
     }
 }

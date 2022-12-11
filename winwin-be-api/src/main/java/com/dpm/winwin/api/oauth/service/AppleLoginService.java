@@ -103,8 +103,8 @@ public class AppleLoginService {
     }
 
     private TokenResponse getTokenResponse(Member member) {
-        String accessToken = tokenProvider.createAccessToken(member.getId(), member.getNickname());
-        String refreshToken = tokenProvider.createRefreshToken(member.getId());
+        String accessToken = tokenProvider.createToken(member.getId(), member.getNickname(), 1);
+        String refreshToken = tokenProvider.createToken(member.getId(), member.getNickname(), 30);
 
         Optional<RefreshToken> optionalRefreshToken = refreshTokenRepository.findRefreshTokenByMemberId(member.getId());
 
@@ -115,7 +115,7 @@ public class AppleLoginService {
             refreshTokenRepository.save(token);
         });
 
-        return new TokenResponse(accessToken, refreshToken);
+        return new TokenResponse(member.getId(), accessToken, refreshToken);
     }
 
     public TokenResponse signInMember(String code) throws ParseException, InvalidKeySpecException, NoSuchAlgorithmException {

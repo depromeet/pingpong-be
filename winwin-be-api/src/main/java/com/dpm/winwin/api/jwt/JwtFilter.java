@@ -1,13 +1,17 @@
 package com.dpm.winwin.api.jwt;
 
 
+import com.dpm.winwin.api.common.utils.CookieUtil;
+import io.jsonwebtoken.Claims;
 import java.io.IOException;
+import java.util.Optional;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-
+import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,20 +32,65 @@ public class JwtFilter extends GenericFilterBean {
     // 토큰의 인증 정보를 securityContext에 저장하는 역할을 수행
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
+        throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        String jwt = resolveToken(httpServletRequest);
+        HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+
+        String accessToken = getToken(httpServletRequest, CookieUtil.ACCESS_TOKEN);
+        String refreshToken = getToken(httpServletRequest, CookieUtil.REFRESH_TOKEN);
         String requestURI = httpServletRequest.getRequestURI();
 
-        if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
-            Authentication authentication = tokenProvider.getAuthentication(jwt);
+        if (verifyToken(accessToken)) {
+            Authentication authentication = tokenProvider.getAuthentication(accessToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             log.info("Security Context에 '{}' 인증 정보를 저장했습니다. uri : {}", authentication.getName(), requestURI);
-        } else {
-            log.info("유효한 JWT 토큰이 없습니다. uri : {}", requestURI);
+            chain.doFilter(request, response);
+            return;
         }
 
+        // 액세스 토큰이 만료되어 리프레시 토큰으로 액세스 토큰 재발급
+        if (StringUtils.hasText(accessToken) && verifyToken(refreshToken)) {
+            log.info("access_token 재발급");
+            Claims claims = tokenProvider.getClaims(refreshToken);
+            Long memberId = getMemberId(claims);
+            log.info("memberId : {}", memberId);
+            String memberName = claims.getSubject();
+            String newAccessToken = tokenProvider.createToken(memberId, memberName, 1);
+            changeAccessToken(httpServletRequest, httpServletResponse, newAccessToken);
+            Authentication authentication = tokenProvider.getAuthentication(newAccessToken);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            log.info("Security Context에 '{}' 인증 정보를 저장했습니다. uri : {}", authentication.getName(), requestURI);
+            chain.doFilter(request, response);
+            return;
+        }
+
+        log.info("유효한 JWT 토큰이 없습니다. uri : {}", requestURI);
         chain.doFilter(request, response);
+    }
+
+    private Long getMemberId(Claims claims) {
+        log.info("claims : {}", claims);
+        Object id = claims.get("memberId");
+        return Long.parseLong(String.valueOf(id));
+    }
+
+    private void changeAccessToken(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
+        String newAccessToken) {
+        CookieUtil.deleteCookie(httpServletRequest, httpServletResponse, CookieUtil.ACCESS_TOKEN);
+        CookieUtil.addCookie(httpServletResponse, CookieUtil.ACCESS_TOKEN, newAccessToken, 86400);
+    }
+
+    private boolean verifyToken(String jwtToken) {
+        return StringUtils.hasText(jwtToken) && tokenProvider.validateToken(jwtToken);
+    }
+
+    private String getToken(HttpServletRequest httpServletRequest, String tokenType) {
+        Optional<Cookie> optional = CookieUtil.getCookie(httpServletRequest, tokenType);
+        if (optional.isPresent()) {
+            Cookie cookie = optional.get();
+            return cookie.getValue();
+        }
+        return null;
     }
 
     private String resolveToken(HttpServletRequest request) {

@@ -9,6 +9,9 @@ import org.springframework.util.SerializationUtils;
 
 public class CookieUtil {
 
+    public static final String ACCESS_TOKEN = "access_token";
+    public static final String REFRESH_TOKEN = "refresh_token";
+
     public static Optional<Cookie> getCookie(HttpServletRequest request, String name) {
         Cookie[] cookies = request.getCookies();
 

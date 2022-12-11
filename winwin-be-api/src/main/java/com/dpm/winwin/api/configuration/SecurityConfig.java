@@ -4,6 +4,7 @@ import com.dpm.winwin.api.jwt.JwtAccessDeniedHandler;
 import com.dpm.winwin.api.jwt.JwtAuthenticationEntryPoint;
 import com.dpm.winwin.api.jwt.JwtFilter;
 import com.dpm.winwin.api.jwt.TokenProvider;
+import com.dpm.winwin.domain.entity.member.enums.RoleType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -58,6 +59,11 @@ public class SecurityConfig {
     }
 
     @Bean
+    public HttpCookieOAuth2AuthorizationRequestRepository authorizationRequestRepository() {
+        return new HttpCookieOAuth2AuthorizationRequestRepository();
+    }
+
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         JwtFilter jwtFilter = new JwtFilter(tokenProvider);
         http
@@ -66,10 +72,8 @@ public class SecurityConfig {
                     .authorizeRequests()
                     .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                     .antMatchers("/test").authenticated()
+                    // TODO : 개발 편의를 위한 임시 조치
                     .anyRequest().permitAll()
-//                    .antMatchers("/apple/redirect").permitAll()
-//                    .antMatchers("/api/**").hasAnyAuthority(RoleType.USER.getCode())
-//                    .anyRequest().authenticated()
                 .and()
                     .formLogin()
                     .disable()
@@ -89,7 +93,8 @@ public class SecurityConfig {
                     .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                     .oauth2Login()
                     .authorizationEndpoint()
-                    .baseUri("/oauth2/authorization");
+                    .baseUri("/oauth2/authorization")
+                    .authorizationRequestRepository(authorizationRequestRepository());
         return http.build();
     }
 }

@@ -59,13 +59,14 @@ public class TokenProvider implements InitializingBean {
                 .compact();
     }
 
-    public String createRefreshToken(Long memberId) {
+    public String createToken(Long memberId, String memberName, int day) {
         long now = new Date().getTime();
-        long expired = this.tokenValidityInMilliseconds * 30;
+        long expired = this.tokenValidityInMilliseconds * day;
         Date expiredDate = new Date(now + expired);
 
         return Jwts.builder()
             .setIssuedAt(new Date())
+            .setSubject(memberName)
             .claim("memberId", memberId)
             .signWith(key, SignatureAlgorithm.HS512)
             .setExpiration(expiredDate)

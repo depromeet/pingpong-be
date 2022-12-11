@@ -10,6 +10,7 @@ import com.dpm.winwin.domain.entity.chat.ChatRoom;
 import com.dpm.winwin.domain.entity.member.enums.Ranks;
 import com.dpm.winwin.domain.entity.oauth.OauthToken;
 import com.dpm.winwin.domain.entity.post.Post;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -65,7 +66,7 @@ public class Member extends BaseEntity{
     @Column(nullable = false)
     private Ranks ranks;
 
-    private Integer likeCount;
+    private BigDecimal likeCount;
 
     // TODO: one to one 연관관계 편의 메서드?
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "member", cascade = CascadeType.REMOVE)
@@ -74,13 +75,10 @@ public class Member extends BaseEntity{
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "member", cascade = CascadeType.REMOVE)
     private final List<RefreshToken> refreshTokens = new ArrayList<>();
 
-    public Member(String nickname) {
-        this.nickname = nickname;
-    }
-
     public Member(String nickname, Ranks ranks) {
         this.nickname = nickname;
         this.ranks = ranks;
+        this.likeCount = BigDecimal.valueOf(0);
     }
 
     public void updateOauthToken(OauthToken oauthToken){
@@ -139,15 +137,22 @@ public class Member extends BaseEntity{
         setTakenTalents(takenTalents);
     }
 
+    public BigDecimal getLikeCount(){
+        if (this.likeCount == null){
+            this.likeCount = BigDecimal.valueOf(0);
+        }
+        return this.likeCount;
+    }
+
     public void updateTotalPostLike(){
-        this.likeCount += 1;
+        this.likeCount.add(BigDecimal.valueOf(1));
         updateRank(this.likeCount);
     }
 
-    private void updateRank(Integer likesCount){
+    private void updateRank(BigDecimal likesCount){
 
         Ranks rank = Arrays.stream(Ranks.values())
-                .filter( value -> likesCount >= value.getLikeCount())
+                .filter( value -> likesCount.compareTo(value.getLikeCount()) >= 0 )
                 .findFirst().get();
 
         updateMemberRank(rank);

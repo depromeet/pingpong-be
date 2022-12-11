@@ -145,7 +145,7 @@ public class PostService {
 
         post.update(updateRequest.toDto(), subCategory, savedTalents);
 
-        for (LinkRequest linkRequest : updateRequest.getExistentLinks()) {
+        for (LinkRequest linkRequest : updateRequest.filterExistentLinks()) {
             Link link = linkRepository.findById(linkRequest.id())
                 .orElseThrow(() -> new BusinessException(ErrorMessage.LINK_NOT_FOUND));
             link.setContent(linkRequest.content());

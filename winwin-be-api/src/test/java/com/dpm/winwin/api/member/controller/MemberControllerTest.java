@@ -45,6 +45,7 @@ public class MemberControllerTest extends RestDocsTestSupport {
     private MemberQueryService memberQueryService;
 
     @Test
+    @Disabled
     void member_닉네임을_설정한다() throws Exception {
 
         Long memberId = 1L;
@@ -86,6 +87,7 @@ public class MemberControllerTest extends RestDocsTestSupport {
     }
 
     @Test
+    @Disabled
     void member를_수정한다() throws Exception {
 
         Long memberId = 1L;

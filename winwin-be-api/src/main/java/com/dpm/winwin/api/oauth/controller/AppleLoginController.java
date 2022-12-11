@@ -1,5 +1,8 @@
 package com.dpm.winwin.api.oauth.controller;
 
+import static com.dpm.winwin.api.common.utils.CookieUtil.ACCESS_TOKEN;
+import static com.dpm.winwin.api.common.utils.CookieUtil.MEMBER_ID;
+import static com.dpm.winwin.api.common.utils.CookieUtil.REFRESH_TOKEN;
 import static com.dpm.winwin.api.configuration.HttpCookieOAuth2AuthorizationRequestRepository.*;
 
 import com.dpm.winwin.api.common.error.enums.ErrorMessage;
@@ -62,13 +65,13 @@ public class AppleLoginController {
 
             log.info("memberInfo:: {}", memberInfo);
             TokenResponse token = appleLoginService.signUpMember(memberInfo, code);
-            setResponse(response, redirectUri, token);
+            setResponse(request, response, redirectUri, token);
             return BaseResponseDto.ok(new LoginResponse(token.memberId()));
         }
 
         String code = redirectInfo.getFirst("code");
         TokenResponse token = appleLoginService.signInMember(code);
-        setResponse(response, redirectUri, token);
+        setResponse(request, response, redirectUri, token);
         return BaseResponseDto.ok(new LoginResponse(token.memberId()));
     }
 
@@ -80,8 +83,8 @@ public class AppleLoginController {
         log.info("error :: {} ", redirectInfo.get("error"));
     }
 
-    private void setResponse(HttpServletResponse response, String redirectUri, TokenResponse token) throws IOException {
-        setTokenCookie(response, token);
+    private void setResponse(HttpServletRequest request, HttpServletResponse response, String redirectUri, TokenResponse token) throws IOException {
+        setTokenCookie(request, response, token);
         response.sendRedirect(redirectUri);
     }
 
@@ -94,8 +97,9 @@ public class AppleLoginController {
         return "/home";
     }
 
-    private void setTokenCookie(HttpServletResponse response, TokenResponse token) {
-        CookieUtil.addCookie(response, CookieUtil.ACCESS_TOKEN, token.accessToken(), 86400);
-        CookieUtil.addCookie(response, CookieUtil.REFRESH_TOKEN, token.refreshToken(), 86400 * 30);
+    private void setTokenCookie(HttpServletRequest request, HttpServletResponse response, TokenResponse token) {
+        CookieUtil.changeCookie(request, response, MEMBER_ID, String.valueOf(token.memberId()), -1);
+        CookieUtil.changeCookie(request, response, ACCESS_TOKEN, token.accessToken(), 86400);
+        CookieUtil.changeCookie(request, response, REFRESH_TOKEN, token.refreshToken(), 86400 * 30);
     }
 }

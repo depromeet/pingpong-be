@@ -11,6 +11,7 @@ public class CookieUtil {
 
     public static final String ACCESS_TOKEN = "access_token";
     public static final String REFRESH_TOKEN = "refresh_token";
+    public static final String MEMBER_ID = "member_id";
 
     public static Optional<Cookie> getCookie(HttpServletRequest request, String name) {
         Cookie[] cookies = request.getCookies();
@@ -32,6 +33,15 @@ public class CookieUtil {
         cookie.setMaxAge(maxAge);
 
         response.addCookie(cookie);
+    }
+
+    public static void changeCookie(HttpServletRequest request, HttpServletResponse response, String name, String value, int maxAge) {
+        Optional<Cookie> cookie = getCookie(request, name);
+        if (cookie.isPresent()){
+            deleteCookie(request, response, name);
+        }
+
+        addCookie(response, name, value, maxAge);
     }
 
     public static void deleteCookie(HttpServletRequest request, HttpServletResponse response, String name) {

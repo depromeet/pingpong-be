@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class AwsS3UploadUtil {
+public class AwsS3UploadUtil implements FileUploader {
 
     private final AmazonS3Client amazonS3Client;
 
@@ -27,7 +27,7 @@ public class AwsS3UploadUtil {
     @Value("${cloud.aws.s3.bucket.url}")
     private String defaultUrl;
 
-    public String upload(MultipartFile multipartFile, String directory) throws IOException {
+    public String upload(MultipartFile multipartFile, String directory) {
         String savedFileName = getSavedFileName(multipartFile, directory);
         ObjectMetadata metadata = new ObjectMetadata();
 

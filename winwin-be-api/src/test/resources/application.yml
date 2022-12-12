@@ -58,3 +58,17 @@ jasypt:
     algorithm: PBEWithMD5AndDES
     iv-generator-classname: org.jasypt.iv.NoIvGenerator
     password: test1234
+
+cloud:
+  aws:
+    s3:
+      bucket:
+        name: bucketName
+        url: bucketUrl
+    credentials:
+      access-key:
+      secret-key:
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false

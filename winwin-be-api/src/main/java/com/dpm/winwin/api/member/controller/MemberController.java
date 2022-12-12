@@ -11,17 +11,13 @@ import com.dpm.winwin.api.member.dto.response.RanksListResponse;
 import com.dpm.winwin.api.member.service.MemberCommandService;
 import com.dpm.winwin.api.member.service.MemberQueryService;
 import com.dpm.winwin.domain.repository.member.dto.request.MemberNicknameRequest;
-import javax.validation.Valid;
+import com.dpm.winwin.domain.repository.member.dto.response.MemberReadResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RestController
@@ -39,6 +35,14 @@ public class MemberController {
             throw new BusinessException(ErrorMessage.INVALID_NICKNAME);
         }
         return BaseResponseDto.ok(memberCommandService.updateMemberNickname(memberId, memberNicknameRequest));
+    }
+
+    @PostMapping("/image")
+    public BaseResponseDto<MemberReadResponse> uploadImage(
+            @RequestPart(name = "image", required = false) MultipartFile file
+    ) {
+        Long memberId = 1L;
+        return BaseResponseDto.ok(null);
     }
 
     @GetMapping("/{memberId}")

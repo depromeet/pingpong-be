@@ -74,3 +74,18 @@ springdoc:
     doc-expansion: none
   paths-to-match:
     - /api/**
+
+cloud:
+  aws:
+    s3:
+      bucket:
+        name: ENC(KydYPKGs+Dt6Tw5ftB3q9KZzx6elxYBe2103TDNwZvA=)
+        url: ENC(DBv6XHkcQPu1ozAFGJE3oEEADm3kpmFqZfwedjsHtrfTmad7UVj8lFYl+4wII8KMb2P0pJROrnw/VUZhWNQrvN6iTr3/cuuf)
+    credentials:
+      access-key: ENC(RKFCNH3Hfh23NDkdV9qcBQFY05KOWokFk3WqUIDgckQ=)
+      secret-key: ENC(E+5VE+62nn8hfVelioNTTLlFTGRXDmWNn4MONZh9gdSqzSvBWfax5b5zgM9VgDhbCikbG3O3eDo=)
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+

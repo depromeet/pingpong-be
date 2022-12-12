@@ -161,4 +161,8 @@ public class Member extends BaseEntity{
     private void updateMemberRank(Ranks rank){
         this.ranks = rank;
     }
+
+    public void updateProfileImage(String profileImageUrl) {
+        this.image = profileImageUrl;
+    }
 }

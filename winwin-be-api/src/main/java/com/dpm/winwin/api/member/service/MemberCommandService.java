@@ -7,9 +7,11 @@ import static com.dpm.winwin.domain.entity.member.enums.TalentType.GIVE;
 import static com.dpm.winwin.domain.entity.member.enums.TalentType.TAKE;
 
 import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
+import com.dpm.winwin.api.common.file.service.FileService;
 import com.dpm.winwin.api.jwt.TokenProvider;
 import com.dpm.winwin.api.member.dto.request.MemberUpdateRequest;
 import com.dpm.winwin.api.member.dto.response.MemberNicknameResponse;
+import com.dpm.winwin.api.member.dto.response.MemberUpdateImageResponse;
 import com.dpm.winwin.api.member.dto.response.MemberUpdateResponse;
 import com.dpm.winwin.domain.entity.category.SubCategory;
 import com.dpm.winwin.domain.entity.member.Member;
@@ -36,6 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @Service
@@ -48,6 +51,7 @@ public class MemberCommandService {
     private final OauthRepository oauthRepository;
     private final RestTemplate restTemplate;
     private final ClientRegistrationRepository clientRegistrationRepository;
+    private final FileService fileService;
 
     private final TokenProvider tokenProvider;
 
@@ -141,5 +145,13 @@ public class MemberCommandService {
         HttpEntity<MultiValueMap<String, String>> revokeRequest = new HttpEntity<>(params, headers);
 
         return restTemplate.postForEntity("https://appleid.apple.com/auth/revoke", revokeRequest, Object.class);
+    }
+
+    public MemberUpdateImageResponse updateProfileImage(Long memberId, MultipartFile multipartFile) {
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
+        String profileImageUrl = fileService.upload(multipartFile, "profileImage");
+        member.updateProfileImage(profileImageUrl);
+        return new MemberUpdateImageResponse(profileImageUrl);
     }
 }

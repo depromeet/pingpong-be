@@ -1,7 +1,7 @@
-package com.dpm.winwin.api.common.utils;
+package com.dpm.winwin.api.common.file.service;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public interface FileUploader {
+public interface FileService {
     String upload(MultipartFile multipartFile, String directory);
 }

@@ -155,4 +155,12 @@ public class MemberCommandService {
 
         return restTemplate.postForEntity("https://appleid.apple.com/auth/revoke", revokeRequest, Object.class);
     }
+
+    public MemberUpdateImageResponse updateProfileImage(Long memberId, MultipartFile multipartFile) {
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
+        String profileImageUrl = fileService.upload(multipartFile, "profileImage");
+        member.updateProfileImage(profileImageUrl);
+        return new MemberUpdateImageResponse(profileImageUrl);
+    }
 }

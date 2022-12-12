@@ -12,8 +12,6 @@ import com.dpm.winwin.api.utils.RestDocsTestSupport;
 import com.dpm.winwin.domain.entity.member.enums.Ranks;
 import java.util.List;
 import com.dpm.winwin.domain.repository.member.dto.request.MemberNicknameRequest;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -24,8 +22,6 @@ import static java.util.Collections.emptyList;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
-import static org.mockito.BDDMockito.given;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
@@ -93,7 +89,6 @@ public class MemberControllerTest extends RestDocsTestSupport {
 
         MemberUpdateRequest request = new MemberUpdateRequest(
                 nickname,
-                "depromeet/team2.png",
                 "안녕하세요 김감자입니다.",
                 "www.depromeet.com",
                 emptyList(),
@@ -126,8 +121,6 @@ public class MemberControllerTest extends RestDocsTestSupport {
                         requestFields(
                                 fieldWithPath("nickname").type(JsonFieldType.STRING)
                                         .description("수정하려는 닉네임"),
-                                fieldWithPath("image").type(JsonFieldType.STRING)
-                                        .description("수정할 회원 프로필 사진"),
                                 fieldWithPath("introduction").type(JsonFieldType.STRING)
                                         .description("수정할 회원 소개"),
                                 fieldWithPath("profileLink").type(JsonFieldType.STRING)

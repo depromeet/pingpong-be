@@ -1,5 +1,6 @@
 package com.dpm.winwin.api.member.controller;
 
+import com.dpm.winwin.api.common.error.enums.ErrorMessage;
 import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
 import com.dpm.winwin.api.common.response.dto.BaseResponseDto;
 import com.dpm.winwin.api.member.dto.request.MemberUpdateRequest;
@@ -10,6 +11,7 @@ import com.dpm.winwin.api.member.dto.response.RanksListResponse;
 import com.dpm.winwin.api.member.service.MemberCommandService;
 import com.dpm.winwin.api.member.service.MemberQueryService;
 import com.dpm.winwin.domain.repository.member.dto.request.MemberNicknameRequest;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,37 +23,33 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-
-import static com.dpm.winwin.api.common.error.enums.ErrorMessage.INVALID_NICKNAME;
-
-
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/members")
 public class MemberController {
+
     private final MemberQueryService memberQueryService;
     private final MemberCommandService memberCommandService;
 
     @PatchMapping("/nickname")
     public BaseResponseDto<MemberNicknameResponse> updateMemberNickname(
-            @Valid @RequestBody MemberNicknameRequest memberNicknameRequest, BindingResult bindingResult){
+        @Valid @RequestBody MemberNicknameRequest memberNicknameRequest, BindingResult bindingResult) {
         Long memberId = 1L;
-        if (bindingResult.hasErrors()){
-            throw new BusinessException(INVALID_NICKNAME);
+        if (bindingResult.hasErrors()) {
+            throw new BusinessException(ErrorMessage.INVALID_NICKNAME);
         }
         return BaseResponseDto.ok(memberCommandService.updateMemberNickname(memberId, memberNicknameRequest));
     }
 
     @GetMapping("/{memberId}")
     public BaseResponseDto<MemberRankReadResponse> readMemberInfo(
-            @PathVariable Long memberId) {
+        @PathVariable Long memberId) {
         return BaseResponseDto.ok(memberQueryService.readMemberInfo(memberId));
     }
 
     @PutMapping
     public BaseResponseDto<MemberUpdateResponse> updateMember(
-            @RequestBody final  MemberUpdateRequest memberUpdateRequest) {
+        @RequestBody MemberUpdateRequest memberUpdateRequest) {
         Long memberId = 1L;
         return BaseResponseDto.ok(memberCommandService.updateMember(memberId, memberUpdateRequest));
     }

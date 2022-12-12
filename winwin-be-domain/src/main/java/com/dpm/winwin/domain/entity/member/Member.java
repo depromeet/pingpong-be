@@ -130,7 +130,6 @@ public class Member extends BaseEntity{
 
     public void update(MemberUpdateDto memberUpdateDto, List<SubCategory> givenTalents, List<SubCategory> takenTalents){
         this.nickname = memberUpdateDto.nickname();
-        this.image = memberUpdateDto.image();
         this.introduction = memberUpdateDto.introduction();
         this.profileLink = memberUpdateDto.profileLink();
         setGivenTalents(givenTalents);

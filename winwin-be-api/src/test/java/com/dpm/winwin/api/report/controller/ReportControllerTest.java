@@ -1,8 +1,7 @@
 package com.dpm.winwin.api.report.controller;
 
+import static com.dpm.winwin.api.member.controller.MemberControllerTest.MEMBER_ID;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
@@ -19,17 +18,20 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
 
+@WithMockUser(username = MEMBER_ID, authorities = {"ROLE_USER"})
 public class ReportControllerTest extends RestDocsTestSupport {
 
+    static final String MEMBER_ID = "1";
     @MockBean
     private ReportService reportService;
 
     @Test
     public void 게시물에서_신고한다() throws Exception {
         // given
-        Long reportedId = 1L;
+        Long reportedId = Long.parseLong(MEMBER_ID);
         Long postId = 10L;
         ReportType reportType = ReportType.POST;
 

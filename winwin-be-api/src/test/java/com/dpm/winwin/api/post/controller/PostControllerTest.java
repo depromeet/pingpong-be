@@ -24,10 +24,10 @@ import com.dpm.winwin.api.post.dto.request.PostUpdateRequest;
 import com.dpm.winwin.api.post.dto.response.LinkResponse;
 import com.dpm.winwin.api.post.dto.response.MyPagePostResponse;
 import com.dpm.winwin.api.post.dto.response.PostAddResponse;
-import com.dpm.winwin.api.post.dto.response.PostReadResponse;
-import com.dpm.winwin.api.post.dto.response.PostUpdateResponse;
 import com.dpm.winwin.api.post.dto.response.PostCustomizedResponse;
+import com.dpm.winwin.api.post.dto.response.PostReadResponse;
 import com.dpm.winwin.api.post.dto.response.PostResponse;
+import com.dpm.winwin.api.post.dto.response.PostUpdateResponse;
 import com.dpm.winwin.api.post.service.PostService;
 import com.dpm.winwin.api.utils.RestDocsTestSupport;
 import com.dpm.winwin.domain.entity.member.enums.Ranks;
@@ -102,6 +102,8 @@ class PostControllerTest extends RestDocsTestSupport {
                     fieldWithPath("data.content[].takenTalents").type(JsonFieldType.ARRAY).description("받고 싶은 재능"),
                     fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER).description("전체 데이터 수"),
                     fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER).description("전체 페이지 수"),
+                    fieldWithPath("data.pageNumber").type(JsonFieldType.NUMBER).description("현재 페이지 번호"),
+                    fieldWithPath("data.numberOfElements").type(JsonFieldType.NUMBER).description("현재 페이지의 데이터 수"),
                     fieldWithPath("data.hasNextPages").type(JsonFieldType.BOOLEAN).description("다음 페이지 여부")
                 )
             ));
@@ -150,6 +152,8 @@ class PostControllerTest extends RestDocsTestSupport {
                     fieldWithPath("data.content[].ranks").type(JsonFieldType.STRING).description("작성자 등급"),
                     fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER).description("전체 데이터 수"),
                     fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER).description("전체 페이지 수"),
+                    fieldWithPath("data.pageNumber").type(JsonFieldType.NUMBER).description("현재 페이지 번호"),
+                    fieldWithPath("data.numberOfElements").type(JsonFieldType.NUMBER).description("현재 페이지의 데이터 수"),
                     fieldWithPath("data.hasNextPages").type(JsonFieldType.BOOLEAN).description("다음 페이지 여부")
                 )
             ));
@@ -592,6 +596,10 @@ class PostControllerTest extends RestDocsTestSupport {
                         .description("전체 데이터 수"),
                     fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER)
                         .description("전체 페이지 수"),
+                    fieldWithPath("data.pageNumber").type(JsonFieldType.NUMBER)
+                        .description("현재 페이지 번호"),
+                    fieldWithPath("data.numberOfElements").type(JsonFieldType.NUMBER)
+                        .description("현재 페이지의 데이터 수"),
                     fieldWithPath("data.hasNextPages").type(JsonFieldType.BOOLEAN)
                         .description("다음 페이지 여부")
                 )

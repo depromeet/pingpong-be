@@ -1,4 +1,4 @@
-package com.dpm.winwin.api.oauth.record;
+package com.dpm.winwin.api.oauth.dto;
 
 public record MemberInfo(Name name, String email) {
 

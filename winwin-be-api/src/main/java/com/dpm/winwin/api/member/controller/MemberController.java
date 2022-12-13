@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 import static com.dpm.winwin.api.common.error.enums.ErrorMessage.INVALID_NICKNAME;
+import static com.dpm.winwin.api.common.utils.SecurityUtil.getCurrentMemberId;
 
 
 @RequiredArgsConstructor
@@ -35,8 +36,9 @@ public class MemberController {
 
     @PatchMapping("/nickname")
     public BaseResponseDto<MemberNicknameResponse> updateMemberNickname(
-            @Valid @RequestBody MemberNicknameRequest memberNicknameRequest, BindingResult bindingResult){
-        Long memberId = 1L;
+            @Valid @RequestBody MemberNicknameRequest memberNicknameRequest,
+            BindingResult bindingResult) {
+        Long memberId = getCurrentMemberId();
         if (bindingResult.hasErrors()){
             throw new BusinessException(INVALID_NICKNAME);
         }
@@ -45,14 +47,14 @@ public class MemberController {
 
     @GetMapping("/{memberId}")
     public BaseResponseDto<MemberRankReadResponse> readMemberInfo(
-            @PathVariable Long memberId){
+            @PathVariable Long memberId) {
         return BaseResponseDto.ok(memberQueryService.readMemberInfo(memberId));
     }
 
     @PutMapping
     public BaseResponseDto<MemberUpdateResponse> updateMember(
             @RequestBody final  MemberUpdateRequest memberUpdateRequest) {
-        Long memberId = 1L;
+        Long memberId = getCurrentMemberId();
         return BaseResponseDto.ok(memberCommandService.updateMember(memberId, memberUpdateRequest));
     }
 
@@ -60,5 +62,12 @@ public class MemberController {
     public BaseResponseDto<RanksListResponse> getRankList() {
         RanksListResponse response = memberQueryService.getRankList();
         return BaseResponseDto.ok(response);
+    }
+
+    @DeleteMapping("/{memberId}")
+    public BaseResponseDto<Long> deleteMember(@PathVariable Long memberId) {
+        Long deleteMemberId = memberCommandService.deleteMember(memberId);
+
+        return BaseResponseDto.ok(deleteMemberId);
     }
 }

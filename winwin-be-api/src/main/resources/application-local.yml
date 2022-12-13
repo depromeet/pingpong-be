@@ -1,12 +1,5 @@
 server:
   port: 8080
-  # 임시로 https 사용하기 위함
-  ssl:
-    enabled: true
-    key-store: classpath:keystore.p12
-    key-store-password: ENC(nnXnuphKlElI1NTR3PlcRPVhS8HgHWDT)
-    key-store-type: PKCS12
-    key-alias: pingpong-ssl
 
 
 spring:
@@ -37,7 +30,7 @@ spring:
             clientName: apple
             authorizationGrantType: authorization_code
             clientAuthenticationMethod: CLIENT_SECRET_JWT
-            redirect-uri: https://www.pingpongg.shop:8080/apple/redirect
+            redirect-uri: https://test.pingpongg.shop:8083/apple/redirect
             scope:
               - openid
               - name

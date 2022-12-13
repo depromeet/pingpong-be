@@ -46,11 +46,12 @@ public class TokenProvider implements InitializingBean {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String createToken(Long memberId, String memberName) {
+    public String createAccessToken(Long memberId, String memberName) {
         long now = new Date().getTime();
         Date expiredDate = new Date(now + this.tokenValidityInMilliseconds);
 
         return Jwts.builder()
+                .setIssuedAt(new Date())
                 .setSubject(memberName)
                 .claim("memberId", memberId)
                 .signWith(key, SignatureAlgorithm.HS512)
@@ -58,19 +59,34 @@ public class TokenProvider implements InitializingBean {
                 .compact();
     }
 
+    public String createToken(Long memberId, String memberName, int day) {
+        long now = new Date().getTime();
+        long expired = this.tokenValidityInMilliseconds * day;
+        Date expiredDate = new Date(now + expired);
+
+        return Jwts.builder()
+            .setIssuedAt(new Date())
+            .setSubject(memberName)
+            .claim("memberId", memberId)
+            .signWith(key, SignatureAlgorithm.HS512)
+            .setExpiration(expiredDate)
+            .compact();
+    }
+
     public Authentication getAuthentication(String token) {
-        Claims claims = Jwts.parserBuilder()
+        Claims claims = getClaims(token);
+
+        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        User principal = new User(claims.get("memberId").toString(), "", authorities);
+        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+    }
+
+    public Claims getClaims(String token) {
+        return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
-
-        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
-
-        User principal = new User(claims.getSubject(), "", authorities);
-
-        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
-
     }
 
     public boolean validateToken(String token) {

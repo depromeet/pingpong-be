@@ -19,7 +19,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.dpm.winwin.api.common.response.dto.GlobalPageResponseDto;
 import com.dpm.winwin.api.post.dto.request.LinkRequest;
-import com.dpm.winwin.api.common.response.dto.GlobalPageResponseDto;
 import com.dpm.winwin.api.post.dto.request.PostAddRequest;
 import com.dpm.winwin.api.post.dto.request.PostUpdateRequest;
 import com.dpm.winwin.api.post.dto.response.LinkResponse;
@@ -465,27 +464,27 @@ class PostControllerTest extends RestDocsTestSupport {
         Long postId = 1L;
         Long memberId = 1L;
 
-        PostReadResponse response = PostReadResponse.builder()
-            .id(postId)
-            .title("재능 재목")
-            .content("재능 내용")
-            .isShare(false)
-            .subCategory("재능 서브 카테고리")
-            .links(List.of(new LinkResponse(1L, "www.naver.com"),
-                new LinkResponse(2L, "www.google.com")))
-            .chatLink("www.chatLink.com")
-            .likes(10000)
-            .exchangeType(ExchangeType.ANY_TYPE)
-            .exchangePeriod(ExchangePeriod.ANY_PERIOD)
-            .exchangeTime(ExchangeTime.ANY_TIME)
-            .takenContent("나는 이런걸 받고 싶어요")
-            .takenTalents(List.of("서브 카테고리 1", "서브카테고리 2"))
-            .memberId(memberId)
-            .nickname("minsoozz")
-            .image("image/apple.png")
-            .ranks(Ranks.BEGINNER.getName())
-            .isLike(false)
-            .build();
+        PostReadResponse response = new PostReadResponse(
+            postId,
+            "재능 제목",
+            "재능 내용",
+            false,
+            "재능 서브 카테고리",
+            List.of(new LinkResponse(1L, "www.naver.com"),
+                new LinkResponse(2L, "www.google.com")),
+            "www.chatLink.com",
+            3,
+            "받고 싶은 재능 내용",
+            List.of("받고 싶은 재능1", "받고 싶은 재능2"),
+            ExchangeType.ANY_TYPE,
+            ExchangePeriod.ANY_PERIOD,
+            ExchangeTime.ANY_TIME,
+            memberId,
+            "말하는 감자",
+            "image/apple.png",
+            Ranks.BEGINNER.getName(),
+            false
+        );
 
         given(postService.get(postId, memberId))
             .willReturn(response);

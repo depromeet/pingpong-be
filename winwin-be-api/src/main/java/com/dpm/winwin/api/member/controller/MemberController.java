@@ -11,6 +11,8 @@ import com.dpm.winwin.api.member.service.MemberCommandService;
 import com.dpm.winwin.api.member.service.MemberQueryService;
 import com.dpm.winwin.domain.repository.member.dto.request.MemberNicknameRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,6 +51,11 @@ public class MemberController {
     public BaseResponseDto<MemberRankReadResponse> readMemberInfo(
             @PathVariable Long memberId) {
         return BaseResponseDto.ok(memberQueryService.readMemberInfo(memberId));
+    }
+
+    @GetMapping
+    public BaseResponseDto<MemberRankReadResponse> currentMemberInfo(@AuthenticationPrincipal User user) {
+        return BaseResponseDto.ok(memberQueryService.readMemberInfo(Long.parseLong(user.getUsername())));
     }
 
     @PutMapping

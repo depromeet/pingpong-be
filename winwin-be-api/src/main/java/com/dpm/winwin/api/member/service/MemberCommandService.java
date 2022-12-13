@@ -159,7 +159,7 @@ public class MemberCommandService {
     public MemberUpdateImageResponse updateProfileImage(Long memberId, MultipartFile multipartFile) {
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
-        String profileImageUrl = fileService.upload(multipartFile, "profileImage");
+        String profileImageUrl = fileService.upload(multipartFile, memberId, PROFILE_IMAGE);
         member.updateProfileImage(profileImageUrl);
         return new MemberUpdateImageResponse(profileImageUrl);
     }

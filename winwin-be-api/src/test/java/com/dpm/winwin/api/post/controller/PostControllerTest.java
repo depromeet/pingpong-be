@@ -28,7 +28,7 @@ import com.dpm.winwin.api.post.dto.response.PostAddResponse;
 import com.dpm.winwin.api.post.dto.response.PostReadResponse;
 import com.dpm.winwin.api.post.dto.response.PostUpdateResponse;
 import com.dpm.winwin.api.post.dto.response.PostCustomizedResponse;
-import com.dpm.winwin.api.post.dto.response.PostListResponse;
+import com.dpm.winwin.api.post.dto.response.PostResponse;
 import com.dpm.winwin.api.post.service.PostService;
 import com.dpm.winwin.api.utils.RestDocsTestSupport;
 import com.dpm.winwin.domain.entity.member.enums.Ranks;
@@ -56,11 +56,11 @@ class PostControllerTest extends RestDocsTestSupport {
     @Test
     void post가_category에_의해_목록_조회된다() throws Exception {
         // given
-        List<PostListResponse> posts = setPosts();
+        List<PostResponse> posts = setPosts();
         PageRequest pageable = PageRequest.of(0, 2);
         int total = posts.size();
-        Page<PostListResponse> page = new PageImpl<>(posts, pageable, total);
-        GlobalPageResponseDto<PostListResponse> response = GlobalPageResponseDto.of(page);
+        Page<PostResponse> page = new PageImpl<>(posts, pageable, total);
+        GlobalPageResponseDto<PostResponse> response = GlobalPageResponseDto.of(page);
 
         // when
         given(postService.getPosts(any(), any()))
@@ -294,10 +294,10 @@ class PostControllerTest extends RestDocsTestSupport {
             ));
     }
 
-    private List<PostListResponse> setPosts() {
-        List<PostListResponse> posts = new ArrayList<>();
+    private List<PostResponse> setPosts() {
+        List<PostResponse> posts = new ArrayList<>();
         for (int i = 1; i <= 2; i++) {
-            PostListResponse postResponse = new PostListResponse(
+            PostResponse postResponse = new PostResponse(
                 (long) i,
                 "제목" + i,
                 "UX/UI 디자인",

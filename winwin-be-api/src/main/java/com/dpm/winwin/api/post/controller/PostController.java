@@ -7,9 +7,9 @@ import com.dpm.winwin.api.post.dto.request.PostUpdateRequest;
 import com.dpm.winwin.api.post.dto.response.MyPagePostResponse;
 import com.dpm.winwin.api.post.dto.response.PostAddResponse;
 import com.dpm.winwin.api.post.dto.response.PostCustomizedResponse;
-import com.dpm.winwin.api.post.dto.response.PostListResponse;
 import com.dpm.winwin.api.post.dto.response.PostMethodsResponse;
 import com.dpm.winwin.api.post.dto.response.PostReadResponse;
+import com.dpm.winwin.api.post.dto.response.PostResponse;
 import com.dpm.winwin.api.post.dto.response.PostUpdateResponse;
 import com.dpm.winwin.api.post.service.PostService;
 import com.dpm.winwin.domain.repository.post.dto.request.PostCustomizedConditionRequest;
@@ -33,28 +33,16 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping
-    public BaseResponseDto<GlobalPageResponseDto<PostListResponse>> getPostList(
-        PostListConditionRequest condition, Pageable pageable
-    ) {
-        GlobalPageResponseDto<PostListResponse> response = postService.getPosts(condition,
-            pageable);
-        return BaseResponseDto.ok(response);
-    }
-
-    @PutMapping("/{id}")
-    public BaseResponseDto<PostUpdateResponse> updatePost(
-        @PathVariable Long id, @RequestBody final PostUpdateRequest updateRequest) {
-        long memberId = 1L;
-        return BaseResponseDto.ok(postService.update(memberId, id, updateRequest));
+    public BaseResponseDto<GlobalPageResponseDto<PostResponse>> getPosts(
+        PostListConditionRequest condition, Pageable pageable) {
+        return BaseResponseDto.ok(postService.getPosts(condition, pageable));
     }
 
     @GetMapping("/custom")
-    public BaseResponseDto<GlobalPageResponseDto<PostCustomizedResponse>> getCustomPostList(
+    public BaseResponseDto<GlobalPageResponseDto<PostCustomizedResponse>> getCustomPosts(
         PostCustomizedConditionRequest condition, Pageable pageable) {
         Long tempMemberId = 1L;
-        GlobalPageResponseDto<PostCustomizedResponse> response = postService
-            .getPostsCustomized(tempMemberId, condition, pageable);
-        return BaseResponseDto.ok(response);
+        return BaseResponseDto.ok(postService.getPostsCustomized(tempMemberId, condition, pageable));
     }
 
     @GetMapping("/{id}")
@@ -66,26 +54,30 @@ public class PostController {
     @PostMapping
     public BaseResponseDto<PostAddResponse> createPost(@RequestBody PostAddRequest request) {
         long tempMemberId = 1L;
-        PostAddResponse response = postService.save(tempMemberId, request);
-        return BaseResponseDto.ok(response);
+        return BaseResponseDto.ok(postService.save(tempMemberId, request));
     }
+
+    @PutMapping("/{id}")
+    public BaseResponseDto<PostUpdateResponse> updatePost(
+        @PathVariable Long id, @RequestBody final PostUpdateRequest updateRequest) {
+        long memberId = 1L;
+        return BaseResponseDto.ok(postService.update(memberId, id, updateRequest));
+    }
+
 
     @DeleteMapping("/{id}")
     public BaseResponseDto<Long> deletePost(@PathVariable Long id) {
-        Long deletedId = postService.delete(id);
-        return BaseResponseDto.ok(deletedId);
+        return BaseResponseDto.ok(postService.delete(id));
     }
 
     @GetMapping("/method")
-    public BaseResponseDto<PostMethodsResponse> getPostMethod() {
-        PostMethodsResponse response = postService.getPostMethod();
-        return BaseResponseDto.ok(response);
+    public BaseResponseDto<PostMethodsResponse> getPostMethods() {
+        return BaseResponseDto.ok(postService.getPostMethods());
     }
 
     @GetMapping("/members/{memberId}")
     public BaseResponseDto<GlobalPageResponseDto<MyPagePostResponse>> getAllByMemberId(
-        @PathVariable Long memberId,
-        Pageable pageable) {
+        @PathVariable Long memberId, Pageable pageable) {
         return BaseResponseDto.ok(postService.getAllByMemberId(memberId, pageable));
     }
 }

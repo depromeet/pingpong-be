@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 import static com.dpm.winwin.api.common.error.enums.ErrorMessage.INVALID_NICKNAME;
+import static com.dpm.winwin.api.common.utils.SecurityUtil.getCurrentMemberId;
 
 
 @RequiredArgsConstructor
@@ -35,8 +36,9 @@ public class MemberController {
 
     @PatchMapping("/nickname")
     public BaseResponseDto<MemberNicknameResponse> updateMemberNickname(
-            @Valid @RequestBody MemberNicknameRequest memberNicknameRequest, BindingResult bindingResult){
-        Long memberId = 1L;
+            @Valid @RequestBody MemberNicknameRequest memberNicknameRequest,
+            BindingResult bindingResult) {
+        Long memberId = getCurrentMemberId();
         if (bindingResult.hasErrors()){
             throw new BusinessException(INVALID_NICKNAME);
         }
@@ -52,7 +54,7 @@ public class MemberController {
     @PutMapping
     public BaseResponseDto<MemberUpdateResponse> updateMember(
             @RequestBody final  MemberUpdateRequest memberUpdateRequest) {
-        Long memberId = 1L;
+        Long memberId = getCurrentMemberId();
         return BaseResponseDto.ok(memberCommandService.updateMember(memberId, memberUpdateRequest));
     }
 

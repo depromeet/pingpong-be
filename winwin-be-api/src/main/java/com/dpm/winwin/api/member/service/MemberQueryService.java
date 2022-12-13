@@ -10,6 +10,7 @@ import com.dpm.winwin.domain.repository.member.MemberRepository;
 import com.dpm.winwin.domain.repository.member.dto.response.MemberReadResponse;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -40,7 +41,7 @@ public class MemberQueryService {
 
 
         if (likeCount.compareTo(BigDecimal.valueOf(1000)) >= 0) {
-            likeCounts = likeCount.divide(BigDecimal.valueOf(1000),1,BigDecimal.ROUND_DOWN).toPlainString() + 'k';
+            likeCounts = likeCount.divide(BigDecimal.valueOf(1000),1, RoundingMode.DOWN).toPlainString() + 'k';
         }
 
         return new MemberRankReadResponse(

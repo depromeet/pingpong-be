@@ -77,8 +77,7 @@ public class TokenProvider implements InitializingBean {
         Claims claims = getClaims(token);
 
         List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
-        User principal = new User(claims.getSubject(), "", authorities);
-
+        User principal = new User(claims.get("memberId").toString(), "", authorities);
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 

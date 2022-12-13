@@ -1,5 +1,6 @@
 package com.dpm.winwin.api.category.controller;
 
+import static com.dpm.winwin.api.utils.RestDocsConfig.field;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
@@ -74,7 +75,8 @@ class CategoryControllerTest extends RestDocsTestSupport {
         result.andExpect(status().isOk())
             .andDo(restDocs.document(
                 requestParameters(
-                    parameterWithName("mainCategoryId").description("대분류 아이디").optional()
+                    parameterWithName("mainCategoryId").optional().description("대분류 아이디")
+                        .attributes(field("type", "Number"))
                 ),
                 responseFields(
                     fieldWithPath("message").type(STRING).description("성공 여부"),
@@ -102,8 +104,9 @@ class CategoryControllerTest extends RestDocsTestSupport {
         result.andExpect(status().isOk())
             .andDo(restDocs.document(
                 requestParameters(
-                    parameterWithName("midCategoryId").description("대분류 아이디").optional()
-                ),
+                    parameterWithName("midCategoryId").optional().description("대분류 아이디")
+                        .attributes(field("type", "Number"))
+                    ),
                 responseFields(
                     fieldWithPath("message").type(STRING).description("성공 여부"),
                     fieldWithPath("data[].id").type(NUMBER).description("서브 카테고리 id"),

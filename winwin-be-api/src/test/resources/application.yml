@@ -63,11 +63,11 @@ cloud:
   aws:
     s3:
       bucket:
-        name: bucketName
-        url: bucketUrl
+        name: cloudAwsS3BucketName
+        url: cloudAwsS3BucketUrl
     credentials:
-      access-key:
-      secret-key:
+      access-key: cloudAwsS3CredentialsAccessKey
+      secret-key: cloudAwsS3CredentialsSecretKey
     region:
       static: ap-northeast-2
     stack:

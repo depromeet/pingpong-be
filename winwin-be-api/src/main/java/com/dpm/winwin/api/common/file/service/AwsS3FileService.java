@@ -26,8 +26,8 @@ public class AwsS3FileService implements FileService {
     @Value("${cloud.aws.s3.bucket.url}")
     private String defaultUrl;
 
-    public String upload(MultipartFile multipartFile, String directory) {
-        String savedFileName = getSavedFileName(multipartFile, directory);
+    public String upload(MultipartFile multipartFile, Long memberId, String imageType) {
+        String savedFileName = getSavedFileName(multipartFile, memberId, imageType);
         ObjectMetadata metadata = new ObjectMetadata();
 
         try (InputStream inputStream = multipartFile.getInputStream()) {
@@ -39,8 +39,13 @@ public class AwsS3FileService implements FileService {
         return getPath(savedFileName);
     }
 
-    private String getSavedFileName(MultipartFile multipartFile, String directory) {
-        return directory + "/" + UUID.randomUUID() + "-" + multipartFile.getOriginalFilename();
+    private String getSavedFileName(MultipartFile multipartFile, Long memberId, String imageType) {
+        return String.format("member%s/%s/%s-%s",
+                memberId, imageType, getRandomUUID(), multipartFile.getOriginalFilename());
+    }
+
+    private String getRandomUUID() {
+        return UUID.randomUUID().toString().replace("-", "");
     }
 
     private String getPath(String savedFileName) {

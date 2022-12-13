@@ -1,5 +1,6 @@
 package com.dpm.winwin.api.member.service;
 
+import static com.dpm.winwin.api.common.constant.ImageType.PROFILE_IMAGE;
 import static com.dpm.winwin.api.common.error.enums.ErrorMessage.APPLE_TOKEN_REVOKE_FAIL;
 import static com.dpm.winwin.api.common.error.enums.ErrorMessage.DOES_NOT_MATCH_MEMBER_ID;
 import static com.dpm.winwin.api.common.error.enums.ErrorMessage.MEMBER_NOT_FOUND;
@@ -150,7 +151,7 @@ public class MemberCommandService {
     public MemberUpdateImageResponse updateProfileImage(Long memberId, MultipartFile multipartFile) {
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
-        String profileImageUrl = fileService.upload(multipartFile, "profileImage");
+        String profileImageUrl = fileService.upload(multipartFile, memberId, PROFILE_IMAGE);
         member.updateProfileImage(profileImageUrl);
         return new MemberUpdateImageResponse(profileImageUrl);
     }

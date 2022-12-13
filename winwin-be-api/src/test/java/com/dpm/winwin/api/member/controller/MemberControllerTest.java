@@ -1,5 +1,6 @@
 package com.dpm.winwin.api.member.controller;
 
+import com.dpm.winwin.api.member.dto.response.MemberUpdateImageResponse;
 import com.dpm.winwin.api.member.dto.response.RanksListResponse;
 import com.dpm.winwin.api.member.dto.response.RanksResponse;
 import com.dpm.winwin.api.member.dto.request.MemberUpdateRequest;
@@ -15,6 +16,7 @@ import com.dpm.winwin.domain.repository.member.dto.request.MemberNicknameRequest
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -23,6 +25,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.multipart;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -79,6 +82,38 @@ public class MemberControllerTest extends RestDocsTestSupport {
                                         .description("수정된 닉네임")
                         )
                 ));
+    }
+
+    @Test
+    void member의_profileImage를_수정한다() throws Exception {
+        // given
+        MockMultipartFile multipartFile = new MockMultipartFile("image",
+            "kirby.png",
+            MediaType.IMAGE_PNG_VALUE,
+            "image".getBytes());
+
+        MemberUpdateImageResponse response = new MemberUpdateImageResponse(
+            "https://dpm-pingpong-bucket.s3.ap-northeast-2.amazonaws.com/profileImage/3d4395e4-61db-4010-8104-200e286870c4-kirby.png");
+
+        // when
+        given(memberCommandService.updateProfileImage(1L, multipartFile))
+            .willReturn(response);
+
+        ResultActions result = mockMvc.perform(
+            multipart("/api/v1/members/image")
+                .file(multipartFile)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+        );
+
+        // then
+        result.andExpect(status().isOk())
+            .andDo(restDocs.document(
+                responseFields(
+                    fieldWithPath("message").type(JsonFieldType.STRING).description("성공 여부"),
+                    fieldWithPath("data.image").type(JsonFieldType.STRING).description("저장된 회원의 프로필 사진")
+                )
+            ));
     }
 
     @Test

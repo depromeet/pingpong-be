@@ -30,7 +30,7 @@ spring:
             clientName: apple
             authorizationGrantType: authorization_code
             clientAuthenticationMethod: CLIENT_SECRET_JWT
-            redirect-uri: https://test.pingpongg.shop:8083/apple/redirect
+            redirect-uri: https://test.pingpongg.shop/apple/redirect
             scope:
               - openid
               - name

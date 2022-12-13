@@ -9,6 +9,8 @@ public record GlobalPageResponseDto<T>(
     List<T> content,
     long totalElements,
     int totalPages,
+    int pageNumber,
+    int numberOfElements,
     boolean hasNextPages
 ) {
 
@@ -17,6 +19,8 @@ public record GlobalPageResponseDto<T>(
             page.getContent(),
             page.getTotalElements(),
             page.getTotalPages(),
+            page.getNumber(),
+            page.getNumberOfElements(),
             page.hasNext()
         );
     }

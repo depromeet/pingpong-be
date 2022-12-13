@@ -107,13 +107,11 @@ public class PostService {
             post.getLinks().stream().map(LinkResponse::of).toList(),
             post.getChatLink(),
             post.getLikes().size(),
-            post.getExchangeType(),
+            post.getTakenContent(), post.getTakenTalents().stream()
+                .map(postTalent -> postTalent.getTalent().getName())
+                .toList(), post.getExchangeType(),
             post.getExchangePeriod(),
             post.getExchangeTime(),
-            post.getTakenContent(),
-            post.getTakenTalents().stream()
-                .map(postTalent -> postTalent.getTalent().getName())
-                .toList(),
             post.getMember().getId(),
             post.getMember().getNickname(),
             post.getMember().getImage(),

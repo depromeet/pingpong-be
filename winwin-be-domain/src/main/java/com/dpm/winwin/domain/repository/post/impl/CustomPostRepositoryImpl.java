@@ -131,7 +131,7 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
                     post.getTakenTalents().stream()
                         .map(takenTalent -> takenTalent.getTalent().getName())
                         .toList(),
-                    (long) post.getLikes().size()))
+                    post.getLikes().size()))
             .toList();
 
         JPAQuery<Long> countQuery = queryFactory.select(post.count())

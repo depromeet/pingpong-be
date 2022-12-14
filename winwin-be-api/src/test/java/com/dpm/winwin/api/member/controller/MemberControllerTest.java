@@ -34,7 +34,9 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParts;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WithMockUser(username = MEMBER_ID, authorities = {"ROLE_USER"})
@@ -97,7 +99,7 @@ public class MemberControllerTest extends RestDocsTestSupport {
             "image".getBytes());
 
         MemberUpdateImageResponse response = new MemberUpdateImageResponse(
-            "https://dpm-pingpong-bucket.s3.ap-northeast-2.amazonaws.com/profileImage/3d4395e4-61db-4010-8104-200e286870c4-kirby.png");
+            "https://dpm-pingpong-bucket.s3.ap-northeast-2.amazonaws.com/profileImage/3d4395e461db40108104200e286870c4-kirby.png");
 
         // when
         given(memberCommandService.updateProfileImage(1L, multipartFile))
@@ -113,6 +115,9 @@ public class MemberControllerTest extends RestDocsTestSupport {
         // then
         result.andExpect(status().isOk())
             .andDo(restDocs.document(
+                requestParts(
+                    partWithName("image").description("수정할 프로필 사진")
+                ),
                 responseFields(
                     fieldWithPath("message").type(JsonFieldType.STRING).description("성공 여부"),
                     fieldWithPath("data.image").type(JsonFieldType.STRING).description("저장된 회원의 프로필 사진")

@@ -502,6 +502,9 @@ class PostControllerTest extends RestDocsTestSupport {
         // then
         result.andExpect(status().isOk())
             .andDo(restDocs.document(
+                pathParameters(
+                    parameterWithName("id").description("조회할 게시물 id")
+                ),
                 responseFields(
                     fieldWithPath("message").type(JsonFieldType.STRING)
                         .description("성공 여부"),
@@ -572,6 +575,9 @@ class PostControllerTest extends RestDocsTestSupport {
 
         result.andExpect(status().isOk())
             .andDo(restDocs.document(
+                pathParameters(
+                    parameterWithName("id").description("회원 id")
+                ),
                 requestParameters(
                     parameterWithName("size").optional().description("페이지 번호 (0부터 시작)")
                         .attributes(field("type", "Number")),

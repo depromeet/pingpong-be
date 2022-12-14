@@ -92,14 +92,15 @@ class PostControllerTest extends RestDocsTestSupport {
                     fieldWithPath("message").type(JsonFieldType.STRING).description("성공 여부"),
                     fieldWithPath("data.content[].id").type(JsonFieldType.NUMBER).description("게시물 id"),
                     fieldWithPath("data.content[].title").type(JsonFieldType.STRING).description("게시물 제목"),
-                    fieldWithPath("data.content[].subCategory").type(JsonFieldType.STRING).description("소분류 카테고리"),
+                    fieldWithPath("data.content[].subCategory").type(JsonFieldType.STRING).description("소분류 카테고리 이름"),
                     fieldWithPath("data.content[].isShare").type(JsonFieldType.BOOLEAN).description("재능 나눔 여부"),
                     fieldWithPath("data.content[].likes").type(JsonFieldType.NUMBER).description("게시물 좋아요 수"),
                     fieldWithPath("data.content[].memberId").type(JsonFieldType.NUMBER).description("작성자 id"),
                     fieldWithPath("data.content[].nickname").type(JsonFieldType.STRING).description("작성자 닉네임"),
                     fieldWithPath("data.content[].image").type(JsonFieldType.STRING).description("작성자 이미지 url"),
                     fieldWithPath("data.content[].ranks").type(JsonFieldType.STRING).description("작성자 등급"),
-                    fieldWithPath("data.content[].takenTalents").type(JsonFieldType.ARRAY).description("받고 싶은 재능"),
+                    fieldWithPath("data.content[].takenTalents").type(JsonFieldType.ARRAY).optional()
+                        .description("받고 싶은 재능"),
                     fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER).description("전체 데이터 수"),
                     fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER).description("전체 페이지 수"),
                     fieldWithPath("data.pageNumber").type(JsonFieldType.NUMBER).description("현재 페이지 번호"),
@@ -143,7 +144,7 @@ class PostControllerTest extends RestDocsTestSupport {
                     fieldWithPath("message").type(JsonFieldType.STRING).description("성공 여부"),
                     fieldWithPath("data.content[].postId").type(JsonFieldType.NUMBER).description("게시물 id"),
                     fieldWithPath("data.content[].title").type(JsonFieldType.STRING).description("게시물 제목"),
-                    fieldWithPath("data.content[].subCategory").type(JsonFieldType.STRING).description("소분류 카테고리"),
+                    fieldWithPath("data.content[].subCategory").type(JsonFieldType.STRING).description("소분류 카테고리 이름"),
                     fieldWithPath("data.content[].isShare").type(JsonFieldType.BOOLEAN).description("재능 나눔 여부"),
                     fieldWithPath("data.content[].likes").type(JsonFieldType.NUMBER).description("게시물 좋아요 수"),
                     fieldWithPath("data.content[].memberId").type(JsonFieldType.NUMBER).description("작성자 id"),
@@ -194,9 +195,9 @@ class PostControllerTest extends RestDocsTestSupport {
             "제목",
             "내용",
             false,
-            "대분류 카테고리 이름",
-            "중분류 카테고리 이름",
-            "소분류 카테고리 이름",
+            "자기계발",
+            "취업/이직",
+            "자소서 · 면접",
             linksResponse,
             "www.chatLink.com",
             takeCategoriesResponse,
@@ -227,7 +228,7 @@ class PostControllerTest extends RestDocsTestSupport {
                     fieldWithPath("subCategoryId").type(JsonFieldType.NUMBER)
                         .description("소분류 카테고리 id"),
                     fieldWithPath("links").type(JsonFieldType.ARRAY).description("링크"),
-                    fieldWithPath("chatLink").type(JsonFieldType.STRING).description("오픈 채팅 링크"),
+                    fieldWithPath("chatLink").type(JsonFieldType.STRING).description("채팅 링크"),
                     fieldWithPath("takenTalentIds").type(JsonFieldType.ARRAY)
                         .description("받고 싶은 재능 id"),
                     fieldWithPath("takenContent").type(JsonFieldType.STRING)
@@ -248,16 +249,15 @@ class PostControllerTest extends RestDocsTestSupport {
                         .description("중분류 카테고리 이름"),
                     fieldWithPath("data.subCategory").type(JsonFieldType.STRING)
                         .description("소분류 카테고리 이름"),
-                    fieldWithPath("data.links").type(JsonFieldType.ARRAY).description("링크")
-                        .optional(),
-                    fieldWithPath("data.chatLink").type(JsonFieldType.STRING).description("오픈 채팅 링크"),
+                    fieldWithPath("data.links").type(JsonFieldType.ARRAY).optional().description("링크"),
+                    fieldWithPath("data.chatLink").type(JsonFieldType.STRING).description("채팅 링크"),
                     fieldWithPath("data.links[].id").type(JsonFieldType.NUMBER)
                         .description("링크 id"),
                     fieldWithPath("data.links[].content").type(JsonFieldType.STRING)
                         .description("링크"),
-                    fieldWithPath("data.takenTalents").type(JsonFieldType.ARRAY)
-                        .description("받고 싶은 카테고리"),
-                    fieldWithPath("data.takenContent").type(JsonFieldType.STRING)
+                    fieldWithPath("data.takenTalents").type(JsonFieldType.ARRAY).optional()
+                        .description("받고 싶은 재능"),
+                    fieldWithPath("data.takenContent").type(JsonFieldType.STRING).optional()
                         .description("받고 싶은 내용"),
                     fieldWithPath("data.exchangeType").type(JsonFieldType.STRING)
                         .description("교환 방식"),
@@ -308,7 +308,7 @@ class PostControllerTest extends RestDocsTestSupport {
                 3,
                 1L,
                 "말하는 감자" + i,
-                "imageUrl" + i,
+                "https://dpm-pingpong-bucket.s3.ap-northeast-2.amazonaws.com/profileImage/3d4395e461db40108104200e286870c4-kirby.png",
                 Ranks.BEGINNER.getName(),
                 Arrays.asList("그래픽 디자인", "글쓰기", "브랜드 디자인")
             );
@@ -328,7 +328,7 @@ class PostControllerTest extends RestDocsTestSupport {
                 3,
                 1L,
                 "말하는 감자" + i,
-                "imageUrl" + i,
+                "https://dpm-pingpong-bucket.s3.ap-northeast-2.amazonaws.com/profileImage/3d4395e461db40108104200e286870c4-kirby.png",
                 Ranks.BEGINNER.getName()
             );
             posts.add(postCustomResponse);
@@ -377,9 +377,9 @@ class PostControllerTest extends RestDocsTestSupport {
             "제목",
             "내용",
             false,
-            "대분류 카테고리 이름",
-            "중분류 카테고리 이름",
-            "소분류 카테고리 이름",
+            "자기계발",
+            "취업/이직",
+            "자소서 · 면접",
             linksResponse,
             "www.chatLink.com",
             takeCategoriesResponse,
@@ -413,7 +413,7 @@ class PostControllerTest extends RestDocsTestSupport {
                 requestFields(
                     fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
                     fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
-                    fieldWithPath("isShare").type(JsonFieldType.BOOLEAN).description("나눔 여부"),
+                    fieldWithPath("isShare").type(JsonFieldType.BOOLEAN).description("재능 나눔 여부"),
                     fieldWithPath("subCategoryId").type(JsonFieldType.NUMBER)
                         .description("소분류 카테고리 id"),
                     fieldWithPath("links").type(JsonFieldType.ARRAY).description("링크"),
@@ -435,23 +435,22 @@ class PostControllerTest extends RestDocsTestSupport {
                     fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("저장된 게시물 id"),
                     fieldWithPath("data.title").type(JsonFieldType.STRING).description("제목"),
                     fieldWithPath("data.content").type(JsonFieldType.STRING).description("내용"),
-                    fieldWithPath("data.isShare").type(JsonFieldType.BOOLEAN).description("나눔 여부"),
+                    fieldWithPath("data.isShare").type(JsonFieldType.BOOLEAN).description("재능 나눔 여부"),
                     fieldWithPath("data.mainCategory").type(JsonFieldType.STRING)
                         .description("대분류 카테고리 이름"),
                     fieldWithPath("data.midCategory").type(JsonFieldType.STRING)
                         .description("중분류 카테고리 이름"),
                     fieldWithPath("data.subCategory").type(JsonFieldType.STRING)
                         .description("소분류 카테고리 이름"),
-                    fieldWithPath("data.links").type(JsonFieldType.ARRAY).description("링크")
-                        .optional(),
-                    fieldWithPath("data.chatLink").type(JsonFieldType.STRING).description("채팅 링크"),
+                    fieldWithPath("data.links").type(JsonFieldType.ARRAY).optional().description("링크"),
                     fieldWithPath("data.links[].id").type(JsonFieldType.NUMBER)
                         .description("링크 id"),
                     fieldWithPath("data.links[].content").type(JsonFieldType.STRING)
                         .description("링크 내용"),
-                    fieldWithPath("data.takenTalents").type(JsonFieldType.ARRAY)
-                        .description("받고 싶은 카테고리"),
-                    fieldWithPath("data.takenContent").type(JsonFieldType.STRING)
+                    fieldWithPath("data.chatLink").type(JsonFieldType.STRING).description("채팅 링크"),
+                    fieldWithPath("data.takenTalents").type(JsonFieldType.ARRAY).optional()
+                        .description("받고 싶은 재능"),
+                    fieldWithPath("data.takenContent").type(JsonFieldType.STRING).optional()
                         .description("받고 싶은 내용"),
                     fieldWithPath("data.exchangeType").type(JsonFieldType.STRING)
                         .description("교환 방식"),
@@ -470,22 +469,22 @@ class PostControllerTest extends RestDocsTestSupport {
 
         PostReadResponse response = new PostReadResponse(
             postId,
-            "재능 제목",
-            "재능 내용",
+            "제목",
+            "내용",
             false,
-            "재능 서브 카테고리",
+            "자소서 · 면접",
             List.of(new LinkResponse(1L, "www.naver.com"),
                 new LinkResponse(2L, "www.google.com")),
             "www.chatLink.com",
             3,
             "받고 싶은 재능 내용",
-            List.of("받고 싶은 재능1", "받고 싶은 재능2"),
+            List.of("액세서리 · 패션소품", "뜨개 · 자수 · 라탄"),
             ExchangeType.ANY_TYPE,
             ExchangePeriod.ANY_PERIOD,
             ExchangeTime.ANY_TIME,
             memberId,
             "말하는 감자",
-            "image/apple.png",
+            "https://dpm-pingpong-bucket.s3.ap-northeast-2.amazonaws.com/profileImage/3d4395e461db40108104200e286870c4-kirby.png",
             Ranks.BEGINNER.getName(),
             false
         );
@@ -515,20 +514,20 @@ class PostControllerTest extends RestDocsTestSupport {
                     fieldWithPath("data.content").type(JsonFieldType.STRING)
                         .description("내용"),
                     fieldWithPath("data.isShare").type(JsonFieldType.BOOLEAN)
-                        .description("나눔 여부"),
+                        .description("재능 나눔 여부"),
                     fieldWithPath("data.subCategory").type(JsonFieldType.STRING)
                         .description("소분류 카테고리 이름"),
-                    fieldWithPath("data.links").type(JsonFieldType.ARRAY)
-                        .description("링크").optional(),
-                    fieldWithPath("data.chatLink").type(JsonFieldType.STRING)
-                        .description("채팅 링크"),
+                    fieldWithPath("data.links").type(JsonFieldType.ARRAY).optional()
+                        .description("링크"),
                     fieldWithPath("data.links[].id").type(JsonFieldType.NUMBER)
                         .description("링크 id"),
                     fieldWithPath("data.links[].content").type(JsonFieldType.STRING)
                         .description("링크 내용"),
-                    fieldWithPath("data.takenTalents").type(JsonFieldType.ARRAY)
-                        .description("받고 싶은 카테고리"),
-                    fieldWithPath("data.takenContent").type(JsonFieldType.STRING)
+                    fieldWithPath("data.chatLink").type(JsonFieldType.STRING)
+                        .description("채팅 링크"),
+                    fieldWithPath("data.takenTalents").type(JsonFieldType.ARRAY).optional()
+                        .description("받고 싶은 재능"),
+                    fieldWithPath("data.takenContent").type(JsonFieldType.STRING).optional()
                         .description("받고 싶은 내용"),
                     fieldWithPath("data.exchangeType").type(JsonFieldType.STRING)
                         .description("교환 방식"),
@@ -541,9 +540,9 @@ class PostControllerTest extends RestDocsTestSupport {
                     fieldWithPath("data.nickname").type(JsonFieldType.STRING)
                         .description("작성자 닉네임"),
                     fieldWithPath("data.image").type(JsonFieldType.STRING)
-                        .description("이미지 경로"),
+                        .description("이미지 url"),
                     fieldWithPath("data.ranks").type(JsonFieldType.STRING)
-                        .description("랭킹"),
+                        .description("등급"),
                     fieldWithPath("data.isLike").type(JsonFieldType.BOOLEAN)
                         .description("해당 회원의 게시글 좋아요 여부"),
                     fieldWithPath("data.likes").type(JsonFieldType.NUMBER)
@@ -555,15 +554,13 @@ class PostControllerTest extends RestDocsTestSupport {
     @Test
     void 회원별_post_목록을_조회한다() throws Exception {
 
-        MyPagePostResponse response1 = new MyPagePostResponse(1L, "목록1", "서브카테고리1", false,
-            List.of("탤런트1", "탤런트2"), 1000);
-        MyPagePostResponse response2 = new MyPagePostResponse(1L, "목록1", "서브카테고리1", false,
-            List.of("탤런트1", "탤런트2"), 1000);
-        MyPagePostResponse response3 = new MyPagePostResponse(1L, "목록1", "서브카테고리1", false,
-            List.of("탤런트1", "탤런트2"), 1000);
+        MyPagePostResponse response1 = new MyPagePostResponse(1L, "미술 나눔해요", "미술", false,
+            List.of("네일아트", "종이접기"), 149392);
+        MyPagePostResponse response2 = new MyPagePostResponse(1L, "컴공 나눔해요", "개발", false,
+            List.of("Java", "node.js"), 1);
 
         PageImpl<MyPagePostResponse> myPagePostResponses = new PageImpl<>(
-            List.of(response1, response2, response3));
+            List.of(response1, response2));
         GlobalPageResponseDto<MyPagePostResponse> globalPageResponseDto = GlobalPageResponseDto.of(
             myPagePostResponses);
 
@@ -591,11 +588,11 @@ class PostControllerTest extends RestDocsTestSupport {
                     fieldWithPath("data.content[].title").type(JsonFieldType.STRING)
                         .description("게시물 제목"),
                     fieldWithPath("data.content[].isShare").type(JsonFieldType.BOOLEAN)
-                        .description("공유 여부"),
+                        .description("재능 나눔 여부"),
                     fieldWithPath("data.content[].subCategory").type(JsonFieldType.STRING)
-                        .description("소분류 카테고리"),
-                    fieldWithPath("data.content[].takenTalents").type(JsonFieldType.ARRAY)
-                        .description("소분류 카테고리"),
+                        .description("소분류 카테고리 이름"),
+                    fieldWithPath("data.content[].takenTalents").type(JsonFieldType.ARRAY).optional()
+                        .description("받고 싶은 재능"),
                     fieldWithPath("data.content[].likes").type(JsonFieldType.NUMBER)
                         .description("게시물 좋아요 수"),
                     fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER)

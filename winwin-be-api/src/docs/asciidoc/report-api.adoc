@@ -10,4 +10,4 @@
 
 [[게시믈-신고]]
 == 게시물 신고
-operation::report-controller-test/게시물에서_신고한다[snippets='http-request,request-fields,http-response,response-fields']
+operation::report-controller-test/게시물을_신고한다[snippets='http-request,request-fields,http-response,response-fields']

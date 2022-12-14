@@ -64,6 +64,14 @@ public class MemberCommandService {
         return new MemberNicknameResponse(member.getNickname());
     }
 
+    public MemberUpdateImageResponse updateProfileImage(Long memberId, MultipartFile multipartFile) {
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
+        String profileImageUrl = fileService.uploadFile(multipartFile, memberId, PROFILE_IMAGE);
+        member.updateProfileImage(profileImageUrl);
+        return new MemberUpdateImageResponse(profileImageUrl);
+    }
+
     public MemberUpdateResponse updateMember(Long memberId,
                                          MemberUpdateRequest memberUpdateRequest) {
         Member member = memberRepository.findById(memberId)
@@ -146,13 +154,5 @@ public class MemberCommandService {
         HttpEntity<MultiValueMap<String, String>> revokeRequest = new HttpEntity<>(params, headers);
 
         return restTemplate.postForEntity("https://appleid.apple.com/auth/revoke", revokeRequest, Object.class);
-    }
-
-    public MemberUpdateImageResponse updateProfileImage(Long memberId, MultipartFile multipartFile) {
-        Member member = memberRepository.findById(memberId)
-            .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
-        String profileImageUrl = fileService.upload(multipartFile, memberId, PROFILE_IMAGE);
-        member.updateProfileImage(profileImageUrl);
-        return new MemberUpdateImageResponse(profileImageUrl);
     }
 }

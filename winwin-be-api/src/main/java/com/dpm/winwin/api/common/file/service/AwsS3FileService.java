@@ -1,6 +1,7 @@
 package com.dpm.winwin.api.common.file.service;
 
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.dpm.winwin.api.common.error.enums.ErrorMessage;
 import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
@@ -26,7 +27,7 @@ public class AwsS3FileService implements FileService {
     @Value("${cloud.aws.s3.bucket.url}")
     private String defaultUrl;
 
-    public String upload(MultipartFile multipartFile, Long memberId, String imageType) {
+    public String uploadFile(MultipartFile multipartFile, Long memberId, String imageType) {
         String savedFileName = getSavedFileName(multipartFile, memberId, imageType);
         ObjectMetadata metadata = new ObjectMetadata();
 
@@ -39,6 +40,11 @@ public class AwsS3FileService implements FileService {
         return getPath(savedFileName);
     }
 
+    public void deleteFile(String fileUrl) {
+        String fileName = getFileNameFromResourceUrl(fileUrl);
+        amazonS3Client.deleteObject(new DeleteObjectRequest(bucketName, fileName));
+    }
+
     private String getSavedFileName(MultipartFile multipartFile, Long memberId, String imageType) {
         return String.format("member%s/%s/%s-%s",
                 memberId, imageType, getRandomUUID(), multipartFile.getOriginalFilename());
@@ -49,6 +55,10 @@ public class AwsS3FileService implements FileService {
     }
 
     private String getPath(String savedFileName) {
-        return defaultUrl + "/" + savedFileName;
+        return defaultUrl + savedFileName;
+    }
+
+    private String getFileNameFromResourceUrl(String fileUrl) {
+        return fileUrl.replace(defaultUrl, "");
     }
 }

@@ -37,7 +37,7 @@ public class AwsS3FileService implements FileService {
             log.error("Failed to upload image", e);
             throw new BusinessException(ErrorMessage.INVALID_FILE_UPLOAD);
         }
-        return getPath(savedFileName);
+        return getResourceUrl(savedFileName);
     }
 
     public void deleteFile(String fileUrl) {
@@ -54,8 +54,8 @@ public class AwsS3FileService implements FileService {
         return UUID.randomUUID().toString().replace("-", "");
     }
 
-    private String getPath(String savedFileName) {
-        return defaultUrl + savedFileName;
+    private String getResourceUrl(String savedFileName) {
+        return amazonS3Client.getResourceUrl(bucketName, savedFileName);
     }
 
     private String getFileNameFromResourceUrl(String fileUrl) {

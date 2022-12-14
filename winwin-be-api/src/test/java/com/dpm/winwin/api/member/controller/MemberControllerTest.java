@@ -18,8 +18,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
 
+import static com.dpm.winwin.api.member.controller.MemberControllerTest.MEMBER_ID;
 import static java.util.Collections.emptyList;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -35,8 +37,10 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@WithMockUser(username = MEMBER_ID, authorities = {"ROLE_USER"})
 public class MemberControllerTest extends RestDocsTestSupport {
 
+    public static final String MEMBER_ID = "1";
     @MockBean
     private MemberCommandService memberCommandService;
 
@@ -46,7 +50,7 @@ public class MemberControllerTest extends RestDocsTestSupport {
     @Test
     void member_닉네임을_설정한다() throws Exception {
 
-        Long memberId = 1L;
+        Long memberId = Long.parseLong(MEMBER_ID);
         String nickname = "김감자";
 
         MemberNicknameRequest request = new MemberNicknameRequest(
@@ -119,7 +123,7 @@ public class MemberControllerTest extends RestDocsTestSupport {
     @Test
     void member를_수정한다() throws Exception {
 
-        Long memberId = 1L;
+        Long memberId = Long.parseLong(MEMBER_ID);
         String nickname = "김감자";
 
         MemberUpdateRequest request = new MemberUpdateRequest(

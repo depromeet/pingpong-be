@@ -3,7 +3,7 @@ package com.dpm.winwin.api.post.dto.response;
 import com.dpm.winwin.domain.entity.post.Post;
 import java.util.List;
 
-public record PostListResponse(
+public record PostResponse(
     Long id,
     String title,
     String subCategory,
@@ -16,8 +16,8 @@ public record PostListResponse(
     List<String> takenTalents
 ) {
 
-    public static PostListResponse of(Post post) {
-        return new PostListResponse(
+    public static PostResponse of(Post post) {
+        return new PostResponse(
             post.getId(),
             post.getTitle(),
             post.getSubCategory().getName(),

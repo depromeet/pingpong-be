@@ -10,7 +10,7 @@ import com.dpm.winwin.api.post.dto.response.LinkResponse;
 import com.dpm.winwin.api.post.dto.response.MyPagePostResponse;
 import com.dpm.winwin.api.post.dto.response.PostAddResponse;
 import com.dpm.winwin.api.post.dto.response.PostCustomizedResponse;
-import com.dpm.winwin.api.post.dto.response.PostListResponse;
+import com.dpm.winwin.api.post.dto.response.PostResponse;
 import com.dpm.winwin.api.post.dto.response.PostMethodResponse;
 import com.dpm.winwin.api.post.dto.response.PostMethodsResponse;
 import com.dpm.winwin.api.post.dto.response.PostReadResponse;
@@ -47,11 +47,11 @@ public class PostService {
     private final PostRepository postRepository;
     private final LinkRepository linkRepository;
 
-    public GlobalPageResponseDto<PostListResponse> getPosts(
+    public GlobalPageResponseDto<PostResponse> getPosts(
         PostListConditionRequest condition, Pageable pageable) {
-        Page<PostListResponse> page = postRepository
+        Page<PostResponse> page = postRepository
             .getAllByIsShareAndMidCategory(condition, pageable)
-            .map(PostListResponse::of);
+            .map(PostResponse::of);
         return GlobalPageResponseDto.of(page);
     }
 
@@ -107,13 +107,11 @@ public class PostService {
             post.getLinks().stream().map(LinkResponse::of).toList(),
             post.getChatLink(),
             post.getLikes().size(),
-            post.getExchangeType(),
+            post.getTakenContent(), post.getTakenTalents().stream()
+                .map(postTalent -> postTalent.getTalent().getName())
+                .toList(), post.getExchangeType(),
             post.getExchangePeriod(),
             post.getExchangeTime(),
-            post.getTakenContent(),
-            post.getTakenTalents().stream()
-                .map(postTalent -> postTalent.getTalent().getName())
-                .toList(),
             post.getMember().getId(),
             post.getMember().getNickname(),
             post.getMember().getImage(),
@@ -173,7 +171,7 @@ public class PostService {
         );
     }
 
-    public PostMethodsResponse getPostMethod() {
+    public PostMethodsResponse getPostMethods() {
         List<PostMethodResponse> exchangeTypes = Arrays.stream(ExchangeType.values())
             .map(type -> PostMethodResponse.of(type.name(), type.getMessage()))
             .toList();

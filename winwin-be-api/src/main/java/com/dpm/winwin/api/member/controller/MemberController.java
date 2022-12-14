@@ -12,8 +12,10 @@ import com.dpm.winwin.api.member.dto.response.RanksListResponse;
 import com.dpm.winwin.api.member.service.MemberCommandService;
 import com.dpm.winwin.api.member.service.MemberQueryService;
 import com.dpm.winwin.domain.repository.member.dto.request.MemberNicknameRequest;
-import com.dpm.winwin.domain.repository.member.dto.response.MemberReadResponse;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +29,8 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
+import static com.dpm.winwin.api.common.error.enums.ErrorMessage.INVALID_NICKNAME;
+import static com.dpm.winwin.api.common.utils.SecurityUtil.getCurrentMemberId;
 
 @RequiredArgsConstructor
 @RestController
@@ -40,7 +43,7 @@ public class MemberController {
     @PatchMapping("/nickname")
     public BaseResponseDto<MemberNicknameResponse> updateMemberNickname(
         @Valid @RequestBody MemberNicknameRequest memberNicknameRequest, BindingResult bindingResult) {
-        Long memberId = 1L;
+        Long memberId = getCurrentMemberId();
         if (bindingResult.hasErrors()) {
             throw new BusinessException(ErrorMessage.INVALID_NICKNAME);
         }
@@ -49,7 +52,7 @@ public class MemberController {
 
     @PostMapping("/image")
     public BaseResponseDto<MemberUpdateImageResponse> updateProfileImage(
-            @RequestPart(name = "image", required = false) MultipartFile multipartFile) {
+        @RequestPart(name = "image", required = false) MultipartFile multipartFile) {
         Long memberId = 1L;
         return BaseResponseDto.ok(memberCommandService.updateProfileImage(memberId, multipartFile));
     }
@@ -60,10 +63,15 @@ public class MemberController {
         return BaseResponseDto.ok(memberQueryService.readMemberInfo(memberId));
     }
 
+    @GetMapping
+    public BaseResponseDto<MemberRankReadResponse> currentMemberInfo(@AuthenticationPrincipal User user) {
+        return BaseResponseDto.ok(memberQueryService.readMemberInfo(Long.parseLong(user.getUsername())));
+    }
+
     @PutMapping
     public BaseResponseDto<MemberUpdateResponse> updateMember(
-        @RequestBody MemberUpdateRequest memberUpdateRequest) {
-        Long memberId = 1L;
+        @RequestBody final  MemberUpdateRequest memberUpdateRequest) {
+        Long memberId = getCurrentMemberId();
         return BaseResponseDto.ok(memberCommandService.updateMember(memberId, memberUpdateRequest));
     }
 
@@ -76,7 +84,6 @@ public class MemberController {
     @DeleteMapping("/{memberId}")
     public BaseResponseDto<Long> deleteMember(@PathVariable Long memberId) {
         Long deleteMemberId = memberCommandService.deleteMember(memberId);
-
         return BaseResponseDto.ok(deleteMemberId);
     }
 }

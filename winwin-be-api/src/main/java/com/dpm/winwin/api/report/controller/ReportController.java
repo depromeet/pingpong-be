@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import static com.dpm.winwin.api.common.utils.SecurityUtil.getCurrentMemberId;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/reports")
@@ -23,7 +25,7 @@ public class ReportController {
     public BaseResponseDto<ReportResponse> reportPost(
             @PathVariable Long postId,
             @RequestBody ReportRequest reportRequest){
-        Long reporterId = 1L; //임시 회원
+        Long reporterId = getCurrentMemberId();
         ReportResponse reportResponse = reportService.reportPost(reporterId, postId, ReportType.POST, reportRequest);
         return BaseResponseDto.ok(reportResponse);
     }

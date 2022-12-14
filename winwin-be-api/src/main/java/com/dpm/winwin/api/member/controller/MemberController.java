@@ -1,5 +1,7 @@
 package com.dpm.winwin.api.member.controller;
 
+import static com.dpm.winwin.api.common.utils.SecurityUtil.getCurrentMemberId;
+
 import com.dpm.winwin.api.common.error.enums.ErrorMessage;
 import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
 import com.dpm.winwin.api.common.response.dto.BaseResponseDto;
@@ -28,9 +30,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import static com.dpm.winwin.api.common.error.enums.ErrorMessage.INVALID_NICKNAME;
-import static com.dpm.winwin.api.common.utils.SecurityUtil.getCurrentMemberId;
 
 @RequiredArgsConstructor
 @RestController
@@ -70,7 +69,7 @@ public class MemberController {
 
     @PutMapping
     public BaseResponseDto<MemberUpdateResponse> updateMember(
-        @RequestBody final  MemberUpdateRequest memberUpdateRequest) {
+        @RequestBody final MemberUpdateRequest memberUpdateRequest) {
         Long memberId = getCurrentMemberId();
         return BaseResponseDto.ok(memberCommandService.updateMember(memberId, memberUpdateRequest));
     }

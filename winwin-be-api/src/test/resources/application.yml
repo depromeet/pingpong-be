@@ -2,6 +2,9 @@ server:
   port: 8080
 
 spring:
+  redis:
+    host: 127.0.0.1
+    port: 6379
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     open-in-view: false

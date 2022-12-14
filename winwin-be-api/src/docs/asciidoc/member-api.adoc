@@ -10,7 +10,7 @@
 
 [[회원-프로필-조회]]
 == 회원 프로필 조회
-operation::member-controller-test/member를_조회한다[snippets='http-request,http-response,response-fields']
+operation::member-controller-test/member_profile을_조회한다[snippets='http-request,http-response,response-fields']
 
 [[회원-닉네임-수정]]
 == 회원 닉네임 수정
@@ -26,4 +26,4 @@ operation::member-controller-test/member의_profile-image를_수정한다[snippe
 
 [[등급-목록-조회]]
 == 등급 목록 조회
-operation::member-controller-test/랭크_목록을_조회한다[snippets='http-request,http-response,response-fields']
+operation::member-controller-test/rank_목록을_조회한다[snippets='http-request,http-response,response-fields']

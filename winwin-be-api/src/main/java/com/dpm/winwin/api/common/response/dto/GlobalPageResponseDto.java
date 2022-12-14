@@ -1,8 +1,6 @@
 package com.dpm.winwin.api.common.response.dto;
 
 import java.util.List;
-import lombok.Data;
-import lombok.Setter;
 import org.springframework.data.domain.Page;
 
 public record GlobalPageResponseDto<T>(

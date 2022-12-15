@@ -152,12 +152,12 @@ public class Member extends BaseEntity{
         if (this.likeCount == null){
             nullToZero();
         }
-        this.likeCount.add(BigDecimal.valueOf(1));
+        this.likeCount = this.likeCount.add(BigDecimal.valueOf(1));
         updateRank(this.likeCount);
     }
 
     public void minusTotalPostLike(){
-        this.likeCount.subtract(BigDecimal.valueOf(1));
+        this.likeCount = this.likeCount.subtract(BigDecimal.valueOf(1));
         updateRank(this.likeCount);
     }
 

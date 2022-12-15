@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -31,7 +33,8 @@ public class LikesService {
             likesRepository.save(new Likes(member, post));
             post.getMember().plusTotalPostLike();
         }else{
-            likesRepository.delete(new Likes(member, post));
+            Likes likes = likesRepository.findByMemberAndPost(member, post).get();
+            likesRepository.delete(likes);
             post.getMember().minusTotalPostLike();
         }
 

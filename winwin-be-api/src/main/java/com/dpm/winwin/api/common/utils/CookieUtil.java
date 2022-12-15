@@ -5,11 +5,9 @@ import java.util.Optional;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;
 import org.springframework.util.SerializationUtils;
 
-@RequiredArgsConstructor
 public class CookieUtil {
 
     public static final String ACCESS_TOKEN = "access_token";
@@ -41,7 +39,8 @@ public class CookieUtil {
         response.addHeader("Set-Cookie", cookie.toString());
     }
 
-    public static void changeCookie(HttpServletRequest request, HttpServletResponse response, String name, String value, int maxAge) {
+    public static void changeCookie(HttpServletRequest request, HttpServletResponse response, String name, String value,
+        int maxAge) {
         Optional<Cookie> cookie = getCookie(request, name);
         if (cookie.isPresent()) {
             deleteCookie(request, response, name);

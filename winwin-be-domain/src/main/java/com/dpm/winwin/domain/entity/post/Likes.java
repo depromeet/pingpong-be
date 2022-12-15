@@ -32,7 +32,7 @@ public class Likes extends BaseEntity {
     private Post post;
 
     @Builder
-    public Likes(Member member, Post post){
+    public Likes(Member member, Post post) {
         this.member = member;
         this.post = post;
     }

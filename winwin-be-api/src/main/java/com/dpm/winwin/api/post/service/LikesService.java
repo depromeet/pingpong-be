@@ -21,13 +21,13 @@ public class LikesService {
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
 
-    public LikesResponse createLikes(Long memberId, Long postId){
+    public LikesResponse createLikes(Long memberId, Long postId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.MEMBER_NOT_FOUND));
         Post post = postRepository.getByIdFetchJoin(postId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.POST_NOT_FOUND));
 
-        if(isNotAlreadyLike(member, post)){
+        if(isNotAlreadyLike(member, post)) {
             likesRepository.save(new Likes(member, post));
             post.getMember().plusTotalPostLike();
         }
@@ -35,13 +35,13 @@ public class LikesService {
         return LikesResponse.from(post);
     }
 
-    public LikesResponse deleteLikes(Long memberId, Long postId){
+    public LikesResponse deleteLikes(Long memberId, Long postId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.MEMBER_NOT_FOUND));
         Post post = postRepository.getByIdFetchJoin(postId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.POST_NOT_FOUND));
 
-        if(!isNotAlreadyLike(member, post)){
+        if(!isNotAlreadyLike(member, post)) {
             Likes likes = likesRepository.findByMemberAndPost(member, post).get();
             likesRepository.delete(likes);
             post.setLikes(likes);

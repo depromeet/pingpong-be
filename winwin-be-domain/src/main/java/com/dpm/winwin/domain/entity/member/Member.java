@@ -139,12 +139,19 @@ public class Member extends BaseEntity{
 
     public BigDecimal getLikeCount(){
         if (this.likeCount == null){
-            this.likeCount = BigDecimal.valueOf(0);
+            nullToZero();
         }
         return this.likeCount;
     }
 
+    private void nullToZero(){
+        this.likeCount = BigDecimal.valueOf(0);
+    }
+
     public void plusTotalPostLike(){
+        if (this.likeCount == null){
+            nullToZero();
+        }
         this.likeCount.add(BigDecimal.valueOf(1));
         updateRank(this.likeCount);
     }

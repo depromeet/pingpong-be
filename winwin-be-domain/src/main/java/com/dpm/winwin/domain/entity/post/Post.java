@@ -12,6 +12,7 @@ import com.dpm.winwin.domain.entity.post.enums.ExchangePeriod;
 import com.dpm.winwin.domain.entity.post.enums.ExchangeTime;
 import com.dpm.winwin.domain.entity.post.enums.ExchangeType;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -68,7 +69,7 @@ public class Post extends BaseEntity {
     private List<PostTalent> takenTalents = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Likes> likes = new ArrayList<>();
+    private Set<Likes> likes = new HashSet<>();
 
     @Column(nullable = false)
     private String title;
@@ -174,6 +175,10 @@ public class Post extends BaseEntity {
             .map(postTalent -> PostTalent.of(this, postTalent))
             .toList());
 
+    }
+
+    public void setLikes(Likes likes){
+        this.likes.remove(likes);
     }
 
     public void update(PostUpdateDto updateDto, SubCategory subCategory, List<SubCategory> savedTalents) {

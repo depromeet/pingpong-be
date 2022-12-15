@@ -13,8 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -32,9 +30,21 @@ public class LikesService {
         if(isNotAlreadyLike(member, post)){
             likesRepository.save(new Likes(member, post));
             post.getMember().plusTotalPostLike();
-        }else{
+        }
+
+        return LikesResponse.from(post);
+    }
+
+    public LikesResponse deleteLikes(Long memberId, Long postId){
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.MEMBER_NOT_FOUND));
+        Post post = postRepository.getByIdFetchJoin(postId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.POST_NOT_FOUND));
+
+        if(!isNotAlreadyLike(member, post)){
             Likes likes = likesRepository.findByMemberAndPost(member, post).get();
             likesRepository.delete(likes);
+            post.setLikes(likes);
             post.getMember().minusTotalPostLike();
         }
 

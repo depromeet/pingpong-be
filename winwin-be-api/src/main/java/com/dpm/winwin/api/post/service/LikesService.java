@@ -21,7 +21,7 @@ public class LikesService {
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
 
-    public LikesResponse updateLike(Long memberId, Long postId){
+    public LikesResponse createLikes(Long memberId, Long postId){
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.MEMBER_NOT_FOUND));
         Post post = postRepository.getByIdFetchJoin(postId)

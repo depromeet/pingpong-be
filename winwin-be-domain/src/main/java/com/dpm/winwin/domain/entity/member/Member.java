@@ -144,8 +144,13 @@ public class Member extends BaseEntity{
         return this.likeCount;
     }
 
-    public void updateTotalPostLike(){
+    public void plusTotalPostLike(){
         this.likeCount.add(BigDecimal.valueOf(1));
+        updateRank(this.likeCount);
+    }
+
+    public void minusTotalPostLike(){
+        this.likeCount.subtract(BigDecimal.valueOf(1));
         updateRank(this.likeCount);
     }
 

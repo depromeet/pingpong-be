@@ -22,9 +22,6 @@ spring:
     console:
       enabled: true
 
-  sql:
-    init:
-      mode: embedded
   security:
     oauth2:
       client:

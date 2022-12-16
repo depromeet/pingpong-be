@@ -45,7 +45,7 @@ public class LikesService {
 
         if(isAlreadyLike(member, post)) {
             Likes likes = likesRepository.findByMemberAndPost(member, post)
-                    .orElseThrow(() -> new BusinessException(ErrorMessage.LIKE_NOT_FOUND));;
+                    .orElseThrow(() -> new BusinessException(ErrorMessage.LIKE_NOT_FOUND));
             likesRepository.delete(likes);
             post.minusLikes(likes);
             post.getMember().minusTotalPostLike();

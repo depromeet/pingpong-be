@@ -8,6 +8,7 @@ public record LikeAddRequest(
         Member member,
         Post post
 ) {
+
     public Likes toEntity() {
         return Likes.builder()
                 .member(this.member)

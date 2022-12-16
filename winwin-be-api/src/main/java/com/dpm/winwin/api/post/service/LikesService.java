@@ -2,6 +2,7 @@ package com.dpm.winwin.api.post.service;
 
 import com.dpm.winwin.api.common.error.enums.ErrorMessage;
 import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
+import com.dpm.winwin.api.post.dto.request.LikeAddRequest;
 import com.dpm.winwin.api.post.dto.response.LikesResponse;
 import com.dpm.winwin.domain.entity.member.Member;
 import com.dpm.winwin.domain.entity.post.Likes;
@@ -24,34 +25,36 @@ public class LikesService {
     public LikesResponse createLikes(Long memberId, Long postId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.MEMBER_NOT_FOUND));
-        Post post = postRepository.getByIdFetchJoin(postId)
+        Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.POST_NOT_FOUND));
 
-        if(isNotAlreadyLike(member, post)) {
-            likesRepository.save(new Likes(member, post));
+        if(!isAlreadyLike(member, post)) {
+            LikeAddRequest likeAddRequest = new LikeAddRequest(member, post);
+            likesRepository.save(likeAddRequest.toEntity());
             post.getMember().plusTotalPostLike();
         }
 
         return LikesResponse.from(post);
     }
 
-    public LikesResponse deleteLikes(Long memberId, Long postId) {
+    public LikesResponse cancelLikes(Long memberId, Long postId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.MEMBER_NOT_FOUND));
-        Post post = postRepository.getByIdFetchJoin(postId)
+        Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.POST_NOT_FOUND));
 
-        if(!isNotAlreadyLike(member, post)) {
-            Likes likes = likesRepository.findByMemberAndPost(member, post).get();
+        if(isAlreadyLike(member, post)) {
+            Likes likes = likesRepository.findByMemberAndPost(member, post)
+                    .orElseThrow(() -> new BusinessException(ErrorMessage.LIKE_NOT_FOUND));;
             likesRepository.delete(likes);
-            post.setLikes(likes);
+            post.minusLikes(likes);
             post.getMember().minusTotalPostLike();
         }
 
         return LikesResponse.from(post);
     }
 
-    private boolean isNotAlreadyLike(Member member, Post post) {
-        return likesRepository.findByMemberAndPost(member, post).isEmpty();
+    private boolean isAlreadyLike(Member member, Post post) {
+        return likesRepository.findByMemberAndPost(member, post).isPresent();
     }
 }

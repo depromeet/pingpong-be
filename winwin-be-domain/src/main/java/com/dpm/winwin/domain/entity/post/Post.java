@@ -177,7 +177,7 @@ public class Post extends BaseEntity {
 
     }
 
-    public void setLikes(Likes likes){
+    public void minusLikes(Likes likes){
         this.likes.remove(likes);
     }
 

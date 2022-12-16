@@ -23,8 +23,8 @@ public class LikesController {
     }
 
     @DeleteMapping("/{postId}")
-    public BaseResponseDto<LikesResponse> unlikes(@PathVariable Long postId) {
+    public BaseResponseDto<LikesResponse> cancelLikes(@PathVariable Long postId) {
         long tempMemberId = 1L;
-        return BaseResponseDto.ok(likesService.deleteLikes(tempMemberId, postId));
+        return BaseResponseDto.ok(likesService.cancelLikes(tempMemberId, postId));
     }
 }

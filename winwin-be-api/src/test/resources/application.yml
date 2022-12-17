@@ -22,9 +22,6 @@ spring:
     console:
       enabled: true
 
-  sql:
-    init:
-      mode: embedded
   security:
     oauth2:
       client:
@@ -58,3 +55,17 @@ jasypt:
     algorithm: PBEWithMD5AndDES
     iv-generator-classname: org.jasypt.iv.NoIvGenerator
     password: test1234
+
+cloud:
+  aws:
+    s3:
+      bucket:
+        name: cloudAwsS3BucketName
+        url: cloudAwsS3BucketUrl
+    credentials:
+      access-key: cloudAwsS3CredentialsAccessKey
+      secret-key: cloudAwsS3CredentialsSecretKey
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false

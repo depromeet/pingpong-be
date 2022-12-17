@@ -31,7 +31,8 @@ public enum ErrorMessage {
     INVALID_NICKNAME(BAD_REQUEST, "닉네임 입력이 올바르지 않습니다."),
     LOGIN_CANCEL(UNAUTHORIZED, "사용자가 로그인을 취소하였습니다."),
     APPLE_TOKEN_REVOKE_FAIL(BAD_REQUEST, "애플 토큰 삭제에 실패하였습니다."),
-    DOES_NOT_MATCH_MEMBER_ID(BAD_REQUEST, "jwt Claim 의 멤버 ID 값과 파라미터 멤버 ID 값이 다릅니다.");
+    DOES_NOT_MATCH_MEMBER_ID(BAD_REQUEST, "jwt Claim 의 멤버 ID 값과 파라미터 멤버 ID 값이 다릅니다."),
+    INVALID_FILE_UPLOAD(BAD_REQUEST, "유효하지 않은 파일 업로드입니다.");
 
     private final int code;
     private final String phrase;

@@ -20,6 +20,10 @@ spring:
       password: ENC(f2DZKexIllOKp9G6wKa2T+E/dqGcnngS)
       driver-class-name: com.mysql.cj.jdbc.Driver
 
+  servlet:
+    multipart:
+      max-file-size: 5MB
+
   security:
     oauth2:
       client:
@@ -67,3 +71,18 @@ springdoc:
     doc-expansion: none
   paths-to-match:
     - /api/**
+
+cloud:
+  aws:
+    s3:
+      bucket:
+        name: ENC(KydYPKGs+Dt6Tw5ftB3q9KZzx6elxYBe2103TDNwZvA=)
+        url: ENC(euVI7Jo0kFw7UqVivAr7EuROccDHvzE9jNjei3mYt49yAal3CRP2iErcbW90Fjm2gM8IhjxVYCY80JHdUcX+pLxiTB2uWnUr)
+    credentials:
+      access-key: ENC(RKFCNH3Hfh23NDkdV9qcBQFY05KOWokFk3WqUIDgckQ=)
+      secret-key: ENC(E+5VE+62nn8hfVelioNTTLlFTGRXDmWNn4MONZh9gdSqzSvBWfax5b5zgM9VgDhbCikbG3O3eDo=)
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+

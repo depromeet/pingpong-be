@@ -77,11 +77,8 @@ cloud:
     s3:
       bucket:
         name: ENC(KydYPKGs+Dt6Tw5ftB3q9KZzx6elxYBe2103TDNwZvA=)
-<<<<<<< HEAD
         url: ENC(euVI7Jo0kFw7UqVivAr7EuROccDHvzE9jNjei3mYt49yAal3CRP2iErcbW90Fjm2gM8IhjxVYCY80JHdUcX+pLxiTB2uWnUr)
-=======
-        url: ENC(DBv6XHkcQPu1ozAFGJE3oEEADm3kpmFqZfwedjsHtrfTmad7UVj8lFYl+4wII8KMb2P0pJROrnw/VUZhWNQrvN6iTr3/cuuf)
->>>>>>> 720ef46 (feat: 회원 이미지 업로드 구현)
+
     credentials:
       access-key: ENC(RKFCNH3Hfh23NDkdV9qcBQFY05KOWokFk3WqUIDgckQ=)
       secret-key: ENC(E+5VE+62nn8hfVelioNTTLlFTGRXDmWNn4MONZh9gdSqzSvBWfax5b5zgM9VgDhbCikbG3O3eDo=)

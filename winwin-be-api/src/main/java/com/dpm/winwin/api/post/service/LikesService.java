@@ -30,7 +30,7 @@ public class LikesService {
 
         boolean isAlreadyLike = likesRepository.findByMemberAndPost(member, post).isPresent();
 
-        if(!isAlreadyLike){
+        if (!isAlreadyLike) {
             LikeAddRequest likeAddRequest = new LikeAddRequest(member, post);
             likesRepository.save(likeAddRequest.toEntity());
             post.getMember().plusTotalPostLike();

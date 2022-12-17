@@ -28,7 +28,9 @@ public class LikesService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.POST_NOT_FOUND));
 
-        if(!isAlreadyLike(member, post)) {
+        boolean isAlreadyLike = likesRepository.findByMemberAndPost(member, post).isPresent();
+
+        if(!isAlreadyLike){
             LikeAddRequest likeAddRequest = new LikeAddRequest(member, post);
             likesRepository.save(likeAddRequest.toEntity());
             post.getMember().plusTotalPostLike();
@@ -43,18 +45,14 @@ public class LikesService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.POST_NOT_FOUND));
 
-        if(isAlreadyLike(member, post)) {
-            Likes likes = likesRepository.findByMemberAndPost(member, post)
-                    .orElseThrow(() -> new BusinessException(ErrorMessage.LIKE_NOT_FOUND));
-            likesRepository.delete(likes);
-            post.minusLikes(likes);
-            post.getMember().minusTotalPostLike();
-        }
+        likesRepository.findByMemberAndPost(member, post)
+                .ifPresent(it -> {
+                    likesRepository.delete(it);
+                    post.minusLikes(it);
+                    post.getMember().minusTotalPostLike();
+                });
 
         return LikesResponse.from(post);
     }
 
-    private boolean isAlreadyLike(Member member, Post post) {
-        return likesRepository.findByMemberAndPost(member, post).isPresent();
-    }
 }

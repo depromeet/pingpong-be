@@ -1,5 +1,7 @@
 package com.dpm.winwin.api.post.service;
 
+import static com.dpm.winwin.api.common.error.enums.ErrorMessage.INVALID_POST_REQUEST;
+
 import com.dpm.winwin.api.common.error.enums.ErrorMessage;
 import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
 import com.dpm.winwin.api.common.response.dto.GlobalPageResponseDto;
@@ -70,6 +72,10 @@ public class PostService {
             .getByIdWithMainCategoryAndMidCategory(request.subCategoryId())
             .orElseThrow(() -> new BusinessException(ErrorMessage.SUB_CATEGORY_NOT_FOUND));
 
+        if (!validateRequestByIsShare(request.isShare(), request.takenTalentIds(), request.takenContent())) {
+            throw new BusinessException(INVALID_POST_REQUEST);
+        }
+
         List<Link> links = request.links().stream()
             .map(Link::of)
             .toList();
@@ -80,13 +86,14 @@ public class PostService {
         post.setLink(links);
         post.setTakenContent(request.takenContent());
 
-        List<PostTalent> postTalents = request.takenTalentIds().stream()
-            .map(talentId -> PostTalent.of(post, subCategoryRepository.findById(talentId)
-                .orElseThrow(() -> new BusinessException(ErrorMessage.SUB_CATEGORY_NOT_FOUND))))
-            .toList();
+        if (!request.isShare()) {
+            List<PostTalent> postTalents = request.takenTalentIds().stream()
+                .map(talentId -> PostTalent.of(post, subCategoryRepository.findById(talentId)
+                    .orElseThrow(() -> new BusinessException(ErrorMessage.SUB_CATEGORY_NOT_FOUND))))
+                .toList();
 
-        postTalents.forEach(post::addTakenTalent);
-
+            postTalents.forEach(post::addTakenTalent);
+        }
         Post savedPost = postRepository.save(post);
         return PostAddResponse.from(savedPost);
     }
@@ -122,7 +129,6 @@ public class PostService {
     public Long delete(Long id) {
         Post post = postRepository.findById(id)
             .orElseThrow(() -> new BusinessException(ErrorMessage.POST_NOT_FOUND));
-
         postRepository.delete(post);
         return post.getId();
     }
@@ -133,13 +139,18 @@ public class PostService {
     }
 
     public PostUpdateResponse update(Long memberId, Long postId,
-        PostUpdateRequest updateRequest) {
+                                     PostUpdateRequest updateRequest) {
         Post post = getByIdAndMemberId(memberId, postId);
         SubCategory subCategory = subCategoryRepository
             .getByIdWithMainCategoryAndMidCategory(updateRequest.subCategoryId())
             .orElseThrow(() -> new BusinessException(ErrorMessage.SUB_CATEGORY_NOT_FOUND));
         List<SubCategory> savedTalents = subCategoryRepository.findAllById(
             updateRequest.takenTalents());
+
+        if (!validateRequestByIsShare(updateRequest.isShare(), updateRequest.takenTalents(),
+            updateRequest.takenContent())) {
+            throw new BusinessException(INVALID_POST_REQUEST);
+        }
 
         post.update(updateRequest.toDto(), subCategory, savedTalents);
 
@@ -192,5 +203,12 @@ public class PostService {
             .map(MyPagePostResponse::of);
 
         return GlobalPageResponseDto.of(page);
+    }
+
+    private boolean validateRequestByIsShare(boolean isShare, List<Long> takenTalentIds, String takenContent) {
+        if (isShare) {
+            return (takenContent == null || takenContent.isBlank()) && takenTalentIds.isEmpty();
+        }
+        return !takenContent.isBlank() && !takenTalentIds.isEmpty();
     }
 }

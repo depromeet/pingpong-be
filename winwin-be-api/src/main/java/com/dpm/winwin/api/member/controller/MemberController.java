@@ -62,7 +62,7 @@ public class MemberController {
         return BaseResponseDto.ok(memberQueryService.readMemberInfo(memberId));
     }
 
-    @GetMapping
+    @GetMapping("/me")
     public BaseResponseDto<MemberRankReadResponse> currentMemberInfo(@AuthenticationPrincipal User user) {
         return BaseResponseDto.ok(memberQueryService.readMemberInfo(Long.parseLong(user.getUsername())));
     }

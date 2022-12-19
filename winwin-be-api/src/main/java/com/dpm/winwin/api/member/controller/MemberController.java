@@ -41,11 +41,8 @@ public class MemberController {
 
     @PatchMapping("/nickname")
     public BaseResponseDto<MemberNicknameResponse> updateMemberNickname(
-        @Valid @RequestBody MemberNicknameRequest memberNicknameRequest, BindingResult bindingResult) {
+        @RequestBody @Valid MemberNicknameRequest memberNicknameRequest) {
         Long memberId = getCurrentMemberId();
-        if (bindingResult.hasErrors()) {
-            throw new BusinessException(ErrorMessage.INVALID_NICKNAME);
-        }
         return BaseResponseDto.ok(memberCommandService.updateMemberNickname(memberId, memberNicknameRequest));
     }
 

@@ -1,12 +1,8 @@
-package com.dpm.winwin.domain.repository.post;
+package com.dpm.winwin.domain.configuration;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-import com.dpm.winwin.domain.configuration.TestConfig;
-import com.dpm.winwin.domain.entity.post.Post;
-import com.dpm.winwin.domain.entity.post.enums.ExchangePeriod;
-import com.dpm.winwin.domain.entity.post.enums.ExchangeTime;
-import com.dpm.winwin.domain.entity.post.enums.ExchangeType;
+import com.dpm.winwin.domain.repository.post.PostRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -14,8 +10,8 @@ import org.springframework.context.annotation.Import;
 
 
 @DataJpaTest
-@Import(TestConfig.class)
-class PostRepositoryTest {
+@Import(QuerydslConfiguration.class)
+class JpaConfigurationTest {
 
     @Autowired
     private PostRepository postRepository;

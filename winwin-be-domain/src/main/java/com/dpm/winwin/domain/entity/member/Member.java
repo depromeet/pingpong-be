@@ -10,7 +10,6 @@ import com.dpm.winwin.domain.entity.chat.ChatRoom;
 import com.dpm.winwin.domain.entity.member.enums.Ranks;
 import com.dpm.winwin.domain.entity.oauth.OauthToken;
 import com.dpm.winwin.domain.entity.post.Post;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -66,7 +65,7 @@ public class Member extends BaseEntity{
     @Column(nullable = false)
     private Ranks ranks;
 
-    private BigDecimal likeCount;
+    private Integer likeCount;
 
     // TODO: one to one 연관관계 편의 메서드?
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "member", cascade = CascadeType.REMOVE)
@@ -78,7 +77,7 @@ public class Member extends BaseEntity{
     public Member(String nickname, Ranks ranks) {
         this.nickname = nickname;
         this.ranks = ranks;
-        this.likeCount = BigDecimal.valueOf(0);
+        this.likeCount = 0;
     }
 
     public void updateOauthToken(OauthToken oauthToken){
@@ -130,29 +129,30 @@ public class Member extends BaseEntity{
 
     public void update(MemberUpdateDto memberUpdateDto, List<SubCategory> givenTalents, List<SubCategory> takenTalents){
         this.nickname = memberUpdateDto.nickname();
-        this.image = memberUpdateDto.image();
         this.introduction = memberUpdateDto.introduction();
         this.profileLink = memberUpdateDto.profileLink();
         setGivenTalents(givenTalents);
         setTakenTalents(takenTalents);
     }
 
-    public BigDecimal getLikeCount(){
-        if (this.likeCount == null){
-            this.likeCount = BigDecimal.valueOf(0);
-        }
+    public Integer getLikeCount(){
         return this.likeCount;
     }
 
-    public void updateTotalPostLike(){
-        this.likeCount.add(BigDecimal.valueOf(1));
+    public void plusTotalPostLike(){
+        this.likeCount += 1;
         updateRank(this.likeCount);
     }
 
-    private void updateRank(BigDecimal likesCount){
+    public void minusTotalPostLike(){
+        this.likeCount = this.likeCount - 1;
+        updateRank(this.likeCount);
+    }
+
+    private void updateRank(Integer likesCount){
 
         Ranks rank = Arrays.stream(Ranks.values())
-                .filter( value -> likesCount.compareTo(value.getLikeCount()) >= 0 )
+                .filter( value -> likesCount >= value.getLikeCount() )
                 .findFirst().get();
 
         updateMemberRank(rank);
@@ -161,5 +161,9 @@ public class Member extends BaseEntity{
 
     private void updateMemberRank(Ranks rank){
         this.ranks = rank;
+    }
+
+    public void updateProfileImage(String profileImageUrl) {
+        this.image = profileImageUrl;
     }
 }

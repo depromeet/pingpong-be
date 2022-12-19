@@ -1,5 +1,6 @@
 package com.dpm.winwin.api.member.controller;
 
+import com.dpm.winwin.api.member.dto.response.MemberUpdateImageResponse;
 import com.dpm.winwin.api.member.dto.response.RanksListResponse;
 import com.dpm.winwin.api.member.dto.response.RanksResponse;
 import com.dpm.winwin.api.member.dto.request.MemberUpdateRequest;
@@ -15,6 +16,7 @@ import com.dpm.winwin.domain.repository.member.dto.request.MemberNicknameRequest
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
@@ -25,6 +27,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.multipart;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -86,6 +89,38 @@ public class MemberControllerTest extends RestDocsTestSupport {
     }
 
     @Test
+    void member의_profileImage를_수정한다() throws Exception {
+        // given
+        MockMultipartFile multipartFile = new MockMultipartFile("image",
+            "kirby.png",
+            MediaType.IMAGE_PNG_VALUE,
+            "image".getBytes());
+
+        MemberUpdateImageResponse response = new MemberUpdateImageResponse(
+            "https://dpm-pingpong-bucket.s3.ap-northeast-2.amazonaws.com/profileImage/3d4395e4-61db-4010-8104-200e286870c4-kirby.png");
+
+        // when
+        given(memberCommandService.updateProfileImage(1L, multipartFile))
+            .willReturn(response);
+
+        ResultActions result = mockMvc.perform(
+            multipart("/api/v1/members/image")
+                .file(multipartFile)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+        );
+
+        // then
+        result.andExpect(status().isOk())
+            .andDo(restDocs.document(
+                responseFields(
+                    fieldWithPath("message").type(JsonFieldType.STRING).description("성공 여부"),
+                    fieldWithPath("data.image").type(JsonFieldType.STRING).description("저장된 회원의 프로필 사진")
+                )
+            ));
+    }
+
+    @Test
     void member를_수정한다() throws Exception {
 
         Long memberId = Long.parseLong(MEMBER_ID);
@@ -93,7 +128,6 @@ public class MemberControllerTest extends RestDocsTestSupport {
 
         MemberUpdateRequest request = new MemberUpdateRequest(
                 nickname,
-                "depromeet/team2.png",
                 "안녕하세요 김감자입니다.",
                 "www.depromeet.com",
                 emptyList(),
@@ -126,8 +160,6 @@ public class MemberControllerTest extends RestDocsTestSupport {
                         requestFields(
                                 fieldWithPath("nickname").type(JsonFieldType.STRING)
                                         .description("수정하려는 닉네임"),
-                                fieldWithPath("image").type(JsonFieldType.STRING)
-                                        .description("수정할 회원 프로필 사진"),
                                 fieldWithPath("introduction").type(JsonFieldType.STRING)
                                         .description("수정할 회원 소개"),
                                 fieldWithPath("profileLink").type(JsonFieldType.STRING)

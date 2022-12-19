@@ -24,6 +24,7 @@ public enum ErrorMessage {
     POST_NOT_FOUND(NOT_FOUND, "해당 포스트를 찾을 수 없습니다."),
     TALENT_NOT_FOUND(NOT_FOUND, "해당 받고 싶은 재능을 찾을 수 없습니다."),
     LINK_NOT_FOUND(NOT_FOUND, "해당 링크를 찾을 수 없습니다."),
+    LIKE_NOT_FOUND(NOT_FOUND, "해당 좋아요를 찾을 수 없습니다."),
     DOES_NOT_MATCH_NONCE(BAD_REQUEST, "ID_TOKEN 값 중 NONCE 값이 일치하지 않습니다."),
     INVALID_ISSUER_VALUE(BAD_REQUEST, "ISSUER 값이 잘못되었습니다."),
     INVALID_CLIENT_ID(BAD_REQUEST, "클라이언트 아이디가 잘못되었습니다."),
@@ -31,7 +32,8 @@ public enum ErrorMessage {
     INVALID_NICKNAME(BAD_REQUEST, "닉네임 입력이 올바르지 않습니다."),
     LOGIN_CANCEL(UNAUTHORIZED, "사용자가 로그인을 취소하였습니다."),
     APPLE_TOKEN_REVOKE_FAIL(BAD_REQUEST, "애플 토큰 삭제에 실패하였습니다."),
-    DOES_NOT_MATCH_MEMBER_ID(BAD_REQUEST, "jwt Claim 의 멤버 ID 값과 파라미터 멤버 ID 값이 다릅니다.");
+    DOES_NOT_MATCH_MEMBER_ID(BAD_REQUEST, "jwt Claim 의 멤버 ID 값과 파라미터 멤버 ID 값이 다릅니다."),
+    INVALID_FILE_UPLOAD(BAD_REQUEST, "유효하지 않은 파일 업로드입니다.");
 
     private final int code;
     private final String phrase;

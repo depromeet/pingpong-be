@@ -22,6 +22,7 @@ public enum ErrorMessage {
     POST_NOT_FOUND(NOT_FOUND, "해당 포스트를 찾을 수 없습니다."),
     TALENT_NOT_FOUND(NOT_FOUND, "해당 받고 싶은 재능을 찾을 수 없습니다."),
     LINK_NOT_FOUND(NOT_FOUND, "해당 링크를 찾을 수 없습니다."),
+    LIKE_NOT_FOUND(NOT_FOUND, "해당 좋아요를 찾을 수 없습니다."),
     INVALID_POST_REQUEST(BAD_REQUEST, "해당 재능 게시물 요청이 적절하지 않습니다."),
     DOES_NOT_MATCH_NONCE(BAD_REQUEST, "ID_TOKEN 값 중 NONCE 값이 일치하지 않습니다."),
     INVALID_ISSUER_VALUE(BAD_REQUEST, "ISSUER 값이 적절하지 않습니다."),

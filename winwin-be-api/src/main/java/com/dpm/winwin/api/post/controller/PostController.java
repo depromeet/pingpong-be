@@ -4,6 +4,7 @@ import com.dpm.winwin.api.common.response.dto.BaseResponseDto;
 import com.dpm.winwin.api.common.response.dto.GlobalPageResponseDto;
 import com.dpm.winwin.api.post.dto.request.PostAddRequest;
 import com.dpm.winwin.api.post.dto.request.PostUpdateRequest;
+import com.dpm.winwin.api.post.dto.response.LikesResponse;
 import com.dpm.winwin.api.post.dto.response.MyPagePostResponse;
 import com.dpm.winwin.api.post.dto.response.PostAddResponse;
 import com.dpm.winwin.api.post.dto.response.PostCustomizedResponse;
@@ -11,6 +12,7 @@ import com.dpm.winwin.api.post.dto.response.PostMethodsResponse;
 import com.dpm.winwin.api.post.dto.response.PostReadResponse;
 import com.dpm.winwin.api.post.dto.response.PostResponse;
 import com.dpm.winwin.api.post.dto.response.PostUpdateResponse;
+import com.dpm.winwin.api.post.service.LikesService;
 import com.dpm.winwin.api.post.service.PostService;
 import com.dpm.winwin.domain.repository.post.dto.request.PostCustomizedConditionRequest;
 import com.dpm.winwin.domain.repository.post.dto.request.PostListConditionRequest;
@@ -32,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PostController {
 
     private final PostService postService;
+    private final LikesService likesService;
 
     @GetMapping
     public BaseResponseDto<GlobalPageResponseDto<PostResponse>> getPosts(
@@ -81,4 +84,17 @@ public class PostController {
         @PathVariable Long memberId, Pageable pageable) {
         return BaseResponseDto.ok(postService.getAllByMemberId(memberId, pageable));
     }
+
+    @PostMapping("/{postId}/likes")
+    public BaseResponseDto<LikesResponse> likes(@PathVariable Long postId) {
+        long tempMemberId = 1L;
+        return BaseResponseDto.ok(likesService.createLikes(tempMemberId, postId));
+    }
+
+    @PostMapping("/{postId}/unlikes")
+    public BaseResponseDto<LikesResponse> cancelLikes(@PathVariable Long postId) {
+        long tempMemberId = 1L;
+        return BaseResponseDto.ok(likesService.cancelLikes(tempMemberId, postId));
+    }
+    
 }

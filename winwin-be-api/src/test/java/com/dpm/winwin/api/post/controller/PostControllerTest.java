@@ -552,12 +552,12 @@ class PostControllerTest extends RestDocsTestSupport {
     @Test
     void 회원별_post_목록을_조회한다() throws Exception {
 
-        MyPagePostResponse response1 = new MyPagePostResponse(1L, "목록1", "서브카테고리1", false,
-            List.of("탤런트1", "탤런트2"), 1000);
-        MyPagePostResponse response2 = new MyPagePostResponse(1L, "목록1", "서브카테고리1", false,
-            List.of("탤런트1", "탤런트2"), 1000);
-        MyPagePostResponse response3 = new MyPagePostResponse(1L, "목록1", "서브카테고리1", false,
-            List.of("탤런트1", "탤런트2"), 1000);
+        MyPagePostResponse response1 = new MyPagePostResponse(1L, "미술 나눔해요", "미술", false,
+            List.of("네일아트", "종이접기"), 149392);
+        MyPagePostResponse response2 = new MyPagePostResponse(1L, "컴공 나눔해요", "개발", false,
+            List.of("Java", "node.js"), 1);
+        MyPagePostResponse response3 = new MyPagePostResponse(1L, "운동 나눔해요", "운동", false,
+            List.of("헬스", "필라테스"), 5040);
 
         PageImpl<MyPagePostResponse> myPagePostResponses = new PageImpl<>(
             List.of(response1, response2, response3));
@@ -587,9 +587,9 @@ class PostControllerTest extends RestDocsTestSupport {
                     fieldWithPath("data.content[].isShare").type(JsonFieldType.BOOLEAN)
                         .description("공유 여부"),
                     fieldWithPath("data.content[].subCategory").type(JsonFieldType.STRING)
-                        .description("소분류 카테고리"),
+                        .description("받고 싶은 재능"),
                     fieldWithPath("data.content[].takenTalents").type(JsonFieldType.ARRAY)
-                        .description("소분류 카테고리"),
+                        .description("받고 싶은 재능"),
                     fieldWithPath("data.content[].likes").type(JsonFieldType.NUMBER)
                         .description("게시물 좋아요 수"),
                     fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER)

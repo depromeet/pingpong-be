@@ -47,15 +47,14 @@ public record PostAddRequest(
 ) {
 
     public Post toEntity() {
-        return Post.builder()
-            .title(this.title)
-            .content(this.content)
-            .isShare(this.isShare)
-            .chatLink(this.chatLink)
-            .takenContent(this.takenContent)
-            .exchangeType(this.exchangeType)
-            .exchangePeriod(this.exchangePeriod)
-            .exchangeTime(this.exchangeTime)
-            .build();
+        return new Post(
+            this.title,
+            this.content,
+            this.isShare,
+            this.chatLink,
+            this.exchangeType,
+            this.exchangePeriod,
+            this.exchangeTime
+        );
     }
 }

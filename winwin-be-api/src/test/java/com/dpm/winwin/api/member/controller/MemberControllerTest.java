@@ -12,7 +12,7 @@ import com.dpm.winwin.api.member.service.MemberQueryService;
 import com.dpm.winwin.api.utils.RestDocsTestSupport;
 import com.dpm.winwin.domain.entity.member.enums.Ranks;
 import java.util.List;
-import com.dpm.winwin.domain.repository.member.dto.request.MemberNicknameRequest;
+import com.dpm.winwin.api.member.dto.request.MemberNicknameRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;

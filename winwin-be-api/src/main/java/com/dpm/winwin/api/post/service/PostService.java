@@ -38,6 +38,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -84,9 +86,9 @@ public class PostService {
         post.writeBy(member);
         post.setAllCategoriesBySubCategory(subCategory);
         post.setLink(links);
-        post.setTakenContent(request.takenContent());
 
         if (!request.isShare()) {
+            post.setTakenContent(request.takenContent());
             List<PostTalent> postTalents = request.takenTalentIds().stream()
                 .map(talentId -> PostTalent.of(post, subCategoryRepository.findById(talentId)
                     .orElseThrow(() -> new BusinessException(ErrorMessage.SUB_CATEGORY_NOT_FOUND))))
@@ -207,8 +209,8 @@ public class PostService {
 
     private boolean validateRequestByIsShare(boolean isShare, List<Long> takenTalentIds, String takenContent) {
         if (isShare) {
-            return (takenContent == null || takenContent.isBlank()) && takenTalentIds.isEmpty();
+            return !StringUtils.hasText(takenContent) && CollectionUtils.isEmpty(takenTalentIds);
         }
-        return !takenContent.isBlank() && !takenTalentIds.isEmpty();
+        return StringUtils.hasText(takenContent) && !CollectionUtils.isEmpty(takenTalentIds);
     }
 }

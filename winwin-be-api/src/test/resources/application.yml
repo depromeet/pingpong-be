@@ -54,7 +54,7 @@ jasypt:
     bean: jasyptStringEncryptor
     algorithm: PBEWithMD5AndDES
     iv-generator-classname: org.jasypt.iv.NoIvGenerator
-    password: test1234
+    password: jasyptEncryptorPassword
 
 cloud:
   aws:

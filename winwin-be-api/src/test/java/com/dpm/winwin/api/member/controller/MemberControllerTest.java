@@ -22,7 +22,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static com.dpm.winwin.api.member.controller.MemberControllerTest.MEMBER_ID;
-import static java.util.Collections.emptyList;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
@@ -34,7 +33,9 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParts;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WithMockUser(username = MEMBER_ID, authorities = {"ROLE_USER"})
@@ -97,7 +98,7 @@ public class MemberControllerTest extends RestDocsTestSupport {
             "image".getBytes());
 
         MemberUpdateImageResponse response = new MemberUpdateImageResponse(
-            "https://dpm-pingpong-bucket.s3.ap-northeast-2.amazonaws.com/profileImage/3d4395e4-61db-4010-8104-200e286870c4-kirby.png");
+            "https://dpm-pingpong-bucket.s3.ap-northeast-2.amazonaws.com/profileImage/3d4395e461db40108104200e286870c4-kirby.png");
 
         // when
         given(memberCommandService.updateProfileImage(1L, multipartFile))
@@ -113,9 +114,12 @@ public class MemberControllerTest extends RestDocsTestSupport {
         // then
         result.andExpect(status().isOk())
             .andDo(restDocs.document(
+                requestParts(
+                    partWithName("image").description("수정할 프로필 이미지")
+                ),
                 responseFields(
                     fieldWithPath("message").type(JsonFieldType.STRING).description("성공 여부"),
-                    fieldWithPath("data.image").type(JsonFieldType.STRING).description("저장된 회원의 프로필 사진")
+                    fieldWithPath("data.image").type(JsonFieldType.STRING).description("저장된 회원의 프로필 이미지 url")
                 )
             ));
     }
@@ -130,17 +134,17 @@ public class MemberControllerTest extends RestDocsTestSupport {
                 nickname,
                 "안녕하세요 김감자입니다.",
                 "www.depromeet.com",
-                emptyList(),
-                emptyList()
+                List.of(1L, 2L, 3L),
+                List.of(4L, 5L, 6L)
         );
 
         MemberUpdateResponse response = new MemberUpdateResponse(
                 nickname,
-                "depromeet/team2.png",
+                "https://dpm-pingpong-bucket.s3.ap-northeast-2.amazonaws.com/profileImage/3d4395e461db40108104200e286870c4-kirby.png",
                 "안녕하세요 김감자입니다.",
                 "www.depromeet.com",
-                emptyList(),
-                emptyList()
+                List.of("자소서 · 면접", "취업 · 이직 · 진로", "기획 · PM"),
+                List.of("영업 · MD", "보고서 · 발표", "생산성 툴")
         );
 
         // when
@@ -163,7 +167,7 @@ public class MemberControllerTest extends RestDocsTestSupport {
                                 fieldWithPath("introduction").type(JsonFieldType.STRING)
                                         .description("수정할 회원 소개"),
                                 fieldWithPath("profileLink").type(JsonFieldType.STRING)
-                                        .description("수정할 회원의 프로필 링크"),
+                                        .description("수정할 회원의 대표 링크"),
                                 fieldWithPath("givenTalents").type(JsonFieldType.ARRAY)
                                         .description("수정할 회원이 가진 재능"),
                                 fieldWithPath("takenTalents").type(JsonFieldType.ARRAY)
@@ -175,11 +179,11 @@ public class MemberControllerTest extends RestDocsTestSupport {
                                 fieldWithPath("data.nickname").type(JsonFieldType.STRING)
                                         .description("닉네임"),
                                 fieldWithPath("data.image").type(JsonFieldType.STRING)
-                                        .description("회원 프로필 사진"),
+                                        .description("회원 프로필 이미지 url"),
                                 fieldWithPath("data.introduction").type(JsonFieldType.STRING)
                                         .description("회원 소개"),
                                 fieldWithPath("data.profileLink").type(JsonFieldType.STRING)
-                                        .description("회원의 프로필 링크"),
+                                        .description("회원의 대표 링크"),
                                 fieldWithPath("data.givenTalents").type(JsonFieldType.ARRAY)
                                         .description("회원이 가진 재능"),
                                 fieldWithPath("data.takenTalents").type(JsonFieldType.ARRAY)
@@ -189,19 +193,19 @@ public class MemberControllerTest extends RestDocsTestSupport {
     }
 
     @Test
-    void member를_조회한다() throws Exception {
+    void member_profile을_조회한다() throws Exception {
 
         when(memberQueryService.readMemberInfo(any())).thenReturn(new MemberRankReadResponse(
                 1L,
                 "김감자",
-                "depromeet/team2.png",
+                "https://dpm-pingpong-bucket.s3.ap-northeast-2.amazonaws.com/profileImage/3d4395e461db40108104200e286870c4-kirby.png",
                 "안녕하세요 김감자입니다.",
                 "루키",
-                "ranksImage",
-                "1000",
+                "https://dpm-pingpong-bucket.s3.ap-northeast-2.amazonaws.com/profileImage/3d4395e461db40108104200e286870c4-kirby.png",
+                "23",
                 "www.depromeet.com",
-                emptyList(),
-                emptyList()
+                List.of("자소서 · 면접", "취업 · 이직 · 진로", "기획 · PM"),
+                List.of("영업 · MD", "보고서 · 발표", "생산성 툴")
         ));
 
         mockMvc.perform(
@@ -213,7 +217,7 @@ public class MemberControllerTest extends RestDocsTestSupport {
                 .andDo(
                         restDocs.document(
                                 pathParameters(
-                                        parameterWithName("memberId").description("Member ID")
+                                        parameterWithName("memberId").description("조회할 회원 id")
                                 ),
                                 responseFields(
                                         fieldWithPath("message").type(JsonFieldType.STRING)
@@ -223,17 +227,17 @@ public class MemberControllerTest extends RestDocsTestSupport {
                                         fieldWithPath("data.nickname").type(JsonFieldType.STRING)
                                                 .description("닉네임"),
                                         fieldWithPath("data.image").type(JsonFieldType.STRING)
-                                                .description("회원 프로필 사진"),
+                                                .description("회원 프로필 이미지 url"),
                                         fieldWithPath("data.introduction").type(JsonFieldType.STRING)
                                                 .description("회원 소개"),
                                         fieldWithPath("data.ranks").type(JsonFieldType.STRING)
                                                 .description("회원 등급"),
                                         fieldWithPath("data.ranksImage").type(JsonFieldType.STRING)
-                                                .description("회원 등급의 사진"),
+                                                .description("회원 등급의 이미지 url"),
                                         fieldWithPath("data.likeCount").type(JsonFieldType.STRING)
                                                 .description("회원이 보유한 총 좋아요"),
                                         fieldWithPath("data.profileLink").type(JsonFieldType.STRING)
-                                                .description("회원의 프로필 링크"),
+                                                .description("회원의 대표 링크"),
                                         fieldWithPath("data.givenTalents").type(JsonFieldType.ARRAY)
                                                 .description("회원이 가진 재능"),
                                         fieldWithPath("data.takenTalents").type(JsonFieldType.ARRAY)
@@ -245,7 +249,7 @@ public class MemberControllerTest extends RestDocsTestSupport {
     }
 
     @Test
-    void 랭크_목록을_조회한다() throws Exception {
+    void rank_목록을_조회한다() throws Exception {
         // given
         Ranks rank = Ranks.ROOKIE;
         Ranks rank2 = Ranks.BEGINNER;

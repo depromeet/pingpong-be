@@ -68,15 +68,15 @@ public class PostService {
     }
 
     public PostAddResponse save(Long memberId, PostAddRequest request) {
+        if (!validateRequestByIsShare(request.isShare(), request.takenTalentIds(), request.takenContent())) {
+            throw new BusinessException(INVALID_POST_REQUEST);
+        }
+
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new BusinessException(ErrorMessage.MEMBER_NOT_FOUND));
         SubCategory subCategory = subCategoryRepository
             .getByIdWithMainCategoryAndMidCategory(request.subCategoryId())
             .orElseThrow(() -> new BusinessException(ErrorMessage.SUB_CATEGORY_NOT_FOUND));
-
-        if (!validateRequestByIsShare(request.isShare(), request.takenTalentIds(), request.takenContent())) {
-            throw new BusinessException(INVALID_POST_REQUEST);
-        }
 
         List<Link> links = request.links().stream()
             .map(Link::of)
@@ -142,17 +142,17 @@ public class PostService {
 
     public PostUpdateResponse update(Long memberId, Long postId,
                                      PostUpdateRequest updateRequest) {
+        if (!validateRequestByIsShare(updateRequest.isShare(), updateRequest.takenTalents(),
+            updateRequest.takenContent())) {
+            throw new BusinessException(INVALID_POST_REQUEST);
+        }
+
         Post post = getByIdAndMemberId(memberId, postId);
         SubCategory subCategory = subCategoryRepository
             .getByIdWithMainCategoryAndMidCategory(updateRequest.subCategoryId())
             .orElseThrow(() -> new BusinessException(ErrorMessage.SUB_CATEGORY_NOT_FOUND));
         List<SubCategory> savedTalents = subCategoryRepository.findAllById(
             updateRequest.takenTalents());
-
-        if (!validateRequestByIsShare(updateRequest.isShare(), updateRequest.takenTalents(),
-            updateRequest.takenContent())) {
-            throw new BusinessException(INVALID_POST_REQUEST);
-        }
 
         post.update(updateRequest.toDto(), subCategory, savedTalents);
 

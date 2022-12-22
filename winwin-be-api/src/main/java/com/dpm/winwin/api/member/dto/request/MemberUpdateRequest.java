@@ -7,6 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.Length;
 
 public record MemberUpdateRequest(
 
@@ -15,8 +16,9 @@ public record MemberUpdateRequest(
     String nickname,
 
     @NotBlank(message = "자기 소개는 필수입니다.")
-    @Size(max = 300, message = "자기 소개는 300자 이하이어야 합니다.")
+    @Length(max = 300, message = "자기 소개는 300자 이하이어야 합니다.")
     String introduction,
+
     String profileLink,
 
     @NotNull(message = "주고 싶은 재능을 선택해 주세요.")

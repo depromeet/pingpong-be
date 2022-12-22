@@ -8,14 +8,15 @@ import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.Length;
 
 public record PostAddRequest(
     @NotBlank(message = "제목은 필수입니다.")
-    @Size(max = 30, message = "제목이 30자 이하이어야 합니다.")
+    @Length(max = 30, message = "제목이 30자 이하이어야 합니다.")
     String title,
 
     @NotBlank(message = "상세 설명은 필수입니다.")
-    @Size(max = 30, message = "상세 설명이 300자 이하이어야 합니다.")
+    @Length(max = 300, message = "상세 설명이 300자 이하이어야 합니다.")
     String content,
 
     @NotNull(message = "재능 나눔 유무는 필수입니다.")
@@ -33,7 +34,7 @@ public record PostAddRequest(
     @Size(max = 5, message = "받고 싶은 재능은 최대 5개입니다.")
     List<Long> takenTalentIds,
 
-    @Size(max = 300, message = "받고 싶은 재능의 상세 설명은 500자 이하이어야 합니다.")
+    @Length(max = 300, message = "받고 싶은 재능의 상세 설명은 300자 이하이어야 합니다.")
     String takenContent,
 
     @NotNull(message = "재능 나눔 환경을 선택해 주세요")

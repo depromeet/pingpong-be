@@ -1,5 +1,7 @@
 package com.dpm.winwin.api.post.service;
 
+import static com.dpm.winwin.api.common.error.enums.ErrorMessage.INVALID_POST_REQUEST;
+
 import com.dpm.winwin.api.common.error.enums.ErrorMessage;
 import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
 import com.dpm.winwin.api.common.response.dto.GlobalPageResponseDto;
@@ -36,6 +38,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -64,6 +68,10 @@ public class PostService {
     }
 
     public PostAddResponse save(Long memberId, PostAddRequest request) {
+        if (!validateRequestByIsShare(request.isShare(), request.takenTalentIds(), request.takenContent())) {
+            throw new BusinessException(INVALID_POST_REQUEST);
+        }
+
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new BusinessException(ErrorMessage.MEMBER_NOT_FOUND));
         SubCategory subCategory = subCategoryRepository
@@ -78,15 +86,16 @@ public class PostService {
         post.writeBy(member);
         post.setAllCategoriesBySubCategory(subCategory);
         post.setLink(links);
-        post.setTakenContent(request.takenContent());
 
-        List<PostTalent> postTalents = request.takenTalentIds().stream()
-            .map(talentId -> PostTalent.of(post, subCategoryRepository.findById(talentId)
-                .orElseThrow(() -> new BusinessException(ErrorMessage.SUB_CATEGORY_NOT_FOUND))))
-            .toList();
+        if (!request.isShare()) {
+            post.setTakenContent(request.takenContent());
+            List<PostTalent> postTalents = request.takenTalentIds().stream()
+                .map(talentId -> PostTalent.of(post, subCategoryRepository.findById(talentId)
+                    .orElseThrow(() -> new BusinessException(ErrorMessage.SUB_CATEGORY_NOT_FOUND))))
+                .toList();
 
-        postTalents.forEach(post::addTakenTalent);
-
+            postTalents.forEach(post::addTakenTalent);
+        }
         Post savedPost = postRepository.save(post);
         return PostAddResponse.from(savedPost);
     }
@@ -122,7 +131,6 @@ public class PostService {
     public Long delete(Long id) {
         Post post = postRepository.findById(id)
             .orElseThrow(() -> new BusinessException(ErrorMessage.POST_NOT_FOUND));
-
         postRepository.delete(post);
         return post.getId();
     }
@@ -133,7 +141,12 @@ public class PostService {
     }
 
     public PostUpdateResponse update(Long memberId, Long postId,
-        PostUpdateRequest updateRequest) {
+                                     PostUpdateRequest updateRequest) {
+        if (!validateRequestByIsShare(updateRequest.isShare(), updateRequest.takenTalents(),
+            updateRequest.takenContent())) {
+            throw new BusinessException(INVALID_POST_REQUEST);
+        }
+
         Post post = getByIdAndMemberId(memberId, postId);
         SubCategory subCategory = subCategoryRepository
             .getByIdWithMainCategoryAndMidCategory(updateRequest.subCategoryId())
@@ -192,5 +205,12 @@ public class PostService {
             .map(MyPagePostResponse::of);
 
         return GlobalPageResponseDto.of(page);
+    }
+
+    private boolean validateRequestByIsShare(boolean isShare, List<Long> takenTalentIds, String takenContent) {
+        if (isShare) {
+            return !StringUtils.hasText(takenContent) && CollectionUtils.isEmpty(takenTalentIds);
+        }
+        return StringUtils.hasText(takenContent) && !CollectionUtils.isEmpty(takenTalentIds);
     }
 }

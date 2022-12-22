@@ -19,7 +19,7 @@ import com.dpm.winwin.domain.entity.member.Member;
 import com.dpm.winwin.domain.entity.oauth.OauthToken;
 import com.dpm.winwin.domain.repository.category.SubCategoryRepository;
 import com.dpm.winwin.domain.repository.member.MemberRepository;
-import com.dpm.winwin.domain.repository.member.dto.request.MemberNicknameRequest;
+import com.dpm.winwin.api.member.dto.request.MemberNicknameRequest;
 import com.dpm.winwin.domain.repository.oauth.OauthRepository;
 import io.jsonwebtoken.Claims;
 import java.util.List;

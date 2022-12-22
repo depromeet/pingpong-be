@@ -49,7 +49,6 @@ public class MemberCommandService {
     private static final String TOKEN_TYPE_HINT = "refresh_token";
     private final MemberRepository memberRepository;
     private final SubCategoryRepository subCategoryRepository;
-    private final OauthRepository oauthRepository;
     private final RestTemplate restTemplate;
     private final ClientRegistrationRepository clientRegistrationRepository;
     private final FileService fileService;

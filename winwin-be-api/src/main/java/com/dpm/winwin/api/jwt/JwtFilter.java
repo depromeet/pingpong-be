@@ -2,6 +2,8 @@ package com.dpm.winwin.api.jwt;
 
 
 import com.dpm.winwin.api.common.utils.CookieUtil;
+import com.dpm.winwin.domain.entity.token.ExpiredToken;
+import com.dpm.winwin.domain.repository.token.ExpiredTokenRepository;
 import io.jsonwebtoken.Claims;
 import java.io.IOException;
 import java.util.Optional;
@@ -12,6 +14,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,15 +22,14 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
 
 @Slf4j
+@RequiredArgsConstructor
 public class JwtFilter extends GenericFilterBean {
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String BEARER = "Bearer ";
     private final TokenProvider tokenProvider;
+    private final ExpiredTokenRepository expiredTokenRepository;
 
-    public JwtFilter(TokenProvider tokenProvider) {
-        this.tokenProvider = tokenProvider;
-    }
 
     // 토큰의 인증 정보를 securityContext에 저장하는 역할을 수행
     @Override
@@ -81,7 +83,8 @@ public class JwtFilter extends GenericFilterBean {
     }
 
     private boolean verifyToken(String jwtToken) {
-        return StringUtils.hasText(jwtToken) && tokenProvider.validateToken(jwtToken);
+        Optional<ExpiredToken> expiredToken = expiredTokenRepository.findById(jwtToken);
+        return StringUtils.hasText(jwtToken) && tokenProvider.validateToken(jwtToken) && expiredToken.isEmpty();
     }
 
     private String getToken(HttpServletRequest httpServletRequest, String tokenType) {

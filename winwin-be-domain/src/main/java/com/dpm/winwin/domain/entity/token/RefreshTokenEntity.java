@@ -1,8 +1,8 @@
 package com.dpm.winwin.domain.entity.token;
 
-import javax.persistence.Id;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
 @Getter

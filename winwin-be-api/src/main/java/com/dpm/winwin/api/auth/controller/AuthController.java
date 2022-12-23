@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/v1/auth")
 public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping("/v1/logout")
+    @PostMapping("/logout")
     public BaseResponseDto<Long> logout(@AuthenticationPrincipal User user, HttpServletRequest request, HttpServletResponse response) {
         long memberId = Long.parseLong(user.getUsername());
         authService.logout(request, response);

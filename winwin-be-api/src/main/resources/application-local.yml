@@ -66,7 +66,7 @@ springdoc:
     url: /docs/openapi3.json
     operations-sorter: alpha
     tags-sorter: alpha
-    path: /
+    path: /swagger-ui
     disable-swagger-default-url: true
     doc-expansion: none
   paths-to-match:

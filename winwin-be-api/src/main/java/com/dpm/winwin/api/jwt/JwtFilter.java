@@ -6,6 +6,7 @@ import com.dpm.winwin.domain.entity.token.ExpiredToken;
 import com.dpm.winwin.domain.repository.token.ExpiredTokenRepository;
 import io.jsonwebtoken.Claims;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Optional;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -43,6 +44,12 @@ public class JwtFilter extends GenericFilterBean {
         String requestURI = httpServletRequest.getRequestURI();
 
         if (verifyToken(accessToken)) {
+            if (isLogoutToken(accessToken)) {
+                log.info("로그아웃 처리된 토큰입니다. : {}", accessToken);
+                chain.doFilter(request, response);
+                return;
+            }
+
             Authentication authentication = tokenProvider.getAuthentication(accessToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             log.info("Security Context에 '{}' 인증 정보를 저장했습니다. uri : {}", authentication.getName(), requestURI);
@@ -70,6 +77,11 @@ public class JwtFilter extends GenericFilterBean {
         chain.doFilter(request, response);
     }
 
+    private boolean isLogoutToken(String accessToken) {
+        Optional<ExpiredToken> expiredToken = expiredTokenRepository.findById(Objects.requireNonNull(accessToken));
+        return expiredToken.isPresent();
+    }
+
     private Long getMemberId(Claims claims) {
         log.info("claims : {}", claims);
         Object id = claims.get("memberId");
@@ -83,8 +95,7 @@ public class JwtFilter extends GenericFilterBean {
     }
 
     private boolean verifyToken(String jwtToken) {
-        Optional<ExpiredToken> expiredToken = expiredTokenRepository.findById(jwtToken);
-        return StringUtils.hasText(jwtToken) && tokenProvider.validateToken(jwtToken) && expiredToken.isEmpty();
+        return StringUtils.hasText(jwtToken) && tokenProvider.validateToken(jwtToken);
     }
 
     private String getToken(HttpServletRequest httpServletRequest, String tokenType) {

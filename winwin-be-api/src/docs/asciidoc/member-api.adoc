@@ -27,3 +27,7 @@ operation::member-controller-test/member의_profile-image를_수정한다[snippe
 [[등급-목록-조회]]
 == 등급 목록 조회
 operation::member-controller-test/rank_목록을_조회한다[snippets='http-request,http-response,response-fields']
+
+[[회원-탈퇴]]
+== 회원 탈퇴
+operation::member-controller-test/회원_탈퇴[snippets='http-request,http-response,response-fields']

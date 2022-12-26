@@ -1,5 +1,6 @@
 package com.dpm.winwin.api.member.controller;
 
+import com.dpm.winwin.api.member.dto.response.MemberDeleteResponse;
 import com.dpm.winwin.api.member.dto.response.MemberUpdateImageResponse;
 import com.dpm.winwin.api.member.dto.response.RanksListResponse;
 import com.dpm.winwin.api.member.dto.response.RanksResponse;
@@ -25,6 +26,7 @@ import static com.dpm.winwin.api.member.controller.MemberControllerTest.MEMBER_I
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.multipart;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
@@ -280,5 +282,30 @@ public class MemberControllerTest extends RestDocsTestSupport {
                 )
             ))
         ;
+    }
+
+    @Test
+    void 회원_탈퇴() throws Exception {
+
+        // Given
+        Long deleteMemberId = Long.valueOf(MEMBER_ID);
+        MemberDeleteResponse memberDeleteResponse = new MemberDeleteResponse(deleteMemberId);
+        given(memberCommandService.deleteMember(deleteMemberId)).willReturn(memberDeleteResponse);
+
+        // Then
+        ResultActions resultActions = mockMvc.perform(
+            delete("/api/v1/members/me")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        // Then
+        resultActions.andExpect(status().isOk())
+            .andDo(restDocs.document(
+                responseFields(
+                    fieldWithPath("message").type(JsonFieldType.STRING).description("성공 여부"),
+                    fieldWithPath("data.deleteMemberId").type(JsonFieldType.NUMBER).description("탈퇴한 회원 아이디")
+                )
+            ));
     }
 }

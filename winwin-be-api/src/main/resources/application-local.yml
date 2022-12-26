@@ -87,3 +87,5 @@ cloud:
     stack:
       auto: false
 
+pingpong:
+  url: https://dev-fe.ping-pong.world

@@ -65,7 +65,6 @@ public class AppleLoginService {
     private final TokenProvider tokenProvider;
     private final ClientRegistrationRepository clientRegistrationRepository;
     private final RestTemplate restTemplate;
-    private final ObjectMapper objectMapper;
     private final OauthRepository oauthRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final NicknameGenerator nicknameGenerator;
@@ -173,11 +172,6 @@ public class AppleLoginService {
     private JWSHeader getJwsHeader(String idToken) throws ParseException {
         SignedJWT idTokenJwt = SignedJWT.parse(idToken);
         return idTokenJwt.getHeader();
-    }
-
-    private String getName(String memberInfo) throws JsonProcessingException {
-        MemberInfo info = objectMapper.readValue(memberInfo, MemberInfo.class);
-        return info.name().lastName() + info.name().firstName();
     }
 
     private AppleToken generatedToken(String code) {

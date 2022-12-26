@@ -31,7 +31,7 @@ public class CookieUtil {
             Cookie cookie = new Cookie(name,value);
             cookie.setMaxAge(maxAge);
             cookie.setHttpOnly(true);
-            cookie.setDomain(".ping-pong.world");
+            cookie.setDomain("ping-pong.world");
             cookie.setPath("/");
             response.addCookie(cookie);
     }

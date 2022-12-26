@@ -1,0 +1,88 @@
+server:
+  port: 8080
+
+spring:
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        default_batch_fetch_size: 100
+        format_sql: true
+
+  datasource:
+      url: ENC(XZiReczSSeVhtjiRh2EdMn/QCY1Ju8DgNneba7kajJb9G7wtJP1U0swDxr9ITwHKWPMhgxlJf9YU0AU9ZH2D6X7WhGeTVOlxBjuZcWJathFd6hF94P6yWur5+WOhzb22EHiXmiymzFVJuTLSPQSpruiaenLxEPXfWsyq6/ialV+kwHRbjNyZVSMVycPMM9uZ7c2oHkyf2KY=)
+      username: ENC(kSbVij29Q5IxlMTyH1g0rw==)
+      password: ENC(f2DZKexIllOKp9G6wKa2T+E/dqGcnngS)
+      driver-class-name: com.mysql.cj.jdbc.Driver
+
+  servlet:
+    multipart:
+      max-file-size: 5MB
+
+  security:
+    oauth2:
+      client:
+        registration:
+          apple:
+            clientId: com.dpm.pingpong-login
+            clientSecret: ENC(d+fNAivHiQcwF4bM0kI3CUj0Qn8mhWU+zysRTrfBPb9T1hhlEP8dVVdkCagBVBjW5k+faZ6wb0vzeBP6bf+7Blpb0bXp6wdPcRVYKmnGOClYI7WorVbty8lbeWRcIRLNfc4btAD2PPrTWVjQpfIqo0X+ZgXAG4kE3su6KQSPEYEqDAVmv0qHDVmfRdbGiYra1UzRC4M86bcpf5kqqezFo1CYZ7b1h8ReoR8bO6KR0yaHOVhL12u4nwQn3FDbjH4fxOWYem0C+NFquqd8FRaqzPXqZa/EI1uhXb1xCskO3wsoUHPKYjELCLTvtCjFIZbXMvB5OyPutEJmEW0EuSF7f8FqylV8jUaZzZAYUgzHlHuShHxbZUREKYQ4CG/+Yt2sZcZtgvfKxX8HNco9fqMR5w==)
+            clientName: apple
+            authorizationGrantType: authorization_code
+            clientAuthenticationMethod: CLIENT_SECRET_JWT
+            redirect-uri: https://test.pingpongg.shop/apple/redirect
+            scope:
+              - openid
+              - name
+              - email
+        provider:
+          apple:
+            authorization-uri: https://appleid.apple.com/auth/authorize?response_mode=form_post
+            token-uri: https://appleid.apple.com/auth/token
+            jwk-set-uri: https://appleid.apple.com/auth/keys
+
+jwt:
+  secret: ENC(vtXQqpFzmMOU0LEzZAtvTclmTvMLzhfmOaL4g9nK+Q0/40Ja4ZhlmabPN6GqNbnnhfw/IDdr0nMT1zRVhUlzIT3Qn2B6S3BGAre61WLcHvPhaHJXYijicCy11npKMfzhnSXmWixqUgU=)
+  token-validity-in-seconds: 86400
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
+    password: ${encrypt_key}
+
+springdoc:
+  version: '@project.version@'
+  api-docs:
+    path: /api-docs
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  swagger-ui:
+    url: /docs/openapi3.json
+    operations-sorter: alpha
+    tags-sorter: alpha
+    path: /
+    disable-swagger-default-url: true
+    doc-expansion: none
+  paths-to-match:
+    - /api/**
+
+cloud:
+  aws:
+    s3:
+      bucket:
+        name: ENC(KydYPKGs+Dt6Tw5ftB3q9KZzx6elxYBe2103TDNwZvA=)
+        url: ENC(euVI7Jo0kFw7UqVivAr7EuROccDHvzE9jNjei3mYt49yAal3CRP2iErcbW90Fjm2gM8IhjxVYCY80JHdUcX+pLxiTB2uWnUr)
+
+    credentials:
+      access-key: ENC(RKFCNH3Hfh23NDkdV9qcBQFY05KOWokFk3WqUIDgckQ=)
+      secret-key: ENC(E+5VE+62nn8hfVelioNTTLlFTGRXDmWNn4MONZh9gdSqzSvBWfax5b5zgM9VgDhbCikbG3O3eDo=)
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+

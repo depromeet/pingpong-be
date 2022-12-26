@@ -32,8 +32,8 @@ public class CookieUtil {
             .maxAge(maxAge)
             .httpOnly(true)
             .secure(true)
-            .sameSite("none")
-            .domain(".ping-pong")
+            .sameSite("None")
+            .domain(".ping-pong.world")
             .build();
 
         response.addHeader("Set-Cookie", cookie.toString());

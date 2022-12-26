@@ -6,7 +6,7 @@ spring:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     open-in-view: false
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
@@ -33,7 +33,7 @@ spring:
             clientName: apple
             authorizationGrantType: authorization_code
             clientAuthenticationMethod: CLIENT_SECRET_JWT
-            redirect-uri: https://be.ping-pong.world/apple/redirect
+            redirect-uri: https://dev-be.ping-pong.world/apple/redirect
             scope:
               - openid
               - name
@@ -87,4 +87,4 @@ cloud:
       auto: false
 
 pingpong:
-  url: https://fe.ping-pong.world
+  url: https://dev-fe.ping-pong.world

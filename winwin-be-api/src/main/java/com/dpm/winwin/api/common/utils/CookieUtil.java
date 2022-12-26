@@ -28,15 +28,12 @@ public class CookieUtil {
     }
 
     public static void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
-        ResponseCookie cookie = ResponseCookie.from(name, value)
-            .maxAge(maxAge)
-            .httpOnly(true)
-            .secure(true)
-            .sameSite("None")
-            .domain(".ping-pong.world")
-            .build();
-
-        response.addHeader("Set-Cookie", cookie.toString());
+            Cookie cookie = new Cookie(name,value);
+            cookie.setMaxAge(maxAge);
+            cookie.setHttpOnly(true);
+            cookie.setDomain(".ping-pong.world");
+            cookie.setPath("/");
+            response.addCookie(cookie);
     }
 
     public static void changeCookie(HttpServletRequest request, HttpServletResponse response, String name, String value,

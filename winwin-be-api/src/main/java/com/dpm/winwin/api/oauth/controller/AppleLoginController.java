@@ -98,7 +98,6 @@ public class AppleLoginController {
     }
 
     private void setTokenCookie(HttpServletRequest request, HttpServletResponse response, TokenResponse token) {
-        CookieUtil.changeCookie(request, response, MEMBER_ID, String.valueOf(token.memberId()), -1);
         CookieUtil.changeCookie(request, response, ACCESS_TOKEN, token.accessToken(), 86400);
         CookieUtil.changeCookie(request, response, REFRESH_TOKEN, token.refreshToken(), 86400 * 30);
     }

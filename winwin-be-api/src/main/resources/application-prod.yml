@@ -33,7 +33,7 @@ spring:
             clientName: apple
             authorizationGrantType: authorization_code
             clientAuthenticationMethod: CLIENT_SECRET_JWT
-            redirect-uri: https://test.pingpongg.shop/apple/redirect
+            redirect-uri: https://be.ping-pong.world/apple/redirect
             scope:
               - openid
               - name
@@ -65,7 +65,7 @@ springdoc:
     url: /docs/openapi3.json
     operations-sorter: alpha
     tags-sorter: alpha
-    path: /
+    path: /swagger-ui
     disable-swagger-default-url: true
     doc-expansion: none
   paths-to-match:
@@ -86,3 +86,5 @@ cloud:
     stack:
       auto: false
 
+pingpong:
+  url: https://fe.ping-pong.world

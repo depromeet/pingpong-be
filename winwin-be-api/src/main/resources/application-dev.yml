@@ -1,7 +1,6 @@
 server:
   port: 8080
 
-
 spring:
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
@@ -34,7 +33,7 @@ spring:
             clientName: apple
             authorizationGrantType: authorization_code
             clientAuthenticationMethod: CLIENT_SECRET_JWT
-            redirect-uri: https://test.pingpongg.shop/apple/redirect
+            redirect-uri: https://dev-be.ping-pong.world/apple/redirect
             scope:
               - openid
               - name

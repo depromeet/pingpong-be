@@ -1,6 +1,7 @@
 package com.dpm.winwin.api.post.controller;
 
 import static com.dpm.winwin.api.utils.RestDocsConfig.field;
+import static com.dpm.winwin.domain.entity.post.Likes.changeFormatCountToString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -94,7 +95,7 @@ class PostControllerTest extends RestDocsTestSupport {
                     fieldWithPath("data.content[].title").type(JsonFieldType.STRING).description("게시물 제목"),
                     fieldWithPath("data.content[].subCategory").type(JsonFieldType.STRING).description("소분류 카테고리 이름"),
                     fieldWithPath("data.content[].isShare").type(JsonFieldType.BOOLEAN).description("재능 나눔 여부"),
-                    fieldWithPath("data.content[].likes").type(JsonFieldType.NUMBER).description("게시물 좋아요 수"),
+                    fieldWithPath("data.content[].likes").type(JsonFieldType.STRING).description("게시물 좋아요 수"),
                     fieldWithPath("data.content[].memberId").type(JsonFieldType.NUMBER).description("작성자 id"),
                     fieldWithPath("data.content[].nickname").type(JsonFieldType.STRING).description("작성자 닉네임"),
                     fieldWithPath("data.content[].image").type(JsonFieldType.STRING).description("작성자 이미지 url"),
@@ -146,7 +147,7 @@ class PostControllerTest extends RestDocsTestSupport {
                     fieldWithPath("data.content[].title").type(JsonFieldType.STRING).description("게시물 제목"),
                     fieldWithPath("data.content[].subCategory").type(JsonFieldType.STRING).description("소분류 카테고리 이름"),
                     fieldWithPath("data.content[].isShare").type(JsonFieldType.BOOLEAN).description("재능 나눔 여부"),
-                    fieldWithPath("data.content[].likes").type(JsonFieldType.NUMBER).description("게시물 좋아요 수"),
+                    fieldWithPath("data.content[].likes").type(JsonFieldType.STRING).description("게시물 좋아요 수"),
                     fieldWithPath("data.content[].memberId").type(JsonFieldType.NUMBER).description("작성자 id"),
                     fieldWithPath("data.content[].nickname").type(JsonFieldType.STRING).description("작성자 닉네임"),
                     fieldWithPath("data.content[].image").type(JsonFieldType.STRING).description("작성자 이미지 url"),
@@ -305,7 +306,7 @@ class PostControllerTest extends RestDocsTestSupport {
                 "제목" + i,
                 "UX/UI 디자인",
                 false,
-                3,
+                changeFormatCountToString(1234),
                 1L,
                 "말하는 감자" + i,
                 "https://dpm-pingpong-bucket.s3.ap-northeast-2.amazonaws.com/profileImage/3d4395e461db40108104200e286870c4-kirby.png",
@@ -325,7 +326,7 @@ class PostControllerTest extends RestDocsTestSupport {
                 "제목" + i,
                 "UX/UI 디자인",
                 false,
-                3,
+                changeFormatCountToString(1234),
                 1L,
                 "말하는 감자" + i,
                 "https://dpm-pingpong-bucket.s3.ap-northeast-2.amazonaws.com/profileImage/3d4395e461db40108104200e286870c4-kirby.png",
@@ -476,7 +477,7 @@ class PostControllerTest extends RestDocsTestSupport {
             List.of(new LinkResponse(1L, "www.naver.com"),
                 new LinkResponse(2L, "www.google.com")),
             "www.chatLink.com",
-            3,
+            changeFormatCountToString(1234),
             "받고 싶은 재능 내용",
             List.of("액세서리 · 패션소품", "뜨개 · 자수 · 라탄"),
             ExchangeType.ANY_TYPE,
@@ -545,7 +546,7 @@ class PostControllerTest extends RestDocsTestSupport {
                         .description("등급"),
                     fieldWithPath("data.isLike").type(JsonFieldType.BOOLEAN)
                         .description("해당 회원의 게시글 좋아요 여부"),
-                    fieldWithPath("data.likes").type(JsonFieldType.NUMBER)
+                    fieldWithPath("data.likes").type(JsonFieldType.STRING)
                         .description("좋아요 수")
                 )
             ));
@@ -555,9 +556,9 @@ class PostControllerTest extends RestDocsTestSupport {
     void 회원별_post_목록을_조회한다() throws Exception {
 
         MyPagePostResponse response1 = new MyPagePostResponse(1L, "미술 나눔해요", "미술", false,
-            List.of("네일아트", "종이접기"), 149392);
+            List.of("네일아트", "종이접기"), changeFormatCountToString(1234));
         MyPagePostResponse response2 = new MyPagePostResponse(1L, "컴공 나눔해요", "개발", false,
-            List.of("Java", "node.js"), 1);
+            List.of("Java", "node.js"), changeFormatCountToString(1));
 
         PageImpl<MyPagePostResponse> myPagePostResponses = new PageImpl<>(
             List.of(response1, response2));
@@ -593,7 +594,7 @@ class PostControllerTest extends RestDocsTestSupport {
                         .description("소분류 카테고리 이름"),
                     fieldWithPath("data.content[].takenTalents").type(JsonFieldType.ARRAY).optional()
                         .description("받고 싶은 재능"),
-                    fieldWithPath("data.content[].likes").type(JsonFieldType.NUMBER)
+                    fieldWithPath("data.content[].likes").type(JsonFieldType.STRING)
                         .description("게시물 좋아요 수"),
                     fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER)
                         .description("전체 데이터 수"),

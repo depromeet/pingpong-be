@@ -29,7 +29,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -93,24 +92,15 @@ public class Post extends BaseEntity {
 
     private String takenContent;
 
-    @Builder
-    public Post(Member member, MainCategory mainCategory, MidCategory midCategory,
-        SubCategory subCategory, List<Link> links, String chatLink, String title, String content,
-        boolean isShare, ExchangeType exchangeType, ExchangePeriod exchangePeriod,
-        ExchangeTime exchangeTime, String takenContent) {
-        this.member = member;
-        this.mainCategory = mainCategory;
-        this.midCategory = midCategory;
-        this.subCategory = subCategory;
-        this.links = links;
-        this.chatLink = chatLink;
+    public Post(String title, String content, boolean isShare, String chatLink,
+                ExchangeType exchangeType, ExchangePeriod exchangePeriod, ExchangeTime exchangeTime) {
         this.title = title;
         this.content = content;
         this.isShare = isShare;
+        this.chatLink = chatLink;
         this.exchangeType = exchangeType;
         this.exchangePeriod = exchangePeriod;
         this.exchangeTime = exchangeTime;
-        this.takenContent = takenContent;
     }
 
     public void writeBy(Member member) {
@@ -177,7 +167,7 @@ public class Post extends BaseEntity {
 
     }
 
-    public void minusLikes(Likes likes){
+    public void minusLikes(Likes likes) {
         this.likes.remove(likes);
     }
 

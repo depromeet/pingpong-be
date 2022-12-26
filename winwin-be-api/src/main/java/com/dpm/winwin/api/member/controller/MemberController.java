@@ -2,10 +2,9 @@ package com.dpm.winwin.api.member.controller;
 
 import static com.dpm.winwin.api.common.utils.SecurityUtil.getCurrentMemberId;
 
-import com.dpm.winwin.api.common.error.enums.ErrorMessage;
-import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
 import com.dpm.winwin.api.common.response.dto.BaseResponseDto;
 import com.dpm.winwin.api.member.dto.request.MemberUpdateRequest;
+import com.dpm.winwin.api.member.dto.response.MemberDeleteResponse;
 import com.dpm.winwin.api.member.dto.response.MemberNicknameResponse;
 import com.dpm.winwin.api.member.dto.response.MemberRankReadResponse;
 import com.dpm.winwin.api.member.dto.response.MemberUpdateImageResponse;
@@ -13,12 +12,11 @@ import com.dpm.winwin.api.member.dto.response.MemberUpdateResponse;
 import com.dpm.winwin.api.member.dto.response.RanksListResponse;
 import com.dpm.winwin.api.member.service.MemberCommandService;
 import com.dpm.winwin.api.member.service.MemberQueryService;
-import com.dpm.winwin.domain.repository.member.dto.request.MemberNicknameRequest;
+import com.dpm.winwin.api.member.dto.request.MemberNicknameRequest;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -31,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/members")
@@ -41,11 +40,8 @@ public class MemberController {
 
     @PatchMapping("/nickname")
     public BaseResponseDto<MemberNicknameResponse> updateMemberNickname(
-        @Valid @RequestBody MemberNicknameRequest memberNicknameRequest, BindingResult bindingResult) {
+        @RequestBody @Valid MemberNicknameRequest memberNicknameRequest) {
         Long memberId = getCurrentMemberId();
-        if (bindingResult.hasErrors()) {
-            throw new BusinessException(ErrorMessage.INVALID_NICKNAME);
-        }
         return BaseResponseDto.ok(memberCommandService.updateMemberNickname(memberId, memberNicknameRequest));
     }
 
@@ -69,7 +65,7 @@ public class MemberController {
 
     @PutMapping
     public BaseResponseDto<MemberUpdateResponse> updateMember(
-        @RequestBody final MemberUpdateRequest memberUpdateRequest) {
+        @RequestBody @Valid MemberUpdateRequest memberUpdateRequest) {
         Long memberId = getCurrentMemberId();
         return BaseResponseDto.ok(memberCommandService.updateMember(memberId, memberUpdateRequest));
     }
@@ -80,9 +76,9 @@ public class MemberController {
         return BaseResponseDto.ok(response);
     }
 
-    @DeleteMapping("/{memberId}")
-    public BaseResponseDto<Long> deleteMember(@PathVariable Long memberId) {
-        Long deleteMemberId = memberCommandService.deleteMember(memberId);
-        return BaseResponseDto.ok(deleteMemberId);
+    @DeleteMapping("/me")
+    public BaseResponseDto<MemberDeleteResponse> deleteMember(@AuthenticationPrincipal User user) {
+        MemberDeleteResponse memberDeleteResponse = memberCommandService.deleteMember(Long.parseLong(user.getUsername()));
+        return BaseResponseDto.ok(memberDeleteResponse);
     }
 }

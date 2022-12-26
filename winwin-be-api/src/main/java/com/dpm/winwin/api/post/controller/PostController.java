@@ -16,6 +16,7 @@ import com.dpm.winwin.api.post.service.LikesService;
 import com.dpm.winwin.api.post.service.PostService;
 import com.dpm.winwin.domain.repository.post.dto.request.PostCustomizedConditionRequest;
 import com.dpm.winwin.domain.repository.post.dto.request.PostListConditionRequest;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -55,14 +56,14 @@ public class PostController {
     }
 
     @PostMapping
-    public BaseResponseDto<PostAddResponse> createPost(@RequestBody PostAddRequest request) {
+    public BaseResponseDto<PostAddResponse> createPost(@RequestBody @Valid PostAddRequest request) {
         long tempMemberId = 1L;
         return BaseResponseDto.ok(postService.save(tempMemberId, request));
     }
 
     @PutMapping("/{id}")
     public BaseResponseDto<PostUpdateResponse> updatePost(
-        @PathVariable Long id, @RequestBody final PostUpdateRequest updateRequest) {
+        @PathVariable Long id, @RequestBody @Valid final PostUpdateRequest updateRequest) {
         long memberId = 1L;
         return BaseResponseDto.ok(postService.update(memberId, id, updateRequest));
     }

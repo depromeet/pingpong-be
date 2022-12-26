@@ -9,6 +9,7 @@ import static com.dpm.winwin.api.common.error.enums.ErrorMessage.MEMBER_NOT_FOUN
 import com.dpm.winwin.api.common.error.exception.custom.AppleTokenGenerateException;
 import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
 import com.dpm.winwin.api.common.error.exception.custom.InvalidIdTokenException;
+import com.dpm.winwin.api.configuration.NicknameGenerator;
 import com.dpm.winwin.api.jwt.TokenProvider;
 import com.dpm.winwin.api.jwt.TokenResponse;
 import com.dpm.winwin.api.oauth.dto.ApplePublicKeys;
@@ -64,9 +65,9 @@ public class AppleLoginService {
     private final TokenProvider tokenProvider;
     private final ClientRegistrationRepository clientRegistrationRepository;
     private final RestTemplate restTemplate;
-    private final ObjectMapper objectMapper;
     private final OauthRepository oauthRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final NicknameGenerator nicknameGenerator;
     private static final String APPLE_BASE_URL = "https://appleid.apple.com";
     private static final String APPLE_TOKEN_REQUEST_URL = APPLE_BASE_URL + "/auth/token";
 
@@ -86,19 +87,19 @@ public class AppleLoginService {
 
         String socialId = (String) claims.get("sub");
         ProviderType provider = ProviderType.APPLE;
-        String memberName = getName(memberInfo);
+        String nickname = nicknameGenerator.generate();
 
-        log.info("memberName :: {}, socialId :: {}, provider :: {}", memberName, socialId, provider);
+        log.info("nickname :: {}, socialId :: {}, provider :: {}", nickname, socialId, provider);
 
-        Member member = saveMember(memberName);
+        Member member = saveMember(nickname);
         OauthToken oauthToken = new OauthToken(member, socialId, provider, appleToken.accessToken(), appleToken.refreshToken());
         oauthRepository.save(oauthToken);
 
         return getTokenResponse(member);
     }
 
-    private Member saveMember(String memberName){
-        Member newMember = new Member(memberName, Ranks.ROOKIE);
+    private Member saveMember(String nickname){
+        Member newMember = new Member(nickname, Ranks.ROOKIE);
         return memberRepository.save(newMember);
     }
 
@@ -171,11 +172,6 @@ public class AppleLoginService {
     private JWSHeader getJwsHeader(String idToken) throws ParseException {
         SignedJWT idTokenJwt = SignedJWT.parse(idToken);
         return idTokenJwt.getHeader();
-    }
-
-    private String getName(String memberInfo) throws JsonProcessingException {
-        MemberInfo info = objectMapper.readValue(memberInfo, MemberInfo.class);
-        return info.name().lastName() + info.name().firstName();
     }
 
     private AppleToken generatedToken(String code) {

@@ -5,7 +5,6 @@ import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
 import com.dpm.winwin.api.post.dto.request.LikeAddRequest;
 import com.dpm.winwin.api.post.dto.response.LikesResponse;
 import com.dpm.winwin.domain.entity.member.Member;
-import com.dpm.winwin.domain.entity.post.Likes;
 import com.dpm.winwin.domain.entity.post.Post;
 import com.dpm.winwin.domain.repository.member.MemberRepository;
 import com.dpm.winwin.domain.repository.post.LikesRepository;

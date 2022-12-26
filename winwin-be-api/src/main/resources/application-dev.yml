@@ -53,7 +53,7 @@ jasypt:
     bean: jasyptStringEncryptor
     algorithm: PBEWithMD5AndDES
     iv-generator-classname: org.jasypt.iv.NoIvGenerator
-    password: ${encrypt_key}
+    password: ${ENCRYPT_KEY}
 
 springdoc:
   version: '@project.version@'

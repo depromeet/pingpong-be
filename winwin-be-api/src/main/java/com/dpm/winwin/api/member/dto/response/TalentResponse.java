@@ -9,7 +9,7 @@ public record TalentResponse(
 
     public static TalentResponse of(MemberTalent memberTalent) {
         return new TalentResponse(
-            memberTalent.getId(),
+            memberTalent.getTalent().getId(),
             memberTalent.getTalent().getName()
         );
     }

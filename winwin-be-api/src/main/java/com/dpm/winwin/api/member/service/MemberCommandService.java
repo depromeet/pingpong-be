@@ -14,6 +14,7 @@ import com.dpm.winwin.api.member.dto.response.MemberDeleteResponse;
 import com.dpm.winwin.api.member.dto.response.MemberNicknameResponse;
 import com.dpm.winwin.api.member.dto.response.MemberUpdateImageResponse;
 import com.dpm.winwin.api.member.dto.response.MemberUpdateResponse;
+import com.dpm.winwin.api.member.dto.response.TalentResponse;
 import com.dpm.winwin.domain.entity.category.SubCategory;
 import com.dpm.winwin.domain.entity.member.Member;
 import com.dpm.winwin.domain.entity.oauth.OauthToken;
@@ -83,11 +84,11 @@ public class MemberCommandService {
                 member.getProfileLink(),
                 member.getTalents().stream()
                         .filter(memberTalent -> memberTalent.getType().equals(GIVE))
-                        .map(memberTalent -> memberTalent.getTalent().getName())
+                        .map(TalentResponse::of)
                         .toList(),
                 member.getTalents().stream()
                         .filter(memberTalent -> memberTalent.getType().equals(TAKE))
-                        .map(memberTalent -> memberTalent.getTalent().getName())
+                        .map(TalentResponse::of)
                         .toList()
         );
     }

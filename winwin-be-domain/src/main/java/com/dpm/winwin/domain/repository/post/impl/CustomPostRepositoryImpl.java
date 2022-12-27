@@ -136,9 +136,9 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
 
         JPAQuery<Long> countQuery = queryFactory.select(post.count())
             .from(post)
-            .leftJoin(post.likes, likes).fetchJoin()
-            .leftJoin(post.subCategory, subCategory).fetchJoin()
-            .leftJoin(post.member, member).fetchJoin()
+            .leftJoin(post.likes, likes)
+            .leftJoin(post.subCategory, subCategory)
+            .leftJoin(post.member, member)
             .where(post.member.id.eq(memberId));
 
         return PageableExecutionUtils.getPage(results, pageable, countQuery::fetchOne);

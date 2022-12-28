@@ -4,6 +4,7 @@ import static com.dpm.winwin.api.common.utils.SecurityUtil.getCurrentMemberId;
 
 import com.dpm.winwin.api.common.response.dto.BaseResponseDto;
 import com.dpm.winwin.api.member.dto.request.MemberUpdateRequest;
+import com.dpm.winwin.api.member.dto.response.MemberDeleteResponse;
 import com.dpm.winwin.api.member.dto.response.MemberNicknameResponse;
 import com.dpm.winwin.api.member.dto.response.MemberRankReadResponse;
 import com.dpm.winwin.api.member.dto.response.MemberUpdateImageResponse;
@@ -75,9 +76,9 @@ public class MemberController {
         return BaseResponseDto.ok(response);
     }
 
-    @DeleteMapping("/{memberId}")
-    public BaseResponseDto<Long> deleteMember(@PathVariable Long memberId) {
-        Long deleteMemberId = memberCommandService.deleteMember(memberId);
-        return BaseResponseDto.ok(deleteMemberId);
+    @DeleteMapping("/me")
+    public BaseResponseDto<MemberDeleteResponse> deleteMember(@AuthenticationPrincipal User user) {
+        MemberDeleteResponse memberDeleteResponse = memberCommandService.deleteMember(Long.parseLong(user.getUsername()));
+        return BaseResponseDto.ok(memberDeleteResponse);
     }
 }

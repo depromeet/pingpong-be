@@ -1,5 +1,6 @@
 package com.dpm.winwin.api.member.controller;
 
+import com.dpm.winwin.api.member.dto.response.MemberDeleteResponse;
 import com.dpm.winwin.api.member.dto.response.MemberUpdateImageResponse;
 import com.dpm.winwin.api.member.dto.response.RanksListResponse;
 import com.dpm.winwin.api.member.dto.response.RanksResponse;
@@ -7,6 +8,7 @@ import com.dpm.winwin.api.member.dto.request.MemberUpdateRequest;
 import com.dpm.winwin.api.member.dto.response.MemberNicknameResponse;
 import com.dpm.winwin.api.member.dto.response.MemberRankReadResponse;
 import com.dpm.winwin.api.member.dto.response.MemberUpdateResponse;
+import com.dpm.winwin.api.member.dto.response.TalentResponse;
 import com.dpm.winwin.api.member.service.MemberCommandService;
 import com.dpm.winwin.api.member.service.MemberQueryService;
 import com.dpm.winwin.api.utils.RestDocsTestSupport;
@@ -25,6 +27,7 @@ import static com.dpm.winwin.api.member.controller.MemberControllerTest.MEMBER_I
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.multipart;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
@@ -204,8 +207,8 @@ public class MemberControllerTest extends RestDocsTestSupport {
                 "https://dpm-pingpong-bucket.s3.ap-northeast-2.amazonaws.com/profileImage/3d4395e461db40108104200e286870c4-kirby.png",
                 "23",
                 "www.depromeet.com",
-                List.of("자소서 · 면접", "취업 · 이직 · 진로", "기획 · PM"),
-                List.of("영업 · MD", "보고서 · 발표", "생산성 툴")
+                List.of(new TalentResponse(1L, "자소서·면접"), new TalentResponse(2L, "취업·이직·진로")),
+                List.of(new TalentResponse(1L, "자소서·면접"), new TalentResponse(2L, "취업·이직·진로"))
         ));
 
         mockMvc.perform(
@@ -238,10 +241,14 @@ public class MemberControllerTest extends RestDocsTestSupport {
                                                 .description("회원이 보유한 총 좋아요"),
                                         fieldWithPath("data.profileLink").type(JsonFieldType.STRING)
                                                 .description("회원의 대표 링크"),
-                                        fieldWithPath("data.givenTalents").type(JsonFieldType.ARRAY)
-                                                .description("회원이 가진 재능"),
-                                        fieldWithPath("data.takenTalents").type(JsonFieldType.ARRAY)
-                                                .description("회원이 줄 수 있는 재능")
+                                        fieldWithPath("data.givenTalents[].id").type(JsonFieldType.NUMBER)
+                                            .description("회원이 가진 재능 id"),
+                                        fieldWithPath("data.givenTalents[].content").type(JsonFieldType.STRING)
+                                            .description("회원이 가진 재능 내용"),
+                                        fieldWithPath("data.takenTalents[].id").type(JsonFieldType.NUMBER)
+                                            .description("회원이 줄 수 있는 재능 id"),
+                                        fieldWithPath("data.takenTalents[].content").type(JsonFieldType.STRING)
+                                            .description("회원이 줄 수 있는 재능 내용")
                                 )
                         )
                 )
@@ -280,5 +287,30 @@ public class MemberControllerTest extends RestDocsTestSupport {
                 )
             ))
         ;
+    }
+
+    @Test
+    void 회원_탈퇴() throws Exception {
+
+        // Given
+        Long deleteMemberId = Long.valueOf(MEMBER_ID);
+        MemberDeleteResponse memberDeleteResponse = new MemberDeleteResponse(deleteMemberId);
+        given(memberCommandService.deleteMember(deleteMemberId)).willReturn(memberDeleteResponse);
+
+        // Then
+        ResultActions resultActions = mockMvc.perform(
+            delete("/api/v1/members/me")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        // Then
+        resultActions.andExpect(status().isOk())
+            .andDo(restDocs.document(
+                responseFields(
+                    fieldWithPath("message").type(JsonFieldType.STRING).description("성공 여부"),
+                    fieldWithPath("data.deleteMemberId").type(JsonFieldType.NUMBER).description("탈퇴한 회원 아이디")
+                )
+            ));
     }
 }

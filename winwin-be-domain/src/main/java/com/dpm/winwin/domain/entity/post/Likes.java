@@ -39,4 +39,12 @@ public class Likes extends BaseEntity {
         this.post = post;
     }
 
+    public static String changeFormatCountToString(int likeCount) {
+        if (likeCount >= 1000) {
+            double kCount = likeCount / 1000.0;
+            return String.valueOf(Math.floor(kCount * 10) / 10.0)
+                .replace(".0", "") + "k";
+        }
+        return String.valueOf(likeCount);
+    }
 }

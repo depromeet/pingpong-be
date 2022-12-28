@@ -5,6 +5,7 @@ import java.util.Optional;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.http.ResponseCookie;
 import org.springframework.util.SerializationUtils;
 
 public class CookieUtil {
@@ -27,17 +28,18 @@ public class CookieUtil {
     }
 
     public static void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
-        Cookie cookie = new Cookie(name, value);
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-        cookie.setMaxAge(maxAge);
-
-        response.addCookie(cookie);
+            Cookie cookie = new Cookie(name,value);
+            cookie.setMaxAge(maxAge);
+            cookie.setHttpOnly(true);
+            cookie.setDomain("ping-pong.world");
+            cookie.setPath("/");
+            response.addCookie(cookie);
     }
 
-    public static void changeCookie(HttpServletRequest request, HttpServletResponse response, String name, String value, int maxAge) {
+    public static void changeCookie(HttpServletRequest request, HttpServletResponse response, String name, String value,
+        int maxAge) {
         Optional<Cookie> cookie = getCookie(request, name);
-        if (cookie.isPresent()){
+        if (cookie.isPresent()) {
             deleteCookie(request, response, name);
         }
 

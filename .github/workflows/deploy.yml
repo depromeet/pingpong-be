@@ -7,10 +7,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    env:
-      working-directory: ./
-      APPLICATION: ${{ secrets.APPLICATION }}
-
     steps:
       - uses: actions/checkout@v3
 
@@ -26,40 +22,48 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
-      # 도커허브 로그인
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          username: ${{secrets.DOCKER_HUB_USERNAME}}
-          password: ${{secrets.DOCKER_HUB_TOKEN}}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
 
-      # 빌드 이미지 만들어 도커허브로 업로드
-      - name: api server build and release to DockerHub
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
         env:
-          NAME: hpwh4457 # DockerHub 계정 명
-          IMAGE: winwin # Docker 이미지 이름
-          REPO: winwin #  DockerHub 레포 이름
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: dpm-pingpong-ecr-repository
+          IMAGE_TAG: latest
         run: |
-          docker build -t $IMAGE ./winwin-be-api
-          docker tag $IMAGE:latest $NAME/$REPO:latest
-          docker push $NAME/$REPO:latest
-
-      - name: chatting server build and release to DockerHub
-        env:
-          NAME: hpwh4457 # DockerHub 계정 명
-          IMAGE: winwin-chat # Docker 이미지 이름
-          REPO: winwin-chat #  DockerHub 레포 이름
-        run: |
-          docker build -t $IMAGE ./winwin-be-chatting
-          docker tag $IMAGE:latest $NAME/$REPO:latest
-          docker push $NAME/$REPO:latest         
-
-      - name: Github Action to EC2
-        uses: appleboy/ssh-action@master
+          docker buildx build --platform=linux/amd64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG . -f ./winwin-be-api/Dockerfile
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+      - name: Get current time
+        uses: 1466587594/get-current-time@v2
+        id: current-time
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          port: ${{ secrets.EC2_SSH_PORT }}
-          script: |
-            /app/deploy2.sh
+          format: YYYYMMDD_HH-mm-ss
+          utcOffset: "+09:00"
+
+      - name: Generate deployment package
+        run: |
+          mkdir -p deploy
+          cp ./winwin-be-api/Dockerrun.aws.json deploy/Dockerrun.aws.json
+          cd deploy && zip -r deploy.zip .
+
+      - name: Beanstalk Deploy
+        uses: einaregilsson/beanstalk-deploy@v14
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: dpm-pingpong
+          environment_name: Dpmpingpong-env
+          version_label: earth-docker-${{steps.current-time.outputs.formattedTime}}
+          region: ap-northeast-2
+          deployment_package: deploy/deploy.zip
+          wait_for_environment_recovery: 200

@@ -1,22 +1,17 @@
 server:
   port: 8080
 
-
 spring:
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     open-in-view: false
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     show-sql: true
     properties:
       hibernate:
         default_batch_fetch_size: 100
         format_sql: true
-
-  redis:
-    host: localhost
-    port: 6379
 
   datasource:
       url: ENC(XZiReczSSeVhtjiRh2EdMn/QCY1Ju8DgNneba7kajJb9G7wtJP1U0swDxr9ITwHKWPMhgxlJf9YU0AU9ZH2D6X7WhGeTVOlxBjuZcWJathFd6hF94P6yWur5+WOhzb22EHiXmiymzFVJuTLSPQSpruiaenLxEPXfWsyq6/ialV+kwHRbjNyZVSMVycPMM9uZ7c2oHkyf2KY=)
@@ -38,7 +33,7 @@ spring:
             clientName: apple
             authorizationGrantType: authorization_code
             clientAuthenticationMethod: CLIENT_SECRET_JWT
-            redirect-uri: https://test.pingpongg.shop/apple/redirect
+            redirect-uri: https://be.ping-pong.world/apple/redirect
             scope:
               - openid
               - name
@@ -58,7 +53,7 @@ jasypt:
     bean: jasyptStringEncryptor
     algorithm: PBEWithMD5AndDES
     iv-generator-classname: org.jasypt.iv.NoIvGenerator
-    password: ${ENCRYPT_KEY}
+    password: ${encrypt_key}
 
 springdoc:
   version: '@project.version@'
@@ -92,4 +87,4 @@ cloud:
       auto: false
 
 pingpong:
-  url: https://dev-fe.ping-pong.world
+  url: https://fe.ping-pong.world

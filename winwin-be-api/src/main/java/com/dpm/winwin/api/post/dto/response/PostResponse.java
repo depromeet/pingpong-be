@@ -1,5 +1,7 @@
 package com.dpm.winwin.api.post.dto.response;
 
+import static com.dpm.winwin.domain.entity.post.Likes.changeFormatCountToString;
+
 import com.dpm.winwin.domain.entity.post.Post;
 import java.util.List;
 
@@ -8,7 +10,7 @@ public record PostResponse(
     String title,
     String subCategory,
     boolean isShare,
-    Integer likes,
+    String likes,
     Long memberId,
     String nickname,
     String image,
@@ -22,7 +24,7 @@ public record PostResponse(
             post.getTitle(),
             post.getSubCategory().getName(),
             post.isShare(),
-            post.getLikes().size(),
+            changeFormatCountToString(post.getLikes().size()),
             post.getMember().getId(),
             post.getMember().getNickname(),
             post.getMember().getImage(),

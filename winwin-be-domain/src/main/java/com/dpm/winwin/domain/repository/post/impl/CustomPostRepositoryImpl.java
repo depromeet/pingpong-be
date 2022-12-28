@@ -27,6 +27,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.ObjectUtils;
 
 @Repository
 @RequiredArgsConstructor
@@ -192,27 +193,24 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
         return null;
     }
 
-    private BooleanExpression mainCategoryEq(Long mainCategory) {
-        if (mainCategory != null) {
-            return post.mainCategory.id.eq(mainCategory);
+    private BooleanExpression mainCategoryEq(Long mainCategoryId) {
+        if (ObjectUtils.isEmpty(mainCategoryId) || mainCategoryId == 0) {
+            return null;
         }
-
-        return null;
+        return post.mainCategory.id.eq(mainCategoryId);
     }
 
-    private BooleanExpression midCategoryEq(Long midCategory) {
-        if (midCategory != null) {
-            return post.midCategory.id.eq(midCategory);
+    private BooleanExpression midCategoryEq(Long midCategoryId) {
+        if (ObjectUtils.isEmpty(midCategoryId) || midCategoryId == 0) {
+            return null;
         }
-
-        return null;
+        return post.midCategory.id.eq(midCategoryId);
     }
 
-    private BooleanExpression subCategoryEq(Long subCategory) {
-        if (subCategory != null) {
-            return post.subCategory.id.eq(subCategory);
+    private BooleanExpression subCategoryEq(Long subCategoryId) {
+        if (ObjectUtils.isEmpty(subCategoryId) || subCategoryId == 0) {
+            return null;
         }
-
-        return null;
+        return post.subCategory.id.eq(subCategoryId);
     }
 }

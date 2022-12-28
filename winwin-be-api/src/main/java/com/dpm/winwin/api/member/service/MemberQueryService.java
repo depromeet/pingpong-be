@@ -4,6 +4,7 @@ import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
 import com.dpm.winwin.api.member.dto.response.MemberRankReadResponse;
 import com.dpm.winwin.api.member.dto.response.RanksListResponse;
 import com.dpm.winwin.api.member.dto.response.RanksResponse;
+import com.dpm.winwin.api.member.dto.response.TalentResponse;
 import com.dpm.winwin.domain.entity.member.Member;
 import com.dpm.winwin.domain.entity.member.enums.Ranks;
 import com.dpm.winwin.domain.repository.member.MemberRepository;
@@ -55,11 +56,11 @@ public class MemberQueryService {
                 member.getProfileLink(),
                 member.getTalents().stream()
                         .filter(memberTalent -> memberTalent.getType().equals(GIVE))
-                        .map(memberTalent -> memberTalent.getTalent().getName())
+                        .map(TalentResponse::of)
                         .toList(),
                 member.getTalents().stream()
                         .filter(memberTalent -> memberTalent.getType().equals(TAKE))
-                        .map(memberTalent -> memberTalent.getTalent().getName())
+                        .map(TalentResponse::of)
                         .toList()
         );
     }

@@ -2,15 +2,15 @@ package com.dpm.winwin.api.member.service;
 
 import static com.dpm.winwin.api.common.constant.ImageType.PROFILE_IMAGE;
 import static com.dpm.winwin.api.common.error.enums.ErrorMessage.APPLE_TOKEN_REVOKE_FAIL;
-import static com.dpm.winwin.api.common.error.enums.ErrorMessage.DOES_NOT_MATCH_MEMBER_ID;
 import static com.dpm.winwin.api.common.error.enums.ErrorMessage.MEMBER_NOT_FOUND;
 import static com.dpm.winwin.domain.entity.member.enums.TalentType.GIVE;
 import static com.dpm.winwin.domain.entity.member.enums.TalentType.TAKE;
 
 import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
 import com.dpm.winwin.api.common.file.service.FileService;
-import com.dpm.winwin.api.jwt.TokenProvider;
+import com.dpm.winwin.api.member.dto.request.MemberNicknameRequest;
 import com.dpm.winwin.api.member.dto.request.MemberUpdateRequest;
+import com.dpm.winwin.api.member.dto.response.MemberDeleteResponse;
 import com.dpm.winwin.api.member.dto.response.MemberNicknameResponse;
 import com.dpm.winwin.api.member.dto.response.MemberUpdateImageResponse;
 import com.dpm.winwin.api.member.dto.response.MemberUpdateResponse;
@@ -19,19 +19,13 @@ import com.dpm.winwin.domain.entity.member.Member;
 import com.dpm.winwin.domain.entity.oauth.OauthToken;
 import com.dpm.winwin.domain.repository.category.SubCategoryRepository;
 import com.dpm.winwin.domain.repository.member.MemberRepository;
-import com.dpm.winwin.api.member.dto.request.MemberNicknameRequest;
-import com.dpm.winwin.domain.repository.oauth.OauthRepository;
-import io.jsonwebtoken.Claims;
 import java.util.List;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.stereotype.Service;
@@ -52,8 +46,6 @@ public class MemberCommandService {
     private final RestTemplate restTemplate;
     private final ClientRegistrationRepository clientRegistrationRepository;
     private final FileService fileService;
-
-    private final TokenProvider tokenProvider;
 
     public MemberNicknameResponse updateMemberNickname(Long memberId,
                                                        MemberNicknameRequest memberNicknameRequest) {
@@ -100,12 +92,10 @@ public class MemberCommandService {
         );
     }
 
-    public Long deleteMember(Long memberId) {
+    public MemberDeleteResponse deleteMember(Long memberId) {
 
         Member member = memberRepository.findMemberWithToken(memberId)
             .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
-
-        verifyMemberId(memberId);
 
         OauthToken oauthToken = member.getOauthToken();
         String refreshToken = oauthToken.getRefreshToken();
@@ -114,26 +104,12 @@ public class MemberCommandService {
 
         if (response.getStatusCode().equals(HttpStatus.OK)) {
             memberRepository.delete(member);
-            return memberId;
+
+            MemberDeleteResponse memberDeleteResponse = new MemberDeleteResponse(memberId);
+            return memberDeleteResponse;
         }
 
         throw new BusinessException(APPLE_TOKEN_REVOKE_FAIL);
-    }
-
-    private void verifyMemberId(Long memberId) {
-        Long jwtMemberId = getJwtMemberId();
-
-        if (!Objects.equals(jwtMemberId, memberId)) {
-            throw new BusinessException(DOES_NOT_MATCH_MEMBER_ID);
-        }
-    }
-
-    private Long getJwtMemberId() {
-        UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext()
-            .getAuthentication();
-        String jwt = (String) authentication.getCredentials();
-        Claims claims = tokenProvider.getClaims(jwt);
-        return (Long) claims.get("memberId");
     }
 
     private ResponseEntity<Object> appleTokenRevokeRequest(String providerName, String refreshToken) {

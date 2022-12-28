@@ -12,6 +12,9 @@ spring:
       hibernate:
         default_batch_fetch_size: 100
         format_sql: true
+  redis:
+    host: pingpong-redis.bcf0zk.ng.0001.apn2.cache.amazonaws.com
+    port: 6379
 
   datasource:
       url: ENC(XZiReczSSeVhtjiRh2EdMn/QCY1Ju8DgNneba7kajJb9G7wtJP1U0swDxr9ITwHKWPMhgxlJf9YU0AU9ZH2D6X7WhGeTVOlxBjuZcWJathFd6hF94P6yWur5+WOhzb22EHiXmiymzFVJuTLSPQSpruiaenLxEPXfWsyq6/ialV+kwHRbjNyZVSMVycPMM9uZ7c2oHkyf2KY=)

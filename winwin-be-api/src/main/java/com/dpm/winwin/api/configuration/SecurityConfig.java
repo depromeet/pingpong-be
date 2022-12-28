@@ -5,6 +5,7 @@ import com.dpm.winwin.api.jwt.JwtAuthenticationEntryPoint;
 import com.dpm.winwin.api.jwt.JwtFilter;
 import com.dpm.winwin.api.jwt.TokenProvider;
 import com.dpm.winwin.domain.entity.member.enums.RoleType;
+import com.dpm.winwin.domain.repository.token.ExpiredTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,6 +23,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private final ExpiredTokenRepository expiredTokenRepository;
     private final TokenProvider tokenProvider;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
@@ -66,7 +68,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        JwtFilter jwtFilter = new JwtFilter(tokenProvider);
+        JwtFilter jwtFilter = new JwtFilter(tokenProvider, expiredTokenRepository);
         http
                 .cors().configurationSource(corsConfigurationSource())
                 .and()

@@ -1,7 +1,6 @@
 package com.dpm.winwin.domain.repository.member.impl;
 
 import static com.dpm.winwin.domain.entity.member.QMember.member;
-import static com.dpm.winwin.domain.entity.member.QRefreshToken.*;
 import static com.dpm.winwin.domain.entity.oauth.QOauthToken.oauthToken;
 import static com.querydsl.core.group.GroupBy.groupBy;
 
@@ -47,8 +46,6 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
         Member findMember = jpaQueryFactory.selectFrom(member)
             .where(member.id.eq(memberId))
             .join(member.oauthToken, oauthToken)
-            .fetchJoin()
-            .join(member.refreshTokens, refreshToken1)
             .fetchJoin()
             .fetchOne();
 

@@ -16,13 +16,13 @@ import com.dpm.winwin.api.oauth.dto.ApplePublicKeys;
 import com.dpm.winwin.api.oauth.dto.AppleToken;
 import com.dpm.winwin.api.oauth.dto.MemberInfo;
 import com.dpm.winwin.domain.entity.member.Member;
-import com.dpm.winwin.domain.entity.member.RefreshToken;
 import com.dpm.winwin.domain.entity.member.enums.ProviderType;
 import com.dpm.winwin.domain.entity.member.enums.Ranks;
 import com.dpm.winwin.domain.entity.oauth.OauthToken;
+import com.dpm.winwin.domain.entity.token.RefreshTokenEntity;
 import com.dpm.winwin.domain.repository.member.MemberRepository;
-import com.dpm.winwin.domain.repository.member.RefreshTokenRepository;
 import com.dpm.winwin.domain.repository.oauth.OauthRepository;
+import com.dpm.winwin.domain.repository.token.JwtTokenRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.JWSHeader;
@@ -39,7 +39,6 @@ import java.text.ParseException;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
@@ -62,11 +61,11 @@ import org.springframework.web.client.RestTemplate;
 public class AppleLoginService {
 
     private final MemberRepository memberRepository;
+    private final JwtTokenRepository jwtTokenRepository;
     private final TokenProvider tokenProvider;
     private final ClientRegistrationRepository clientRegistrationRepository;
     private final RestTemplate restTemplate;
     private final OauthRepository oauthRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
     private final NicknameGenerator nicknameGenerator;
     private static final String APPLE_BASE_URL = "https://appleid.apple.com";
     private static final String APPLE_TOKEN_REQUEST_URL = APPLE_BASE_URL + "/auth/token";
@@ -107,15 +106,8 @@ public class AppleLoginService {
         String accessToken = tokenProvider.createToken(member.getId(), member.getNickname(), 1);
         String refreshToken = tokenProvider.createToken(member.getId(), member.getNickname(), 30);
 
-        Optional<RefreshToken> optionalRefreshToken = refreshTokenRepository.findRefreshTokenByMemberId(member.getId());
-
-        optionalRefreshToken.ifPresentOrElse(
-            findRefreshToken -> findRefreshToken.changeRefreshToken(refreshToken),
-            () -> {
-            RefreshToken token = new RefreshToken(refreshToken, member);
-            refreshTokenRepository.save(token);
-        });
-
+        RefreshTokenEntity refreshTokenEntity = new RefreshTokenEntity(member.getId(), refreshToken);
+        jwtTokenRepository.save(refreshTokenEntity);
         return new TokenResponse(member.getId(), accessToken, refreshToken);
     }
 

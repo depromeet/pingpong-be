@@ -25,7 +25,8 @@ public record PostReadResponse(
     String nickname,
     String image,
     String ranks,
-    Boolean isLike
+    Boolean isLike,
+    String backgroundImage
 ) {
 
     public static PostReadResponse from(
@@ -46,7 +47,8 @@ public record PostReadResponse(
         String nickname,
         String image,
         String ranks,
-        Boolean isLike) {
+        Boolean isLike,
+        String backgroundImage) {
         return new PostReadResponse(
             id,
             title,
@@ -65,7 +67,8 @@ public record PostReadResponse(
             nickname,
             image,
             ranks,
-            isLike
+            isLike,
+            backgroundImage
         );
     }
 }

@@ -30,6 +30,9 @@ public class MainCategory extends BaseEntity {
     @Column(nullable = false)
     private String image;
 
+    @Column(nullable = false)
+    private String backgroundImage;
+
     @OneToMany(mappedBy = "mainCategory", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MidCategory> midCategories = new ArrayList<>();
 

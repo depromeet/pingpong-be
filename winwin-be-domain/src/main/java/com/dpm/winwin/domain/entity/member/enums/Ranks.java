@@ -1,7 +1,6 @@
 package com.dpm.winwin.domain.entity.member.enums;
 
 import lombok.Getter;
-import org.springframework.beans.factory.annotation.Value;
 
 @Getter
 public enum Ranks {

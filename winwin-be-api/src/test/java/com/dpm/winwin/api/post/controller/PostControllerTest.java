@@ -548,7 +548,9 @@ class PostControllerTest extends RestDocsTestSupport {
                     fieldWithPath("data.isLike").type(JsonFieldType.BOOLEAN)
                         .description("해당 회원의 게시글 좋아요 여부"),
                     fieldWithPath("data.likes").type(JsonFieldType.STRING)
-                        .description("좋아요 수")
+                        .description("좋아요 수"),
+                    fieldWithPath("data.backgroundImage").type(JsonFieldType.STRING)
+                        .description("배경 이미지 url")
                 )
             ));
     }

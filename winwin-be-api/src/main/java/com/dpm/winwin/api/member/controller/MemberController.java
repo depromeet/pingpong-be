@@ -80,7 +80,7 @@ public class MemberController {
     @DeleteMapping("/me")
     public BaseResponseDto<MemberDeleteResponse> deleteMember(@AuthenticationPrincipal User user, @RequestBody MemberDeleteRequest memberDeleteRequest) {
         MemberDeleteResponse memberDeleteResponse
-            = memberCommandService.deleteMember(Long.parseLong(user.getUsername()), memberDeleteRequest.description());
+            = memberCommandService.deleteMember(Long.parseLong(user.getUsername()), memberDeleteRequest.content());
         return BaseResponseDto.ok(memberDeleteResponse);
     }
 }

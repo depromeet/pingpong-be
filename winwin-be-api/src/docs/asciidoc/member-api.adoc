@@ -31,3 +31,7 @@ operation::member-controller-test/rank_목록을_조회한다[snippets='http-req
 [[회원-탈퇴]]
 == 회원 탈퇴
 operation::member-controller-test/회원_탈퇴[snippets='http-request,http-response,response-fields']
+
+[[로그인한-사용자-조회]]
+== 로그인한 사용자 조회
+operation::member-controller-test/로그인한_사용자를_조회한다[snippets='http-request,http-response,response-fields']

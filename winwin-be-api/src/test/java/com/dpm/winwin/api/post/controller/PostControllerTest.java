@@ -22,6 +22,7 @@ import com.dpm.winwin.api.common.response.dto.GlobalPageResponseDto;
 import com.dpm.winwin.api.post.dto.request.LinkRequest;
 import com.dpm.winwin.api.post.dto.request.PostAddRequest;
 import com.dpm.winwin.api.post.dto.request.PostUpdateRequest;
+import com.dpm.winwin.api.post.dto.response.LikesResponse;
 import com.dpm.winwin.api.post.dto.response.LinkResponse;
 import com.dpm.winwin.api.post.dto.response.MyPagePostResponse;
 import com.dpm.winwin.api.post.dto.response.PostAddResponse;
@@ -29,6 +30,7 @@ import com.dpm.winwin.api.post.dto.response.PostCustomizedResponse;
 import com.dpm.winwin.api.post.dto.response.PostReadResponse;
 import com.dpm.winwin.api.post.dto.response.PostResponse;
 import com.dpm.winwin.api.post.dto.response.PostUpdateResponse;
+import com.dpm.winwin.api.post.service.LikesService;
 import com.dpm.winwin.api.post.service.PostService;
 import com.dpm.winwin.api.utils.RestDocsTestSupport;
 import com.dpm.winwin.domain.entity.member.enums.Ranks;
@@ -52,6 +54,9 @@ class PostControllerTest extends RestDocsTestSupport {
 
     @MockBean
     private PostService postService;
+
+    @MockBean
+    private LikesService likesService;
 
     @Test
     void post가_category에_의해_목록_조회된다() throws Exception {
@@ -606,6 +611,68 @@ class PostControllerTest extends RestDocsTestSupport {
                         .description("현재 페이지의 데이터 수"),
                     fieldWithPath("data.hasNextPages").type(JsonFieldType.BOOLEAN)
                         .description("다음 페이지 여부")
+                )
+            ));
+    }
+
+    @Test
+    public void post의_like를_중가시킨다() throws Exception {
+        // given
+        Long memberId = 1L;
+        Long postId = 1L;
+
+        LikesResponse likesResponse = new LikesResponse(5);
+
+        // when
+        given(likesService.createLikes(memberId, postId))
+            .willReturn(likesResponse);
+
+        ResultActions result = mockMvc.perform(
+            post("/api/v1/posts/{postId}/likes", postId)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        //then
+        result.andExpect(status().isOk())
+            .andDo(restDocs.document(
+                pathParameters(
+                    parameterWithName("postId").description("좋아요 수를 증가할 게시물 id")
+                ),
+                responseFields(
+                    fieldWithPath("message").type(JsonFieldType.STRING).description("성공 여부"),
+                    fieldWithPath("data.likes").type(JsonFieldType.NUMBER).description("해당 게시물의 좋아요 수")
+                )
+            ));
+    }
+
+    @Test
+    public void post의_like를_취소한다() throws Exception {
+        // given
+        Long memberId = 1L;
+        Long postId = 1L;
+
+        LikesResponse likesResponse = new LikesResponse(5);
+
+        // when
+        given(likesService.cancelLikes(memberId, postId))
+            .willReturn(likesResponse);
+
+        ResultActions result = mockMvc.perform(
+            post("/api/v1/posts/{postId}/unlikes", postId)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        //then
+        result.andExpect(status().isOk())
+            .andDo(restDocs.document(
+                pathParameters(
+                    parameterWithName("postId").description("좋아요를 취소할 게시물 id")
+                ),
+                responseFields(
+                    fieldWithPath("message").type(JsonFieldType.STRING).description("성공 여부"),
+                    fieldWithPath("data.likes").type(JsonFieldType.NUMBER).description("해당 게시물의 좋아요 수")
                 )
             ));
     }

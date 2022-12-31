@@ -35,3 +35,11 @@ operation::post-controller-test/post를_수정한다[snippets='http-request,requ
 [[재능-게시물-삭제]]
 == 재능 게시물 삭제
 operation::post-controller-test/post가_삭제된다[snippets='path-parameters,http-request,http-response,response-fields']
+
+[[재능-게시물-좋아요-생성]]
+== 재능 게시물 좋아요 생성
+operation::post-controller-test/post의_like를_중가시킨다[snippets='path-parameters,http-request,http-response,response-fields']
+
+[[재능-게시물-좋아요-취소]]
+== 재능 게시물 좋아요 취소
+operation::post-controller-test/post의_like를_취소한다[snippets='path-parameters,http-request,http-response,response-fields']

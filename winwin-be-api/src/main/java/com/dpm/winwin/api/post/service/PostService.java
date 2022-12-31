@@ -108,7 +108,6 @@ public class PostService {
             .orElseThrow(() -> new BusinessException(ErrorMessage.POST_NOT_FOUND));
 
         Boolean hasLike = postRepository.hasLikeByMemberId(postId, memberId);
-        String backgroundImage = mainCategoryRepository.getBackgroundImageById(post.getMainCategory().getId());
 
         return PostReadResponse.from(
             post.getId(),
@@ -129,7 +128,7 @@ public class PostService {
             post.getMember().getImage(),
             post.getMember().getRanks().getName(),
             hasLike,
-            backgroundImage);
+            post.getMainCategory().getBackgroundImage());
     }
 
     public Long delete(Long id) {

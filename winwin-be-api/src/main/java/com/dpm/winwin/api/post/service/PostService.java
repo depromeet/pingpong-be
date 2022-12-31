@@ -78,15 +78,15 @@ public class PostService {
             .getByIdWithMainCategoryAndMidCategory(request.subCategoryId())
             .orElseThrow(() -> new BusinessException(ErrorMessage.SUB_CATEGORY_NOT_FOUND));
 
-        List<Link> links = request.links().stream()
-            .map(Link::of)
-            .toList();
-
         Post post = request.toEntity();
         post.writeBy(member);
         post.setAllCategoriesBySubCategory(subCategory);
-        post.setLink(links);
 
+        if (!CollectionUtils.isEmpty(request.links())) {
+            post.setLink(request.links().stream()
+                .map(Link::from)
+                .toList());
+        }
         if (!request.isShare()) {
             post.setTakenContent(request.takenContent());
             List<PostTalent> postTalents = request.takenTalentIds().stream()

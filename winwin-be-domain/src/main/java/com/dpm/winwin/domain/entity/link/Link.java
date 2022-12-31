@@ -7,7 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -27,7 +26,7 @@ public class Link extends BaseEntity {
         this.content = content;
     }
 
-    public static Link of(String content) {
+    public static Link from(String content) {
         return new Link(content);
     }
 

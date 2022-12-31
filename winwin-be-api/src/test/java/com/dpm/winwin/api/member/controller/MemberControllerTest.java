@@ -1,5 +1,6 @@
 package com.dpm.winwin.api.member.controller;
 
+import com.dpm.winwin.api.member.dto.request.MemberDeleteRequest;
 import com.dpm.winwin.api.member.dto.response.MemberDeleteResponse;
 import com.dpm.winwin.api.member.dto.response.MemberUpdateImageResponse;
 import com.dpm.winwin.api.member.dto.response.RanksListResponse;
@@ -290,13 +291,16 @@ public class MemberControllerTest extends RestDocsTestSupport {
         // Given
         Long deleteMemberId = Long.valueOf(MEMBER_ID);
         MemberDeleteResponse memberDeleteResponse = new MemberDeleteResponse(deleteMemberId);
-        given(memberCommandService.deleteMember(deleteMemberId)).willReturn(memberDeleteResponse);
+        String description = "탈퇴 테스트";
+        MemberDeleteRequest memberDeleteRequest = new MemberDeleteRequest(description);
+        given(memberCommandService.deleteMember(deleteMemberId, description)).willReturn(memberDeleteResponse);
 
         // Then
         ResultActions resultActions = mockMvc.perform(
             delete("/api/v1/members/me")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(memberDeleteRequest))
         );
 
         // Then

@@ -21,6 +21,7 @@ import com.dpm.winwin.domain.repository.category.SubCategoryRepository;
 import com.dpm.winwin.domain.repository.member.MemberRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -92,15 +93,12 @@ public class MemberCommandService {
         );
     }
 
-    public MemberDeleteResponse deleteMember(Long memberId) {
+    public MemberDeleteResponse deleteMember(Long memberId, String description) {
 
         Member member = memberRepository.findMemberWithToken(memberId)
             .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
 
-        OauthToken oauthToken = member.getOauthToken();
-        String refreshToken = oauthToken.getRefreshToken();
-
-        ResponseEntity<Object> response = appleTokenRevokeRequest(oauthToken.getProviderType().name(), refreshToken);
+        ResponseEntity<Object> response = revokeAppleToken(member);
 
         if (response.getStatusCode().equals(HttpStatus.OK)) {
             memberRepository.delete(member);
@@ -110,6 +108,14 @@ public class MemberCommandService {
         }
 
         throw new BusinessException(APPLE_TOKEN_REVOKE_FAIL);
+    }
+
+    @NotNull
+    private ResponseEntity<Object> revokeAppleToken(Member member) {
+        OauthToken oauthToken = member.getOauthToken();
+        String refreshToken = oauthToken.getRefreshToken();
+
+        return appleTokenRevokeRequest(oauthToken.getProviderType().name(), refreshToken);
     }
 
     private ResponseEntity<Object> appleTokenRevokeRequest(String providerName, String refreshToken) {

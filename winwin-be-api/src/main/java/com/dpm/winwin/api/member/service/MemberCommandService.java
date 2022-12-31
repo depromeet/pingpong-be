@@ -93,7 +93,7 @@ public class MemberCommandService {
         );
     }
 
-    public MemberDeleteResponse deleteMember(Long memberId, String description) {
+    public MemberDeleteResponse deleteMember(Long memberId, String content) {
 
         Member member = memberRepository.findMemberWithToken(memberId)
             .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));

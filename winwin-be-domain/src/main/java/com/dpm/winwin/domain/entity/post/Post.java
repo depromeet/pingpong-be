@@ -31,6 +31,7 @@ import javax.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.CollectionUtils;
 
 @Getter
 @Entity
@@ -113,8 +114,13 @@ public class Post extends BaseEntity {
         this.subCategory = subCategory;
     }
 
-    public void setLink(List<Link> links) {
-        this.links = links;
+    public void setLink(List<String> links) {
+        if (CollectionUtils.isEmpty(links)) {
+            return ;
+        }
+        this.links = links.stream()
+            .map(Link::from)
+            .toList();
     }
 
     public void addTakenTalent(PostTalent postTalent) {

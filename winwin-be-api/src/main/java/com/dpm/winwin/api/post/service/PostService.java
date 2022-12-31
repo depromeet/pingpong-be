@@ -81,12 +81,8 @@ public class PostService {
         Post post = request.toEntity();
         post.writeBy(member);
         post.setAllCategoriesBySubCategory(subCategory);
+        post.setLink(request.links());
 
-        if (!CollectionUtils.isEmpty(request.links())) {
-            post.setLink(request.links().stream()
-                .map(Link::from)
-                .toList());
-        }
         if (!request.isShare()) {
             post.setTakenContent(request.takenContent());
             List<PostTalent> postTalents = request.takenTalentIds().stream()

@@ -119,7 +119,7 @@ public class MemberCommandService {
     }
 
     private ResponseEntity<Object> appleTokenRevokeRequest(String providerName, String refreshToken) {
-        ClientRegistration registration = clientRegistrationRepository.findByRegistrationId(providerName);
+        ClientRegistration registration = clientRegistrationRepository.findByRegistrationId(providerName.toLowerCase());
         String clientSecret = registration.getClientSecret();
         String clientId = registration.getClientId();
 

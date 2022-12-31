@@ -1,5 +1,7 @@
 package com.dpm.winwin.api.common.file.service;
 
+import static com.dpm.winwin.api.common.constant.ImageType.PROFILE_IMAGE;
+
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -28,6 +30,9 @@ public class AwsS3FileService implements FileService {
     private String defaultUrl;
 
     public String uploadFile(MultipartFile multipartFile, Long memberId, String imageType) {
+        if (multipartFile.isEmpty()) {
+            return getDefaultRandomProfileImageUrl();
+        }
         String savedFileName = getSavedFileName(multipartFile, memberId, imageType);
         ObjectMetadata metadata = new ObjectMetadata();
 
@@ -38,6 +43,10 @@ public class AwsS3FileService implements FileService {
             throw new BusinessException(ErrorMessage.INVALID_FILE_UPLOAD);
         }
         return getResourceUrl(savedFileName);
+    }
+
+    public String getDefaultRandomProfileImageUrl() {
+        return String.format("%s/%s/%s.png", defaultUrl, PROFILE_IMAGE, (int)(Math.random() * 3 + 1));
     }
 
     public void deleteFile(String fileUrl) {

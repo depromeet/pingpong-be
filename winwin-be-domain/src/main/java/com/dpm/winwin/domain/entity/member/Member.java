@@ -70,9 +70,10 @@ public class Member extends BaseEntity{
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "member", cascade = CascadeType.REMOVE)
     private OauthToken oauthToken;
 
-    public Member(String nickname, Ranks ranks) {
+    public Member(String nickname, String image, Ranks ranks) {
         this.nickname = nickname;
         this.ranks = ranks;
+        this.image = image;
         this.likeCount = 0;
     }
 

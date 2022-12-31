@@ -59,6 +59,6 @@ public class AwsS3FileService implements FileService {
     }
 
     private String getFileNameFromResourceUrl(String fileUrl) {
-        return fileUrl.replace(defaultUrl, "");
+        return fileUrl.replace(defaultUrl + "/", "");
     }
 }

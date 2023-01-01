@@ -80,6 +80,7 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
                 midCategoryEq(condition.midCategory()),
                 subCategoryEq(condition.subCategory())
             )
+            .orderBy(post.createdDate.desc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .fetch();
@@ -119,6 +120,7 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
             .leftJoin(post.subCategory, subCategory).fetchJoin()
             .leftJoin(post.member, member).fetchJoin()
             .where(post.member.id.eq(memberId))
+            .orderBy(post.createdDate.desc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .fetch();
@@ -167,6 +169,7 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
                 post.subCategory.in(subCategories),
                 subCategoryEq(condition.subCategoryId())
             )
+            .orderBy(post.createdDate.desc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .fetch();

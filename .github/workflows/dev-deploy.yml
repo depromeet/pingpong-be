@@ -1,8 +1,8 @@
-name: deploy
+name: dev-deploy
 
 on:
   push:
-    branches: [ "develop", "feature/dev-deploy" ]
+    branches: [ "develop" ]
 
 jobs:
   deploy:

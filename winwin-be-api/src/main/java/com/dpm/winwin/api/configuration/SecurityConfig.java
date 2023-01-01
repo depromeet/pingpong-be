@@ -4,7 +4,6 @@ import com.dpm.winwin.api.jwt.JwtAccessDeniedHandler;
 import com.dpm.winwin.api.jwt.JwtAuthenticationEntryPoint;
 import com.dpm.winwin.api.jwt.JwtFilter;
 import com.dpm.winwin.api.jwt.TokenProvider;
-import com.dpm.winwin.domain.entity.member.enums.RoleType;
 import com.dpm.winwin.domain.repository.token.ExpiredTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -43,13 +42,12 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
 
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("*");
+        configuration.addAllowedOrigin("http://localhost:3000");
+        configuration.addAllowedOrigin("https://dev-fe.ping-pong.world/");
+        configuration.addAllowedOrigin("https://fe.ping-pong.world/");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
-        /*
-        임시로 origin allow * 로 사용하기 위해서 주석처리 도메인 정해지면 주석해제
         configuration.setAllowCredentials(true);
-        */
         configuration.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

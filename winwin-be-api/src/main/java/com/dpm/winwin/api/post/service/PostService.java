@@ -80,14 +80,10 @@ public class PostService {
             .getByIdWithMainCategoryAndMidCategory(request.subCategoryId())
             .orElseThrow(() -> new BusinessException(ErrorMessage.SUB_CATEGORY_NOT_FOUND));
 
-        List<Link> links = request.links().stream()
-            .map(Link::of)
-            .toList();
-
         Post post = request.toEntity();
         post.writeBy(member);
         post.setAllCategoriesBySubCategory(subCategory);
-        post.setLink(links);
+        post.setLink(request.links());
 
         if (!request.isShare()) {
             post.setTakenContent(request.takenContent());

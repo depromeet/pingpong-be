@@ -9,12 +9,12 @@ import static com.dpm.winwin.api.common.error.enums.ErrorMessage.MEMBER_NOT_FOUN
 import com.dpm.winwin.api.common.error.exception.custom.AppleTokenGenerateException;
 import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
 import com.dpm.winwin.api.common.error.exception.custom.InvalidIdTokenException;
+import com.dpm.winwin.api.common.file.service.FileService;
 import com.dpm.winwin.api.configuration.NicknameGenerator;
 import com.dpm.winwin.api.jwt.TokenProvider;
 import com.dpm.winwin.api.jwt.TokenResponse;
 import com.dpm.winwin.api.oauth.dto.ApplePublicKeys;
 import com.dpm.winwin.api.oauth.dto.AppleToken;
-import com.dpm.winwin.api.oauth.dto.MemberInfo;
 import com.dpm.winwin.domain.entity.member.Member;
 import com.dpm.winwin.domain.entity.member.enums.ProviderType;
 import com.dpm.winwin.domain.entity.member.enums.Ranks;
@@ -24,7 +24,6 @@ import com.dpm.winwin.domain.repository.member.MemberRepository;
 import com.dpm.winwin.domain.repository.oauth.OauthRepository;
 import com.dpm.winwin.domain.repository.token.JwtTokenRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jwt.SignedJWT;
 import io.jsonwebtoken.Claims;
@@ -67,6 +66,7 @@ public class AppleLoginService {
     private final RestTemplate restTemplate;
     private final OauthRepository oauthRepository;
     private final NicknameGenerator nicknameGenerator;
+    private final FileService fileService;
     private static final String APPLE_BASE_URL = "https://appleid.apple.com";
     private static final String APPLE_TOKEN_REQUEST_URL = APPLE_BASE_URL + "/auth/token";
 
@@ -98,7 +98,7 @@ public class AppleLoginService {
     }
 
     private Member saveMember(String nickname){
-        Member newMember = new Member(nickname, Ranks.ROOKIE);
+        Member newMember = new Member(nickname, fileService.getDefaultRandomProfileImageUrl(), Ranks.ROOKIE);
         return memberRepository.save(newMember);
     }
 

@@ -55,11 +55,10 @@ public class Member extends BaseEntity{
 
     private String image;
 
+    @Column(length = 500)
     private String introduction;
 
     private String profileLink;
-
-    private int exchangeCount;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

@@ -45,6 +45,7 @@ public class SecurityConfig {
         configuration.addAllowedOrigin("http://localhost:3000");
         configuration.addAllowedOrigin("https://dev-fe.ping-pong.world/");
         configuration.addAllowedOrigin("https://fe.ping-pong.world/");
+        configuration.addAllowedOrigin("https://appleid.apple.com/");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);

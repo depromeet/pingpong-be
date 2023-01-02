@@ -74,6 +74,7 @@ public class Post extends BaseEntity {
     @Column(nullable = false)
     private String title;
 
+    @Column(length = 500)
     private String content;
 
     @Column(nullable = false)
@@ -91,6 +92,7 @@ public class Post extends BaseEntity {
     @Column(nullable = false)
     private ExchangeTime exchangeTime;
 
+    @Column(length = 500)
     private String takenContent;
 
     public Post(String title, String content, boolean isShare, String chatLink,

@@ -31,6 +31,7 @@ import javax.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.CollectionUtils;
 
 @Getter
 @Entity
@@ -73,6 +74,7 @@ public class Post extends BaseEntity {
     @Column(nullable = false)
     private String title;
 
+    @Column(length = 500)
     private String content;
 
     @Column(nullable = false)
@@ -90,6 +92,7 @@ public class Post extends BaseEntity {
     @Column(nullable = false)
     private ExchangeTime exchangeTime;
 
+    @Column(length = 500)
     private String takenContent;
 
     public Post(String title, String content, boolean isShare, String chatLink,
@@ -113,8 +116,13 @@ public class Post extends BaseEntity {
         this.subCategory = subCategory;
     }
 
-    public void setLink(List<Link> links) {
-        this.links = links;
+    public void setLink(List<String> links) {
+        if (CollectionUtils.isEmpty(links)) {
+            return ;
+        }
+        this.links = links.stream()
+            .map(Link::from)
+            .toList();
     }
 
     public void addTakenTalent(PostTalent postTalent) {

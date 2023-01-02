@@ -14,6 +14,10 @@ spring:
         default_batch_fetch_size: 100
         format_sql: true
 
+  redis:
+    host: localhost
+    port: 6379
+
   datasource:
       url: ENC(XZiReczSSeVhtjiRh2EdMn/QCY1Ju8DgNneba7kajJb9G7wtJP1U0swDxr9ITwHKWPMhgxlJf9YU0AU9ZH2D6X7WhGeTVOlxBjuZcWJathFd6hF94P6yWur5+WOhzb22EHiXmiymzFVJuTLSPQSpruiaenLxEPXfWsyq6/ialV+kwHRbjNyZVSMVycPMM9uZ7c2oHkyf2KY=)
       username: ENC(kSbVij29Q5IxlMTyH1g0rw==)
@@ -77,7 +81,7 @@ cloud:
     s3:
       bucket:
         name: ENC(KydYPKGs+Dt6Tw5ftB3q9KZzx6elxYBe2103TDNwZvA=)
-        url: ENC(euVI7Jo0kFw7UqVivAr7EuROccDHvzE9jNjei3mYt49yAal3CRP2iErcbW90Fjm2gM8IhjxVYCY80JHdUcX+pLxiTB2uWnUr)
+        url: ENC(L2/sKyfUZeKtBpurGc2nEPWV4fgk8V3uDowE61AXeTLugcoWjy7t2ERNjAK5JjZ0B7kPKaD6SHP6LjdOc6GGwGM/Y5LqR+FT)
 
     credentials:
       access-key: ENC(RKFCNH3Hfh23NDkdV9qcBQFY05KOWokFk3WqUIDgckQ=)

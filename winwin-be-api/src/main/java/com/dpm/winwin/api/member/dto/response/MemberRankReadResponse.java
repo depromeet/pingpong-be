@@ -11,7 +11,7 @@ public record MemberRankReadResponse(
         String ranksImage,
         String likeCount,
         String profileLink,
-        List<String> givenTalents,
-        List<String> takenTalents
+        List<TalentResponse> givenTalents,
+        List<TalentResponse> takenTalents
 ) {
 }

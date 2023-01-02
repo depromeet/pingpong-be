@@ -68,7 +68,7 @@ public class AppleLoginController {
 
             log.info("memberInfo:: {}", memberInfo);
             TokenResponse token = appleLoginService.signUpMember(memberInfo, code);
-            redirectUri = pingpongUri + "/nickname";
+            redirectUri = pingpongUri + "/nickname/";
             setResponse(request, response, redirectUri, token);
             return BaseResponseDto.ok(new LoginResponse(token.memberId()));
         }

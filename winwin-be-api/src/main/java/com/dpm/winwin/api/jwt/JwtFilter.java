@@ -2,8 +2,11 @@ package com.dpm.winwin.api.jwt;
 
 
 import com.dpm.winwin.api.common.utils.CookieUtil;
+import com.dpm.winwin.domain.entity.token.ExpiredToken;
+import com.dpm.winwin.domain.repository.token.ExpiredTokenRepository;
 import io.jsonwebtoken.Claims;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Optional;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -12,6 +15,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,15 +23,14 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
 
 @Slf4j
+@RequiredArgsConstructor
 public class JwtFilter extends GenericFilterBean {
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String BEARER = "Bearer ";
     private final TokenProvider tokenProvider;
+    private final ExpiredTokenRepository expiredTokenRepository;
 
-    public JwtFilter(TokenProvider tokenProvider) {
-        this.tokenProvider = tokenProvider;
-    }
 
     // 토큰의 인증 정보를 securityContext에 저장하는 역할을 수행
     @Override
@@ -41,6 +44,12 @@ public class JwtFilter extends GenericFilterBean {
         String requestURI = httpServletRequest.getRequestURI();
 
         if (verifyToken(accessToken)) {
+            if (isLogoutToken(accessToken)) {
+                log.info("로그아웃 처리된 토큰입니다. : {}", accessToken);
+                chain.doFilter(request, response);
+                return;
+            }
+
             Authentication authentication = tokenProvider.getAuthentication(accessToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             log.info("Security Context에 '{}' 인증 정보를 저장했습니다. uri : {}", authentication.getName(), requestURI);
@@ -66,6 +75,11 @@ public class JwtFilter extends GenericFilterBean {
 
         log.info("유효한 JWT 토큰이 없습니다. uri : {}", requestURI);
         chain.doFilter(request, response);
+    }
+
+    private boolean isLogoutToken(String accessToken) {
+        Optional<ExpiredToken> expiredToken = expiredTokenRepository.findById(Objects.requireNonNull(accessToken));
+        return expiredToken.isPresent();
     }
 
     private Long getMemberId(Claims claims) {

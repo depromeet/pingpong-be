@@ -55,11 +55,10 @@ public class Member extends BaseEntity{
 
     private String image;
 
+    @Column(length = 500)
     private String introduction;
 
     private String profileLink;
-
-    private int exchangeCount;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -67,16 +66,13 @@ public class Member extends BaseEntity{
 
     private Integer likeCount;
 
-    // TODO: one to one 연관관계 편의 메서드?
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "member", cascade = CascadeType.REMOVE)
     private OauthToken oauthToken;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member", cascade = CascadeType.REMOVE)
-    private final List<RefreshToken> refreshTokens = new ArrayList<>();
-
-    public Member(String nickname, Ranks ranks) {
+    public Member(String nickname, String image, Ranks ranks) {
         this.nickname = nickname;
         this.ranks = ranks;
+        this.image = image;
         this.likeCount = 0;
     }
 

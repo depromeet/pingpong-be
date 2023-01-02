@@ -4,7 +4,7 @@ import com.dpm.winwin.api.jwt.JwtAccessDeniedHandler;
 import com.dpm.winwin.api.jwt.JwtAuthenticationEntryPoint;
 import com.dpm.winwin.api.jwt.JwtFilter;
 import com.dpm.winwin.api.jwt.TokenProvider;
-import com.dpm.winwin.domain.entity.member.enums.RoleType;
+import com.dpm.winwin.domain.repository.token.ExpiredTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,6 +22,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private final ExpiredTokenRepository expiredTokenRepository;
     private final TokenProvider tokenProvider;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
@@ -41,13 +42,13 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
 
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("*");
+        configuration.addAllowedOrigin("http://localhost:3000");
+        configuration.addAllowedOrigin("https://dev-fe.ping-pong.world/");
+        configuration.addAllowedOrigin("https://fe.ping-pong.world/");
+        configuration.addAllowedOrigin("https://appleid.apple.com/");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
-        /*
-        임시로 origin allow * 로 사용하기 위해서 주석처리 도메인 정해지면 주석해제
         configuration.setAllowCredentials(true);
-        */
         configuration.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -66,15 +67,16 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        JwtFilter jwtFilter = new JwtFilter(tokenProvider);
+        JwtFilter jwtFilter = new JwtFilter(tokenProvider, expiredTokenRepository);
         http
                 .cors().configurationSource(corsConfigurationSource())
                 .and()
                     .authorizeRequests()
                     .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                    .antMatchers("/test").authenticated()
-                    // TODO : 개발 편의를 위한 임시 조치
-                    .anyRequest().permitAll()
+                    .antMatchers(
+                        "/test", "/home", "/apple/redirect")
+                                .permitAll()
+                    .anyRequest().authenticated()
                 .and()
                     .formLogin()
                     .disable()

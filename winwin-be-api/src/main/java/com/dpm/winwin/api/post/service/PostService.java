@@ -25,6 +25,7 @@ import com.dpm.winwin.domain.entity.post.PostTalent;
 import com.dpm.winwin.domain.entity.post.enums.ExchangePeriod;
 import com.dpm.winwin.domain.entity.post.enums.ExchangeTime;
 import com.dpm.winwin.domain.entity.post.enums.ExchangeType;
+import com.dpm.winwin.domain.repository.category.MainCategoryRepository;
 import com.dpm.winwin.domain.repository.category.SubCategoryRepository;
 import com.dpm.winwin.domain.repository.link.LinkRepository;
 import com.dpm.winwin.domain.repository.member.MemberRepository;
@@ -47,6 +48,7 @@ import org.springframework.util.StringUtils;
 public class PostService {
 
     private final MemberRepository memberRepository;
+    private final MainCategoryRepository mainCategoryRepository;
     private final SubCategoryRepository subCategoryRepository;
     private final PostRepository postRepository;
     private final LinkRepository linkRepository;
@@ -78,14 +80,10 @@ public class PostService {
             .getByIdWithMainCategoryAndMidCategory(request.subCategoryId())
             .orElseThrow(() -> new BusinessException(ErrorMessage.SUB_CATEGORY_NOT_FOUND));
 
-        List<Link> links = request.links().stream()
-            .map(Link::of)
-            .toList();
-
         Post post = request.toEntity();
         post.writeBy(member);
         post.setAllCategoriesBySubCategory(subCategory);
-        post.setLink(links);
+        post.setLink(request.links());
 
         if (!request.isShare()) {
             post.setTakenContent(request.takenContent());
@@ -125,7 +123,8 @@ public class PostService {
             post.getMember().getNickname(),
             post.getMember().getImage(),
             post.getMember().getRanks().getName(),
-            hasLike);
+            hasLike,
+            post.getMainCategory().getBackgroundImage());
     }
 
     public Long delete(Long id) {

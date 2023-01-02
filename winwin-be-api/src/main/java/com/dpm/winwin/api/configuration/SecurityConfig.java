@@ -73,9 +73,10 @@ public class SecurityConfig {
                 .and()
                     .authorizeRequests()
                     .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                    .antMatchers("/test").authenticated()
-                    // TODO : 개발 편의를 위한 임시 조치
-                    .anyRequest().permitAll()
+                    .antMatchers(
+                        "/test", "/home", "/apple/redirect")
+                                .permitAll()
+                    .anyRequest().authenticated()
                 .and()
                     .formLogin()
                     .disable()

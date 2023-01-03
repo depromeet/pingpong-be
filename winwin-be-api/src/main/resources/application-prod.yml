@@ -18,10 +18,10 @@ spring:
     port: 6379
 
   datasource:
-      url: ENC(XZiReczSSeVhtjiRh2EdMn/QCY1Ju8DgNneba7kajJb9G7wtJP1U0swDxr9ITwHKWPMhgxlJf9YU0AU9ZH2D6X7WhGeTVOlxBjuZcWJathFd6hF94P6yWur5+WOhzb22EHiXmiymzFVJuTLSPQSpruiaenLxEPXfWsyq6/ialV+kwHRbjNyZVSMVycPMM9uZ7c2oHkyf2KY=)
-      username: ENC(kSbVij29Q5IxlMTyH1g0rw==)
-      password: ENC(f2DZKexIllOKp9G6wKa2T+E/dqGcnngS)
-      driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ENC(R2plCDhY6Nxjuyo0utDsWuGqqqVk6hCnjAVE3nnCNgn73fDd+kfpNSi0Gin4fVh7WCo9l1eidTNHoqvs048J4auAn9TsuJKiG6/yV1R9DLYEMwXIWz69iIjIwbxs4zpuVoYDkXN6l7CgYA6hBgbxzajLWFN2bScDqNam9PSTgCKcrak0aQ3DHlp1Y3Z+GVEbcIHZypTBW7LTvzZL2qj0OQ==)
+    username: ENC(kSbVij29Q5IxlMTyH1g0rw==)
+    password: ENC(f2DZKexIllOKp9G6wKa2T+E/dqGcnngS)
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   servlet:
     multipart:

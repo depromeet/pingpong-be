@@ -29,6 +29,7 @@ import javax.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 @DynamicInsert
@@ -64,6 +65,7 @@ public class Member extends BaseEntity{
     @Column(nullable = false)
     private Ranks ranks;
 
+    @ColumnDefault("0")
     private Integer likeCount;
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "member", cascade = CascadeType.REMOVE)

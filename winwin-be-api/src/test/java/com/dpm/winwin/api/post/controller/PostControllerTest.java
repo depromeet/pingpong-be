@@ -34,6 +34,7 @@ import com.dpm.winwin.api.post.dto.response.PostUpdateResponse;
 import com.dpm.winwin.api.post.service.LikesService;
 import com.dpm.winwin.api.post.service.PostService;
 import com.dpm.winwin.api.utils.RestDocsTestSupport;
+import com.dpm.winwin.api.utils.WithMockCustomUser;
 import com.dpm.winwin.domain.entity.member.enums.Ranks;
 import com.dpm.winwin.domain.entity.post.enums.ExchangePeriod;
 import com.dpm.winwin.domain.entity.post.enums.ExchangeTime;
@@ -52,7 +53,7 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
 
-@WithMockUser(username = MEMBER_ID, authorities = {"ROLE_USER"})
+@WithMockCustomUser
 class PostControllerTest extends RestDocsTestSupport {
 
     @MockBean

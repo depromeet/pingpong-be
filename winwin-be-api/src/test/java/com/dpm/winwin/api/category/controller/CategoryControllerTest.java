@@ -18,6 +18,7 @@ import com.dpm.winwin.api.category.dto.MidCategoryResponse;
 import com.dpm.winwin.api.category.dto.SubCategoryResponse;
 import com.dpm.winwin.api.category.service.CategoryService;
 import com.dpm.winwin.api.utils.RestDocsTestSupport;
+import com.dpm.winwin.api.utils.WithMockCustomUser;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -26,7 +27,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
 
-@WithMockUser(username = MEMBER_ID, authorities = {"ROLE_USER"})
+@WithMockCustomUser
 class CategoryControllerTest extends RestDocsTestSupport {
 
     @MockBean

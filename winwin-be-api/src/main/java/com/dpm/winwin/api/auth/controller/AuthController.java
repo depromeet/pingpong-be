@@ -28,5 +28,4 @@ public class AuthController {
         authService.logout(request, response);
         return BaseResponseDto.message(member.getMemberId(), "LOGOUT SUCCESS");
     }
-
 }

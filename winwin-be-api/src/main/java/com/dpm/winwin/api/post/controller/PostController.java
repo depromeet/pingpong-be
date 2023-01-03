@@ -46,13 +46,10 @@ public class PostController {
     }
 
     @GetMapping("/custom")
-    public BaseResponseDto<GlobalPageResponseDto<PostCustomizedResponse>> getCustomPosts(
-        PostCustomizedConditionRequest condition,
-        Pageable pageable,
-        @AuthenticationPrincipal PingPongMember member) {
-        return BaseResponseDto.ok(
-            postService.getPostsCustomized(member.getMemberId(), condition,
-                pageable));
+    public BaseResponseDto<GlobalPageResponseDto<PostCustomizedResponse>> getCustomPosts(PostCustomizedConditionRequest condition,
+                                                                                         Pageable pageable,
+                                                                                         @AuthenticationPrincipal PingPongMember member) {
+        return BaseResponseDto.ok(postService.getPostsCustomized(member.getMemberId(), condition, pageable));
     }
 
     @GetMapping("/{id}")

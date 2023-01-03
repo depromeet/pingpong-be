@@ -26,8 +26,8 @@ public class ReportController {
     public BaseResponseDto<ReportResponse> reportPost(@PathVariable Long postId,
                                                       @RequestBody ReportRequest reportRequest,
                                                       @AuthenticationPrincipal PingPongMember member) {
-        ReportResponse reportResponse = reportService.reportPost(member.getMemberId(),
-            postId, ReportType.POST, reportRequest);
+        ReportResponse reportResponse = reportService.reportPost(member.getMemberId(), postId, ReportType.POST,
+            reportRequest);
         return BaseResponseDto.ok(reportResponse);
     }
 }

@@ -40,17 +40,14 @@ public class MemberController {
     @PatchMapping("/nickname")
     public BaseResponseDto<MemberNicknameResponse> updateMemberNickname(@RequestBody @Valid MemberNicknameRequest memberNicknameRequest,
                                                                         @AuthenticationPrincipal PingPongMember member) {
-        return BaseResponseDto.ok(memberCommandService.updateMemberNickname(
-            member.getMemberId(), memberNicknameRequest));
+        return BaseResponseDto.ok(
+            memberCommandService.updateMemberNickname(member.getMemberId(), memberNicknameRequest));
     }
 
     @PostMapping("/image")
-    public BaseResponseDto<MemberUpdateImageResponse> updateProfileImage(
-        @RequestPart(name = "image", required = false) MultipartFile multipartFile,
-        @AuthenticationPrincipal PingPongMember member) {
-        return BaseResponseDto.ok(
-            memberCommandService.updateProfileImage(member.getMemberId(),
-                multipartFile));
+    public BaseResponseDto<MemberUpdateImageResponse> updateProfileImage(@RequestPart(name = "image", required = false) MultipartFile multipartFile,
+                                                                         @AuthenticationPrincipal PingPongMember member) {
+        return BaseResponseDto.ok(memberCommandService.updateProfileImage(member.getMemberId(), multipartFile));
     }
 
     @GetMapping("/{memberId}")
@@ -60,16 +57,13 @@ public class MemberController {
 
     @GetMapping("/me")
     public BaseResponseDto<MemberRankReadResponse> currentMemberInfo(@AuthenticationPrincipal PingPongMember member) {
-        return BaseResponseDto.ok(
-            memberQueryService.readMemberInfo(member.getMemberId()));
+        return BaseResponseDto.ok(memberQueryService.readMemberInfo(member.getMemberId()));
     }
 
     @PutMapping
     public BaseResponseDto<MemberUpdateResponse> updateMember(@RequestBody @Valid MemberUpdateRequest memberUpdateRequest,
                                                               @AuthenticationPrincipal PingPongMember member) {
-        return BaseResponseDto.ok(
-            memberCommandService.updateMember(member.getMemberId(),
-                memberUpdateRequest));
+        return BaseResponseDto.ok(memberCommandService.updateMember(member.getMemberId(), memberUpdateRequest));
     }
 
     @GetMapping("/ranks")
@@ -81,8 +75,7 @@ public class MemberController {
     @DeleteMapping("/me")
     public BaseResponseDto<MemberDeleteResponse> deleteMember(@AuthenticationPrincipal PingPongMember member,
                                                               @RequestBody MemberDeleteRequest memberDeleteRequest) {
-        MemberDeleteResponse memberDeleteResponse
-            = memberCommandService.deleteMember(member.getMemberId(),
+        MemberDeleteResponse memberDeleteResponse = memberCommandService.deleteMember(member.getMemberId(),
             memberDeleteRequest.content());
         return BaseResponseDto.ok(memberDeleteResponse);
     }

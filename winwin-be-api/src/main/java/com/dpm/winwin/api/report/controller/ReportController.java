@@ -6,13 +6,13 @@ import com.dpm.winwin.api.report.dto.response.ReportResponse;
 import com.dpm.winwin.api.report.service.ReportService;
 import com.dpm.winwin.domain.entity.report.enums.ReportType;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import static com.dpm.winwin.api.common.utils.SecurityUtil.getCurrentMemberId;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,10 +23,10 @@ public class ReportController {
 
     @PostMapping("/posts/{postId}")
     public BaseResponseDto<ReportResponse> reportPost(
-            @PathVariable Long postId,
-            @RequestBody ReportRequest reportRequest){
-        Long reporterId = getCurrentMemberId();
-        ReportResponse reportResponse = reportService.reportPost(reporterId, postId, ReportType.POST, reportRequest);
+        @PathVariable Long postId, @RequestBody ReportRequest reportRequest,
+        @AuthenticationPrincipal User user) {
+        ReportResponse reportResponse = reportService.reportPost(Long.parseLong(user.getUsername()),
+            postId, ReportType.POST, reportRequest);
         return BaseResponseDto.ok(reportResponse);
     }
 }

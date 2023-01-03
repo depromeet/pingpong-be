@@ -1,5 +1,6 @@
 package com.dpm.winwin.api.post.controller;
 
+import static com.dpm.winwin.api.member.controller.MemberControllerTest.MEMBER_ID;
 import static com.dpm.winwin.api.utils.RestDocsConfig.field;
 import static com.dpm.winwin.domain.entity.post.Likes.changeFormatCountToString;
 import static org.mockito.ArgumentMatchers.any;
@@ -48,8 +49,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
 
+@WithMockUser(username = MEMBER_ID, authorities = {"ROLE_USER"})
 class PostControllerTest extends RestDocsTestSupport {
 
     @MockBean

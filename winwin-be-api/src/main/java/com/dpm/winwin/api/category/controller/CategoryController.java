@@ -7,6 +7,8 @@ import com.dpm.winwin.api.category.service.CategoryService;
 import com.dpm.winwin.api.common.response.dto.BaseResponseDto;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,7 +39,8 @@ public class CategoryController {
     }
 
     @GetMapping("/custom")
-    public BaseResponseDto<List<SubCategoryResponse>> getCustomCategories(){
-        return BaseResponseDto.ok(categoryService.getTakenTalentsByMemberId(1L));
+    public BaseResponseDto<List<SubCategoryResponse>> getCustomCategories(
+        @AuthenticationPrincipal User user) {
+        return BaseResponseDto.ok(categoryService.getTakenTalentsByMemberId(Long.parseLong(user.getUsername())));
     }
 }

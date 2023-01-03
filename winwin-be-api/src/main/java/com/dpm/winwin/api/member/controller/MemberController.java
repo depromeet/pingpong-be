@@ -1,9 +1,8 @@
 package com.dpm.winwin.api.member.controller;
 
-import static com.dpm.winwin.api.common.utils.SecurityUtil.getCurrentMemberId;
-
 import com.dpm.winwin.api.common.response.dto.BaseResponseDto;
 import com.dpm.winwin.api.member.dto.request.MemberDeleteRequest;
+import com.dpm.winwin.api.member.dto.request.MemberNicknameRequest;
 import com.dpm.winwin.api.member.dto.request.MemberUpdateRequest;
 import com.dpm.winwin.api.member.dto.response.MemberDeleteResponse;
 import com.dpm.winwin.api.member.dto.response.MemberNicknameResponse;
@@ -13,7 +12,6 @@ import com.dpm.winwin.api.member.dto.response.MemberUpdateResponse;
 import com.dpm.winwin.api.member.dto.response.RanksListResponse;
 import com.dpm.winwin.api.member.service.MemberCommandService;
 import com.dpm.winwin.api.member.service.MemberQueryService;
-import com.dpm.winwin.api.member.dto.request.MemberNicknameRequest;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -41,16 +39,19 @@ public class MemberController {
 
     @PatchMapping("/nickname")
     public BaseResponseDto<MemberNicknameResponse> updateMemberNickname(
-        @RequestBody @Valid MemberNicknameRequest memberNicknameRequest) {
-        Long memberId = getCurrentMemberId();
-        return BaseResponseDto.ok(memberCommandService.updateMemberNickname(memberId, memberNicknameRequest));
+        @RequestBody @Valid MemberNicknameRequest memberNicknameRequest,
+        @AuthenticationPrincipal User user) {
+        return BaseResponseDto.ok(memberCommandService.updateMemberNickname(
+            Long.parseLong(user.getUsername()), memberNicknameRequest));
     }
 
     @PostMapping("/image")
     public BaseResponseDto<MemberUpdateImageResponse> updateProfileImage(
-        @RequestPart(name = "image", required = false) MultipartFile multipartFile) {
-        Long memberId = 1L;
-        return BaseResponseDto.ok(memberCommandService.updateProfileImage(memberId, multipartFile));
+        @RequestPart(name = "image", required = false) MultipartFile multipartFile,
+        @AuthenticationPrincipal User user) {
+        return BaseResponseDto.ok(
+            memberCommandService.updateProfileImage(Long.parseLong(user.getUsername()),
+                multipartFile));
     }
 
     @GetMapping("/{memberId}")
@@ -60,15 +61,19 @@ public class MemberController {
     }
 
     @GetMapping("/me")
-    public BaseResponseDto<MemberRankReadResponse> currentMemberInfo(@AuthenticationPrincipal User user) {
-        return BaseResponseDto.ok(memberQueryService.readMemberInfo(Long.parseLong(user.getUsername())));
+    public BaseResponseDto<MemberRankReadResponse> currentMemberInfo(
+        @AuthenticationPrincipal User user) {
+        return BaseResponseDto.ok(
+            memberQueryService.readMemberInfo(Long.parseLong(user.getUsername())));
     }
 
     @PutMapping
     public BaseResponseDto<MemberUpdateResponse> updateMember(
-        @RequestBody @Valid MemberUpdateRequest memberUpdateRequest) {
-        Long memberId = getCurrentMemberId();
-        return BaseResponseDto.ok(memberCommandService.updateMember(memberId, memberUpdateRequest));
+        @RequestBody @Valid MemberUpdateRequest memberUpdateRequest,
+        @AuthenticationPrincipal User user) {
+        return BaseResponseDto.ok(
+            memberCommandService.updateMember(Long.parseLong(user.getUsername()),
+                memberUpdateRequest));
     }
 
     @GetMapping("/ranks")
@@ -78,9 +83,11 @@ public class MemberController {
     }
 
     @DeleteMapping("/me")
-    public BaseResponseDto<MemberDeleteResponse> deleteMember(@AuthenticationPrincipal User user, @RequestBody MemberDeleteRequest memberDeleteRequest) {
+    public BaseResponseDto<MemberDeleteResponse> deleteMember(@AuthenticationPrincipal User user,
+        @RequestBody MemberDeleteRequest memberDeleteRequest) {
         MemberDeleteResponse memberDeleteResponse
-            = memberCommandService.deleteMember(Long.parseLong(user.getUsername()), memberDeleteRequest.content());
+            = memberCommandService.deleteMember(Long.parseLong(user.getUsername()),
+            memberDeleteRequest.content());
         return BaseResponseDto.ok(memberDeleteResponse);
     }
 }

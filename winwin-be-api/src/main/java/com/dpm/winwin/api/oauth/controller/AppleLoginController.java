@@ -40,7 +40,8 @@ public class AppleLoginController {
 
     @PostMapping(value = "/apple/redirect", consumes = "application/x-www-form-urlencoded;charset=UTF-8")
     public BaseResponseDto<LoginResponse> appleRedirect(@RequestBody MultiValueMap<String, String> redirectInfo,
-        HttpServletRequest request, HttpServletResponse response)
+                                                        HttpServletRequest request,
+                                                        HttpServletResponse response)
         throws IOException, ParseException, NoSuchAlgorithmException, InvalidKeySpecException {
         log.info("----> {}", redirectInfo);
 
@@ -87,8 +88,10 @@ public class AppleLoginController {
         log.info("error :: {} ", redirectInfo.get("error"));
     }
 
-    private void setResponse(HttpServletRequest request, HttpServletResponse response, String redirectUri,
-        TokenResponse token) throws IOException {
+    private void setResponse(HttpServletRequest request,
+                             HttpServletResponse response,
+                             String redirectUri,
+                             TokenResponse token) throws IOException {
         setTokenCookie(request, response, token);
         response.sendRedirect(redirectUri);
     }
@@ -102,7 +105,9 @@ public class AppleLoginController {
         return pingpongUri;
     }
 
-    private void setTokenCookie(HttpServletRequest request, HttpServletResponse response, TokenResponse token) {
+    private void setTokenCookie(HttpServletRequest request,
+                                HttpServletResponse response,
+                                TokenResponse token) {
         CookieUtil.changeCookie(request, response, ACCESS_TOKEN, token.accessToken(), 86400);
         CookieUtil.changeCookie(request, response, REFRESH_TOKEN, token.refreshToken(), 86400 * 30);
     }

@@ -1,6 +1,7 @@
 package com.dpm.winwin.api.jwt;
 
 
+import com.dpm.winwin.api.member.dto.PingPongMember;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -75,9 +76,10 @@ public class TokenProvider implements InitializingBean {
 
     public Authentication getAuthentication(String token) {
         Claims claims = getClaims(token);
+        Integer memberId = (Integer) claims.get("memberId");
 
         List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
-        User principal = new User(claims.get("memberId").toString(), "", authorities);
+        PingPongMember principal = new PingPongMember(Long.valueOf(memberId), authorities);
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 

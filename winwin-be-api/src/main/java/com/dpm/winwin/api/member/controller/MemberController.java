@@ -1,6 +1,7 @@
 package com.dpm.winwin.api.member.controller;
 
 import com.dpm.winwin.api.common.response.dto.BaseResponseDto;
+import com.dpm.winwin.api.member.dto.PingPongMember;
 import com.dpm.winwin.api.member.dto.request.MemberDeleteRequest;
 import com.dpm.winwin.api.member.dto.request.MemberNicknameRequest;
 import com.dpm.winwin.api.member.dto.request.MemberUpdateRequest;
@@ -15,7 +16,6 @@ import com.dpm.winwin.api.member.service.MemberQueryService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -38,41 +38,37 @@ public class MemberController {
     private final MemberCommandService memberCommandService;
 
     @PatchMapping("/nickname")
-    public BaseResponseDto<MemberNicknameResponse> updateMemberNickname(
-        @RequestBody @Valid MemberNicknameRequest memberNicknameRequest,
-        @AuthenticationPrincipal User user) {
+    public BaseResponseDto<MemberNicknameResponse> updateMemberNickname(@RequestBody @Valid MemberNicknameRequest memberNicknameRequest,
+                                                                        @AuthenticationPrincipal PingPongMember member) {
         return BaseResponseDto.ok(memberCommandService.updateMemberNickname(
-            Long.parseLong(user.getUsername()), memberNicknameRequest));
+            member.getMemberId(), memberNicknameRequest));
     }
 
     @PostMapping("/image")
     public BaseResponseDto<MemberUpdateImageResponse> updateProfileImage(
         @RequestPart(name = "image", required = false) MultipartFile multipartFile,
-        @AuthenticationPrincipal User user) {
+        @AuthenticationPrincipal PingPongMember member) {
         return BaseResponseDto.ok(
-            memberCommandService.updateProfileImage(Long.parseLong(user.getUsername()),
+            memberCommandService.updateProfileImage(member.getMemberId(),
                 multipartFile));
     }
 
     @GetMapping("/{memberId}")
-    public BaseResponseDto<MemberRankReadResponse> readMemberInfo(
-        @PathVariable Long memberId) {
+    public BaseResponseDto<MemberRankReadResponse> readMemberInfo(@PathVariable Long memberId) {
         return BaseResponseDto.ok(memberQueryService.readMemberInfo(memberId));
     }
 
     @GetMapping("/me")
-    public BaseResponseDto<MemberRankReadResponse> currentMemberInfo(
-        @AuthenticationPrincipal User user) {
+    public BaseResponseDto<MemberRankReadResponse> currentMemberInfo(@AuthenticationPrincipal PingPongMember member) {
         return BaseResponseDto.ok(
-            memberQueryService.readMemberInfo(Long.parseLong(user.getUsername())));
+            memberQueryService.readMemberInfo(member.getMemberId()));
     }
 
     @PutMapping
-    public BaseResponseDto<MemberUpdateResponse> updateMember(
-        @RequestBody @Valid MemberUpdateRequest memberUpdateRequest,
-        @AuthenticationPrincipal User user) {
+    public BaseResponseDto<MemberUpdateResponse> updateMember(@RequestBody @Valid MemberUpdateRequest memberUpdateRequest,
+                                                              @AuthenticationPrincipal PingPongMember member) {
         return BaseResponseDto.ok(
-            memberCommandService.updateMember(Long.parseLong(user.getUsername()),
+            memberCommandService.updateMember(member.getMemberId(),
                 memberUpdateRequest));
     }
 
@@ -83,10 +79,10 @@ public class MemberController {
     }
 
     @DeleteMapping("/me")
-    public BaseResponseDto<MemberDeleteResponse> deleteMember(@AuthenticationPrincipal User user,
-        @RequestBody MemberDeleteRequest memberDeleteRequest) {
+    public BaseResponseDto<MemberDeleteResponse> deleteMember(@AuthenticationPrincipal PingPongMember member,
+                                                              @RequestBody MemberDeleteRequest memberDeleteRequest) {
         MemberDeleteResponse memberDeleteResponse
-            = memberCommandService.deleteMember(Long.parseLong(user.getUsername()),
+            = memberCommandService.deleteMember(member.getMemberId(),
             memberDeleteRequest.content());
         return BaseResponseDto.ok(memberDeleteResponse);
     }

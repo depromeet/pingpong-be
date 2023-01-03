@@ -5,6 +5,7 @@ import com.dpm.winwin.api.category.dto.MidCategoryResponse;
 import com.dpm.winwin.api.category.dto.SubCategoryResponse;
 import com.dpm.winwin.api.category.service.CategoryService;
 import com.dpm.winwin.api.common.response.dto.BaseResponseDto;
+import com.dpm.winwin.api.member.dto.PingPongMember;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -40,7 +41,7 @@ public class CategoryController {
 
     @GetMapping("/custom")
     public BaseResponseDto<List<SubCategoryResponse>> getCustomCategories(
-        @AuthenticationPrincipal User user) {
-        return BaseResponseDto.ok(categoryService.getTakenTalentsByMemberId(Long.parseLong(user.getUsername())));
+        @AuthenticationPrincipal PingPongMember member) {
+        return BaseResponseDto.ok(categoryService.getTakenTalentsByMemberId(member.getMemberId()));
     }
 }

@@ -2,6 +2,7 @@ package com.dpm.winwin.api.post.controller;
 
 import com.dpm.winwin.api.common.response.dto.BaseResponseDto;
 import com.dpm.winwin.api.common.response.dto.GlobalPageResponseDto;
+import com.dpm.winwin.api.member.dto.PingPongMember;
 import com.dpm.winwin.api.post.dto.request.PostAddRequest;
 import com.dpm.winwin.api.post.dto.request.PostUpdateRequest;
 import com.dpm.winwin.api.post.dto.response.LikesResponse;
@@ -39,38 +40,39 @@ public class PostController {
     private final LikesService likesService;
 
     @GetMapping
-    public BaseResponseDto<GlobalPageResponseDto<PostResponse>> getPosts(
-        PostListConditionRequest condition, Pageable pageable) {
+    public BaseResponseDto<GlobalPageResponseDto<PostResponse>> getPosts(PostListConditionRequest condition,
+                                                                         Pageable pageable) {
         return BaseResponseDto.ok(postService.getPosts(condition, pageable));
     }
 
     @GetMapping("/custom")
     public BaseResponseDto<GlobalPageResponseDto<PostCustomizedResponse>> getCustomPosts(
-        PostCustomizedConditionRequest condition, Pageable pageable,
-        @AuthenticationPrincipal User user) {
+        PostCustomizedConditionRequest condition,
+        Pageable pageable,
+        @AuthenticationPrincipal PingPongMember member) {
         return BaseResponseDto.ok(
-            postService.getPostsCustomized(Long.parseLong(user.getUsername()), condition,
+            postService.getPostsCustomized(member.getMemberId(), condition,
                 pageable));
     }
 
     @GetMapping("/{id}")
     public BaseResponseDto<PostReadResponse> getPost(@PathVariable Long id,
-        @AuthenticationPrincipal User user) {
-        return BaseResponseDto.ok(postService.get(id, Long.parseLong(user.getUsername())));
+                                                     @AuthenticationPrincipal PingPongMember member) {
+        return BaseResponseDto.ok(postService.get(id, member.getMemberId()));
     }
 
     @PostMapping
     public BaseResponseDto<PostAddResponse> createPost(@RequestBody @Valid PostAddRequest request,
-        @AuthenticationPrincipal User user) {
-        return BaseResponseDto.ok(postService.save(Long.parseLong(user.getUsername()), request));
+                                                       @AuthenticationPrincipal PingPongMember member) {
+        return BaseResponseDto.ok(postService.save(member.getMemberId(), request));
     }
 
     @PutMapping("/{id}")
-    public BaseResponseDto<PostUpdateResponse> updatePost(
-        @PathVariable Long id, @RequestBody @Valid final PostUpdateRequest updateRequest,
-        @AuthenticationPrincipal User user) {
+    public BaseResponseDto<PostUpdateResponse> updatePost(@PathVariable Long id,
+                                                          @RequestBody @Valid final PostUpdateRequest updateRequest,
+                                                          @AuthenticationPrincipal PingPongMember member) {
         return BaseResponseDto.ok(
-            postService.update(Long.parseLong(user.getUsername()), id, updateRequest));
+            postService.update(member.getMemberId(), id, updateRequest));
     }
 
 
@@ -85,21 +87,21 @@ public class PostController {
     }
 
     @GetMapping("/members/{memberId}")
-    public BaseResponseDto<GlobalPageResponseDto<MyPagePostResponse>> getAllByMemberId(
-        @PathVariable Long memberId, Pageable pageable) {
+    public BaseResponseDto<GlobalPageResponseDto<MyPagePostResponse>> getAllByMemberId(@PathVariable Long memberId,
+                                                                                       Pageable pageable) {
         return BaseResponseDto.ok(postService.getAllByMemberId(memberId, pageable));
     }
 
     @PostMapping("/{postId}/likes")
     public BaseResponseDto<LikesResponse> likes(@PathVariable Long postId,
-        @AuthenticationPrincipal User user) {
-        return BaseResponseDto.ok(likesService.createLikes(Long.parseLong(user.getUsername()), postId));
+                                                @AuthenticationPrincipal PingPongMember member) {
+        return BaseResponseDto.ok(likesService.createLikes(member.getMemberId(), postId));
     }
 
     @PostMapping("/{postId}/unlikes")
     public BaseResponseDto<LikesResponse> cancelLikes(@PathVariable Long postId,
-        @AuthenticationPrincipal User user) {
-        return BaseResponseDto.ok(likesService.cancelLikes(Long.parseLong(user.getUsername()), postId));
+                                                      @AuthenticationPrincipal PingPongMember member) {
+        return BaseResponseDto.ok(likesService.cancelLikes(member.getMemberId(), postId));
     }
 
 }

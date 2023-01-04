@@ -2,6 +2,7 @@ plugins {
     id 'org.asciidoctor.jvm.convert' version '3.3.2'
     id 'java'
     id "com.epages.restdocs-api-spec" version "0.16.2"
+    id 'org.hidetake.swagger.generator' version '2.18.2'
 }
 
 group 'com.dpm.winwin.api'
@@ -20,6 +21,11 @@ configurations {
 
 repositories {
     mavenCentral()
+}
+swaggerSources {
+    sample {
+        setInputFile(file("${project.buildDir}/api-spec/openapi3.json"))
+    }
 }
 
 dependencies {
@@ -42,8 +48,13 @@ dependencies {
     implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
+    swaggerUI 'org.webjars:swagger-ui:4.15.0'
 }
 
+openapi3 {
+    title = 'PINGPONG-BE API DOCUMENTATION'
+    servers = [{ url = "http://localhost:8080" }, { url = "https://localhost:8080" }]
+}
 /**
  * REST Docs
  */
@@ -62,4 +73,24 @@ asciidoctor {
 
 bootJar {
     dependsOn asciidoctor
+    dependsOn 'copySwaggerUI'
+}
+
+
+// 3.4. Task 및 설정 추가
+// 3.4.1
+// GenerateSwaggerUI 태스크가, openapi3 task 를 의존하도록 설정
+tasks.withType(GenerateSwaggerUI) {
+    dependsOn 'openapi3'
+}
+
+// 3.4.2
+// 생성된 SwaggerUI 를 jar 에 포함시키기 위해 build/resources 경로로 로 복사
+tasks.register('copySwaggerUI', Copy) {
+    dependsOn 'generateSwaggerUISample'
+
+    def generateSwaggerUISampleTask = tasks.named('generateSwaggerUISample', GenerateSwaggerUI).get()
+
+    from("${generateSwaggerUISampleTask.outputDir}")
+    into("${project.buildDir}/resources/main/static/docs")
 }

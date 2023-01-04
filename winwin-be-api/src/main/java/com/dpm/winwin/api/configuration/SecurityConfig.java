@@ -34,7 +34,10 @@ public class SecurityConfig {
             "oauth2/**",
             "login/**",
             "/favicon.ico",
-            "/error"
+            "/error",
+            "/swagger-ui/**",
+            "/v3/api-docs/**",
+            "/api-docs/**"
         );
     }
 
@@ -74,7 +77,7 @@ public class SecurityConfig {
                     .authorizeRequests()
                     .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                     .antMatchers(
-                        "/test", "/home", "/apple/redirect")
+                        "/test", "/home", "/apple/redirect","/swagger-ui/**","/docs/**")
                                 .permitAll()
                     .anyRequest().authenticated()
                 .and()

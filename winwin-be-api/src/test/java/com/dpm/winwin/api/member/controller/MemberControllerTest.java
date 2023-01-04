@@ -13,6 +13,7 @@ import com.dpm.winwin.api.member.dto.response.TalentResponse;
 import com.dpm.winwin.api.member.service.MemberCommandService;
 import com.dpm.winwin.api.member.service.MemberQueryService;
 import com.dpm.winwin.api.utils.RestDocsTestSupport;
+import com.dpm.winwin.api.utils.WithMockCustomUser;
 import com.dpm.winwin.domain.entity.member.enums.Ranks;
 import java.util.List;
 import com.dpm.winwin.api.member.dto.request.MemberNicknameRequest;
@@ -42,7 +43,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.restdocs.request.RequestDocumentation.requestParts;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WithMockUser(username = MEMBER_ID, authorities = {"ROLE_USER"})
+@WithMockCustomUser
 public class MemberControllerTest extends RestDocsTestSupport {
 
     public static final String MEMBER_ID = "1";

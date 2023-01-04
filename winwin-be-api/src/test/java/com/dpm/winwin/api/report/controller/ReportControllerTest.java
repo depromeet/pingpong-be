@@ -15,6 +15,7 @@ import com.dpm.winwin.api.report.dto.response.ReportResponse;
 import com.dpm.winwin.api.report.service.ReportService;
 import com.dpm.winwin.api.utils.RestDocsTestSupport;
 
+import com.dpm.winwin.api.utils.WithMockCustomUser;
 import com.dpm.winwin.domain.entity.report.enums.ReportType;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -23,7 +24,7 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
 
-@WithMockUser(username = MEMBER_ID, authorities = {"ROLE_USER"})
+@WithMockCustomUser
 public class ReportControllerTest extends RestDocsTestSupport {
 
     static final String MEMBER_ID = "1";

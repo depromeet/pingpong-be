@@ -1,5 +1,6 @@
 package com.dpm.winwin.api.post.controller;
 
+import static com.dpm.winwin.api.member.controller.MemberControllerTest.MEMBER_ID;
 import static com.dpm.winwin.api.utils.RestDocsConfig.field;
 import static com.dpm.winwin.domain.entity.post.Likes.changeFormatCountToString;
 import static org.mockito.ArgumentMatchers.any;
@@ -33,6 +34,7 @@ import com.dpm.winwin.api.post.dto.response.PostUpdateResponse;
 import com.dpm.winwin.api.post.service.LikesService;
 import com.dpm.winwin.api.post.service.PostService;
 import com.dpm.winwin.api.utils.RestDocsTestSupport;
+import com.dpm.winwin.api.utils.WithMockCustomUser;
 import com.dpm.winwin.domain.entity.member.enums.Ranks;
 import com.dpm.winwin.domain.entity.post.enums.ExchangePeriod;
 import com.dpm.winwin.domain.entity.post.enums.ExchangeTime;
@@ -48,8 +50,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
 
+@WithMockCustomUser
 class PostControllerTest extends RestDocsTestSupport {
 
     @MockBean

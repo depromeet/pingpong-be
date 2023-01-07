@@ -19,10 +19,10 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-@Profile({"prod"})
+@Profile({"dev", "local"})
 @RequiredArgsConstructor
 @EnableWebSecurity
-public class SecurityConfig {
+public class SecurityConfigDev {
 
     private final ExpiredTokenRepository expiredTokenRepository;
     private final TokenProvider tokenProvider;
@@ -36,9 +36,7 @@ public class SecurityConfig {
             "oauth2/**",
             "login/**",
             "/favicon.ico",
-            "/error",
-            "/home",
-            "/test"
+            "/error"
         );
     }
 
@@ -73,35 +71,32 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         JwtFilter jwtFilter = new JwtFilter(tokenProvider, expiredTokenRepository);
         http
-                .cors().configurationSource(corsConfigurationSource())
-                .and()
-                    .authorizeRequests()
-                    .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                    .antMatchers(
-                        "/test", "/home", "/apple/redirect")
-                                .permitAll()
-                    .anyRequest().authenticated()
-                .and()
-                    .formLogin()
-                    .disable()
-                    .csrf()
-                    .disable()
-                    .headers()
-                    .disable()
-                    .rememberMe()
-                    .disable()
-                    .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                    .exceptionHandling()
-                    .accessDeniedHandler(jwtAccessDeniedHandler)
-                    .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                .and()
-                    .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                    .oauth2Login()
-                    .authorizationEndpoint()
-                    .baseUri("/oauth2/authorization")
-                    .authorizationRequestRepository(authorizationRequestRepository());
+            .cors().configurationSource(corsConfigurationSource())
+            .and()
+            .authorizeRequests()
+            .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+            .anyRequest().permitAll()
+            .and()
+            .formLogin()
+            .disable()
+            .csrf()
+            .disable()
+            .headers()
+            .disable()
+            .rememberMe()
+            .disable()
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+            .exceptionHandling()
+            .accessDeniedHandler(jwtAccessDeniedHandler)
+            .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+            .and()
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+            .oauth2Login()
+            .authorizationEndpoint()
+            .baseUri("/oauth2/authorization")
+            .authorizationRequestRepository(authorizationRequestRepository());
         return http.build();
     }
 }

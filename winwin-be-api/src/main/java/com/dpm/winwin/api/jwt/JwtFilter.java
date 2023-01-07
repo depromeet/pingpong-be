@@ -2,6 +2,7 @@ package com.dpm.winwin.api.jwt;
 
 
 import com.dpm.winwin.api.common.utils.CookieUtil;
+import com.dpm.winwin.api.member.dto.PingPongMember;
 import com.dpm.winwin.domain.entity.token.ExpiredToken;
 import com.dpm.winwin.domain.repository.token.ExpiredTokenRepository;
 import io.jsonwebtoken.Claims;
@@ -52,7 +53,7 @@ public class JwtFilter extends GenericFilterBean {
 
             Authentication authentication = tokenProvider.getAuthentication(accessToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            log.info("Security Context에 '{}' 인증 정보를 저장했습니다. uri : {}", authentication.getName(), requestURI);
+            log.info("Security Context에 '{}' 인증 정보를 저장했습니다. uri : {}", ((PingPongMember)authentication.getPrincipal()).getMemberId(), requestURI);
             chain.doFilter(request, response);
             return;
         }
@@ -68,12 +69,12 @@ public class JwtFilter extends GenericFilterBean {
             changeAccessToken(httpServletRequest, httpServletResponse, newAccessToken);
             Authentication authentication = tokenProvider.getAuthentication(newAccessToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            log.info("Security Context에 '{}' 인증 정보를 저장했습니다. uri : {}", authentication.getName(), requestURI);
+            log.info("Security Context에 '{}' 인증 정보를 저장했습니다. uri : {}", ((PingPongMember)authentication.getPrincipal()).getMemberId(), requestURI);
             chain.doFilter(request, response);
             return;
         }
 
-        log.info("유효한 JWT 토큰이 없습니다. uri : {}", requestURI);
+        log.info("유효한 JWT 토큰이 없습니다. uri : {}, {}", requestURI, accessToken);
         chain.doFilter(request, response);
     }
 

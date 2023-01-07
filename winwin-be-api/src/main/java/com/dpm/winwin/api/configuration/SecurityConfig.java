@@ -36,7 +36,9 @@ public class SecurityConfig {
             "oauth2/**",
             "login/**",
             "/favicon.ico",
-            "/error"
+            "/error",
+            "/home",
+            "/test"
         );
     }
 

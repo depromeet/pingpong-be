@@ -7,7 +7,6 @@ import com.dpm.winwin.api.jwt.TokenProvider;
 import com.dpm.winwin.domain.repository.token.ExpiredTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -19,7 +18,6 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-@Profile({"prod"})
 @RequiredArgsConstructor
 @EnableWebSecurity
 public class SecurityConfig {

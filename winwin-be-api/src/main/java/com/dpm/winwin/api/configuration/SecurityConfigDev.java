@@ -44,7 +44,7 @@ public class SecurityConfigDev {
     public CorsConfigurationSource corsConfigurationSource() {
 
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("http://localhost:3000");
+        configuration.addAllowedOrigin("http://localhost:3000/");
         configuration.addAllowedOrigin("https://dev-fe.ping-pong.world/");
         configuration.addAllowedOrigin("https://fe.ping-pong.world/");
         configuration.addAllowedOrigin("https://appleid.apple.com/");

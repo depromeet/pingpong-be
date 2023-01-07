@@ -102,7 +102,7 @@ public class AppleLoginController {
             Cookie cookie = optional.get();
             return cookie.getValue();
         }
-        return pingpongUri;
+        return pingpongUri + "/main/";
     }
 
     private void setTokenCookie(HttpServletRequest request,

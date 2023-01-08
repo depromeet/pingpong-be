@@ -8,12 +8,15 @@ import static com.dpm.winwin.domain.entity.member.QMember.member;
 import static com.dpm.winwin.domain.entity.member.QMemberTalent.memberTalent;
 import static com.dpm.winwin.domain.entity.post.QLikes.likes;
 import static com.dpm.winwin.domain.entity.post.QPost.post;
+import static com.dpm.winwin.domain.entity.report.QReport.report;
 
 import com.dpm.winwin.domain.dto.post.MyPagePostDto;
 import com.dpm.winwin.domain.entity.category.SubCategory;
 import com.dpm.winwin.domain.entity.member.MemberTalent;
 import com.dpm.winwin.domain.entity.member.enums.TalentType;
 import com.dpm.winwin.domain.entity.post.Post;
+import com.dpm.winwin.domain.entity.report.Report;
+import com.dpm.winwin.domain.entity.report.enums.ReportType;
 import com.dpm.winwin.domain.repository.post.CustomPostRepository;
 import com.dpm.winwin.domain.repository.post.dto.request.PostCustomizedConditionRequest;
 import com.dpm.winwin.domain.repository.post.dto.request.PostListConditionRequest;
@@ -64,9 +67,11 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
     }
 
     @Override
-    public Page<Post> getAllByIsShareAndMidCategory(
-        PostListConditionRequest condition, Pageable pageable
+    public Page<Post> getAllByIsShareAndCategory(Long memberId,
+                                                 PostListConditionRequest condition,
+                                                 Pageable pageable
     ) {
+        List<Long> reportedPostIds = getReportedPostIds(memberId);
         List<Post> posts = queryFactory
             .select(post)
             .from(post)
@@ -78,7 +83,8 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
                 isShareEq(condition.isShare()),
                 mainCategoryEq(condition.mainCategory()),
                 midCategoryEq(condition.midCategory()),
-                subCategoryEq(condition.subCategory())
+                subCategoryEq(condition.subCategory()),
+                post.id.in(reportedPostIds).not()
             )
             .orderBy(post.createdDate.desc())
             .offset(pageable.getOffset())
@@ -92,7 +98,8 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
                 isShareEq(condition.isShare()),
                 mainCategoryEq(condition.mainCategory()),
                 midCategoryEq(condition.midCategory()),
-                subCategoryEq(condition.subCategory())
+                subCategoryEq(condition.subCategory()),
+                post.id.in(reportedPostIds).not()
             );
 
         return PageableExecutionUtils.getPage(posts, pageable, countQuery::fetchOne);
@@ -148,8 +155,9 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
     }
   
     @Override
-    public Page<Post> getAllByMemberTalents(
-        Long memberId, PostCustomizedConditionRequest condition, Pageable pageable) {
+    public Page<Post> getAllByMemberTalents(Long memberId,
+                                            PostCustomizedConditionRequest condition,
+                                            Pageable pageable) {
         List<SubCategory> subCategories = queryFactory.selectFrom(memberTalent)
             .leftJoin(memberTalent.member, member).fetchJoin()
             .where(
@@ -160,6 +168,7 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
             .stream().map(MemberTalent::getTalent)
             .toList();
 
+        List<Long> reportedPostIds = getReportedPostIds(memberId);
         List<Post> posts = queryFactory.selectFrom(post)
             .leftJoin(post.member, member).fetchJoin()
             .leftJoin(post.likes, likes).fetchJoin()
@@ -167,7 +176,8 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
             .where(
                 member.id.eq(memberId).not(),
                 post.subCategory.in(subCategories),
-                subCategoryEq(condition.subCategoryId())
+                subCategoryEq(condition.subCategoryId()),
+                post.id.in(reportedPostIds).not()
             )
             .orderBy(post.createdDate.desc())
             .offset(pageable.getOffset())
@@ -182,10 +192,23 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
             .where(
                 member.id.eq(memberId).not(),
                 post.subCategory.in(subCategories),
-                subCategoryEq(condition.subCategoryId())
+                subCategoryEq(condition.subCategoryId()),
+                post.id.in(reportedPostIds).not()
             );
 
         return PageableExecutionUtils.getPage(posts, pageable, countQuery::fetchOne);
+    }
+
+    private List<Long> getReportedPostIds(Long memberId) {
+        return queryFactory
+            .selectFrom(report)
+            .where(
+                report.type.eq(ReportType.POST),
+                report.reporterId.eq(memberId)
+            )
+            .fetch()
+            .stream().map(Report::getTypeId)
+            .toList();
     }
 
     private BooleanExpression isShareEq(Boolean isShare) {

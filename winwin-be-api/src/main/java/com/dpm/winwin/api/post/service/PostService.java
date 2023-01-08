@@ -48,15 +48,15 @@ import org.springframework.util.StringUtils;
 public class PostService {
 
     private final MemberRepository memberRepository;
-    private final MainCategoryRepository mainCategoryRepository;
     private final SubCategoryRepository subCategoryRepository;
     private final PostRepository postRepository;
     private final LinkRepository linkRepository;
 
-    public GlobalPageResponseDto<PostResponse> getPosts(
-        PostListConditionRequest condition, Pageable pageable) {
+    public GlobalPageResponseDto<PostResponse> getPosts(Long memberId,
+                                                        PostListConditionRequest condition,
+                                                        Pageable pageable) {
         Page<PostResponse> page = postRepository
-            .getAllByIsShareAndMidCategory(condition, pageable)
+            .getAllByIsShareAndCategory(memberId, condition, pageable)
             .map(PostResponse::of);
         return GlobalPageResponseDto.of(page);
     }

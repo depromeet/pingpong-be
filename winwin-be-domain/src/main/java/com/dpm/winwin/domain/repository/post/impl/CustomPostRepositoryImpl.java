@@ -67,9 +67,9 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
     }
 
     @Override
-    public Page<Post> getAllByIsShareAndMidCategory(Long memberId,
-                                                    PostListConditionRequest condition,
-                                                    Pageable pageable
+    public Page<Post> getAllByIsShareAndCategory(Long memberId,
+                                                 PostListConditionRequest condition,
+                                                 Pageable pageable
     ) {
         List<Long> reportedPostIds = getReportedPostIds(memberId);
         List<Post> posts = queryFactory

@@ -72,7 +72,7 @@ class PostControllerTest extends RestDocsTestSupport {
         GlobalPageResponseDto<PostResponse> response = GlobalPageResponseDto.of(page);
 
         // when
-        given(postService.getPosts(any(), any()))
+        given(postService.getPosts(any(), any(), any()))
             .willReturn(response);
 
         ResultActions result = mockMvc.perform(

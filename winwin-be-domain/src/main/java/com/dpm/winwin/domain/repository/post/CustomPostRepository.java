@@ -12,7 +12,7 @@ public interface CustomPostRepository {
 
     Optional<Post> getByIdAndMemberId(Long memberId, Long postId);
 
-    Page<Post> getAllByIsShareAndMidCategory(PostListConditionRequest condition, Pageable pageable);
+    Page<Post> getAllByIsShareAndMidCategory(Long memberId, PostListConditionRequest condition, Pageable pageable);
 
     Page<Post> getAllByMemberTalents(Long memberId, PostCustomizedConditionRequest condition, Pageable pageable);
 

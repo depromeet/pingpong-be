@@ -21,7 +21,6 @@ import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,8 +40,9 @@ public class PostController {
 
     @GetMapping
     public BaseResponseDto<GlobalPageResponseDto<PostResponse>> getPosts(PostListConditionRequest condition,
-                                                                         Pageable pageable) {
-        return BaseResponseDto.ok(postService.getPosts(condition, pageable));
+                                                                         Pageable pageable,
+                                                                         @AuthenticationPrincipal PingPongMember member) {
+        return BaseResponseDto.ok(postService.getPosts(member.getMemberId(), condition, pageable));
     }
 
     @GetMapping("/custom")

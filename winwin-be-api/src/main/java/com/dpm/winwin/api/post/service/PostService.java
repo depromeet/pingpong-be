@@ -53,10 +53,11 @@ public class PostService {
     private final PostRepository postRepository;
     private final LinkRepository linkRepository;
 
-    public GlobalPageResponseDto<PostResponse> getPosts(
-        PostListConditionRequest condition, Pageable pageable) {
+    public GlobalPageResponseDto<PostResponse> getPosts(Long memberId,
+                                                        PostListConditionRequest condition,
+                                                        Pageable pageable) {
         Page<PostResponse> page = postRepository
-            .getAllByIsShareAndMidCategory(condition, pageable)
+            .getAllByIsShareAndMidCategory(memberId, condition, pageable)
             .map(PostResponse::of);
         return GlobalPageResponseDto.of(page);
     }

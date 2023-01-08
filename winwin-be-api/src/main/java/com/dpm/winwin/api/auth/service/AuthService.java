@@ -25,8 +25,8 @@ public class AuthService {
 
         saveExpiredToken(request);
 
-        CookieUtil.deleteCookie(request, response, ACCESS_TOKEN);
-        CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
+        CookieUtil.addCookie(response, ACCESS_TOKEN, "", 0);
+        CookieUtil.addCookie(response, REFRESH_TOKEN, "", 0);
     }
 
     private void saveExpiredToken(HttpServletRequest request) {

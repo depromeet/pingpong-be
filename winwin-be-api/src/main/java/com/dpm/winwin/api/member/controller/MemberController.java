@@ -1,6 +1,10 @@
 package com.dpm.winwin.api.member.controller;
 
+import static com.dpm.winwin.api.common.utils.CookieUtil.ACCESS_TOKEN;
+import static com.dpm.winwin.api.common.utils.CookieUtil.REFRESH_TOKEN;
+
 import com.dpm.winwin.api.common.response.dto.BaseResponseDto;
+import com.dpm.winwin.api.common.utils.CookieUtil;
 import com.dpm.winwin.api.member.dto.PingPongMember;
 import com.dpm.winwin.api.member.dto.request.MemberDeleteRequest;
 import com.dpm.winwin.api.member.dto.request.MemberNicknameRequest;
@@ -13,6 +17,7 @@ import com.dpm.winwin.api.member.dto.response.MemberUpdateResponse;
 import com.dpm.winwin.api.member.dto.response.RanksListResponse;
 import com.dpm.winwin.api.member.service.MemberCommandService;
 import com.dpm.winwin.api.member.service.MemberQueryService;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -74,9 +79,13 @@ public class MemberController {
 
     @DeleteMapping("/me")
     public BaseResponseDto<MemberDeleteResponse> deleteMember(@AuthenticationPrincipal PingPongMember member,
-                                                              @RequestBody MemberDeleteRequest memberDeleteRequest) {
-        MemberDeleteResponse memberDeleteResponse = memberCommandService.deleteMember(member.getMemberId(),
-            memberDeleteRequest.content());
+                                                              @RequestBody MemberDeleteRequest memberDeleteRequest,
+                                                              HttpServletResponse response) {
+        MemberDeleteResponse memberDeleteResponse =
+            memberCommandService.deleteMember(member.getMemberId(), memberDeleteRequest.content());
+
+        CookieUtil.addCookie(response, REFRESH_TOKEN, "", 0);
+        CookieUtil.addCookie(response, ACCESS_TOKEN, "", 0);
         return BaseResponseDto.ok(memberDeleteResponse);
     }
 }

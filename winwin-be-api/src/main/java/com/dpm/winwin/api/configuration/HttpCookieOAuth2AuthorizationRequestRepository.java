@@ -31,6 +31,9 @@ public class HttpCookieOAuth2AuthorizationRequestRepository implements
     public void saveAuthorizationRequest(OAuth2AuthorizationRequest authorizationRequest, HttpServletRequest request,
         HttpServletResponse response) {
         log.info("==== saveAuthorizationRequest ====");
+        String userAgent = request.getHeader("user-agent");
+        log.info("userAgent =====>  {}", userAgent);
+
         if (authorizationRequest == null) {
             log.info("쿠키 삭제");
             CookieUtil.deleteCookie(request, response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME);

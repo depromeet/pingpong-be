@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.ObjectUtils;
@@ -69,15 +70,27 @@ public class AppleLoginController {
 
             log.info("memberInfo:: {}", memberInfo);
             TokenResponse token = appleLoginService.signUpMember(memberInfo, code);
-            redirectUri = pingpongUri + "/nickname/";
+            redirectUri = getRedirectUri(token);
             setResponse(request, response, redirectUri, token);
             return BaseResponseDto.ok(new LoginResponse(token.memberId()));
         }
 
         String code = redirectInfo.getFirst("code");
         TokenResponse token = appleLoginService.signInMember(code);
+        redirectUri = getRedirectUri(token);
         setResponse(request, response, redirectUri, token);
         return BaseResponseDto.ok(new LoginResponse(token.memberId()));
+    }
+
+    @NotNull
+    private String getRedirectUri(TokenResponse token) {
+        String redirectUri;
+        if (token.isExistNickname()){
+            redirectUri = pingpongUri + "/main/";
+            return redirectUri;
+        }
+        redirectUri = pingpongUri + "/nickname/";
+        return redirectUri;
     }
 
     private void print(MultiValueMap<String, String> redirectInfo) {
@@ -92,6 +105,7 @@ public class AppleLoginController {
                              HttpServletResponse response,
                              String redirectUri,
                              TokenResponse token) throws IOException {
+        log.info("redirectUri : {}", redirectUri);
         setTokenCookie(request, response, token);
         response.sendRedirect(redirectUri);
     }

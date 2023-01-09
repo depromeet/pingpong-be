@@ -21,6 +21,7 @@ import com.dpm.winwin.domain.repository.category.SubCategoryRepository;
 import com.dpm.winwin.domain.repository.member.MemberRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -36,6 +37,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 @Transactional
@@ -98,6 +100,7 @@ public class MemberCommandService {
         Member member = memberRepository.findMemberWithToken(memberId)
             .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
 
+        log.info("member : {}", member);
         ResponseEntity<Object> response = revokeAppleToken(member);
 
         if (response.getStatusCode().equals(HttpStatus.OK)) {

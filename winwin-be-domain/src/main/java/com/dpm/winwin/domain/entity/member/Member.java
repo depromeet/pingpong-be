@@ -88,7 +88,10 @@ public class Member extends BaseEntity{
     }
 
     private void setGivenTalents(List<SubCategory> afterGivenTalents) {
-
+        if (afterGivenTalents == null) {
+            this.talents.removeIf(givenTalent -> (givenTalent.getType().equals(GIVE)));
+            return;
+        }
         Set<Long> before = this.talents.stream()
                 .filter(givenTalent -> givenTalent.getType().equals(GIVE))
                 .map(givenTalent -> givenTalent.getTalent().getId())
@@ -108,7 +111,10 @@ public class Member extends BaseEntity{
     }
 
     private void setTakenTalents(List<SubCategory> afterTakenTalents) {
-
+        if (afterTakenTalents == null) {
+            this.talents.removeIf(givenTalent -> (givenTalent.getType().equals(TAKE)));
+            return;
+        }
         Set<Long> before = this.talents.stream()
                 .filter(takenTalent -> takenTalent.getType().equals(TAKE))
                 .map(takenTalent -> takenTalent.getTalent().getId())

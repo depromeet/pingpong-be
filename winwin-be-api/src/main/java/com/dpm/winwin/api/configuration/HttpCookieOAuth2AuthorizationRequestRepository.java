@@ -3,6 +3,7 @@ package com.dpm.winwin.api.configuration;
 import com.dpm.winwin.api.common.utils.CookieUtil;
 import com.nimbusds.oauth2.sdk.util.StringUtils;
 import java.util.Map;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -41,6 +42,12 @@ public class HttpCookieOAuth2AuthorizationRequestRepository implements
         for (String s : attributes.keySet()) {
             Object o = attributes.get(s);
             log.info("s : {}, attribute : {}",s, o);
+        }
+
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                log.info("cookie name : {}, cookie value : {}", cookie.getName(), cookie.getValue());
+            }
         }
 
         log.info("쿠키 추가");

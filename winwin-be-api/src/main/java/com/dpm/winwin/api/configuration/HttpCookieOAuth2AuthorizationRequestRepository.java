@@ -3,9 +3,9 @@ package com.dpm.winwin.api.configuration;
 import com.dpm.winwin.api.common.utils.CookieUtil;
 import com.nimbusds.oauth2.sdk.util.StringUtils;
 import java.util.Map;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
@@ -32,18 +32,24 @@ public class HttpCookieOAuth2AuthorizationRequestRepository implements
         HttpServletResponse response) {
         log.info("==== saveAuthorizationRequest ====");
         if (authorizationRequest == null) {
-            log.info("쿠키 삭제");
             CookieUtil.deleteCookie(request, response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME);
             CookieUtil.deleteCookie(request, response, REDIRECT_URI_PARAM_COOKIE_NAME);
             return;
         }
+
         Map<String, Object> attributes = authorizationRequest.getAttributes();
         for (String s : attributes.keySet()) {
             Object o = attributes.get(s);
-            log.info("s : {}, attribute : {}",s, o);
+            log.info("s : {}, attribute : {}", s, o);
         }
 
-        log.info("쿠키 추가");
+        log.info("request.getContextPath : {} ", request.getContextPath());
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                log.info("cookie name : {}, cookie value : {}", cookie.getName(), cookie.getValue());
+            }
+        }
+
         CookieUtil.addCookie(response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME,
             CookieUtil.serialize(authorizationRequest), cookieExpireSeconds);
         String redirectUriAfterLogin = request.getParameter(REDIRECT_URI_PARAM_COOKIE_NAME);

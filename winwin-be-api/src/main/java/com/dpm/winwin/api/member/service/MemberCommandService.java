@@ -17,8 +17,10 @@ import com.dpm.winwin.api.member.dto.response.MemberUpdateResponse;
 import com.dpm.winwin.domain.entity.category.SubCategory;
 import com.dpm.winwin.domain.entity.member.Member;
 import com.dpm.winwin.domain.entity.oauth.OauthToken;
+import com.dpm.winwin.domain.entity.post.Likes;
 import com.dpm.winwin.domain.repository.category.SubCategoryRepository;
 import com.dpm.winwin.domain.repository.member.MemberRepository;
+import com.dpm.winwin.domain.repository.post.LikesRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,6 +51,8 @@ public class MemberCommandService {
     private final RestTemplate restTemplate;
     private final ClientRegistrationRepository clientRegistrationRepository;
     private final FileService fileService;
+
+    private final LikesRepository likesRepository;
 
     public MemberNicknameResponse updateMemberNickname(Long memberId,
                                                        MemberNicknameRequest memberNicknameRequest) {
@@ -100,10 +104,13 @@ public class MemberCommandService {
         Member member = memberRepository.findMemberWithToken(memberId)
             .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
 
+        List<Likes> likes = likesRepository.findAllByMember(member);
+
         log.info("member : {}", member);
         ResponseEntity<Object> response = revokeAppleToken(member);
 
         if (response.getStatusCode().equals(HttpStatus.OK)) {
+            likesRepository.deleteAll(likes);
             memberRepository.delete(member);
 
             MemberDeleteResponse memberDeleteResponse = new MemberDeleteResponse(memberId);

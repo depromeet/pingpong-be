@@ -126,6 +126,9 @@ public class AppleLoginService {
         log.info("socialId :: {}, provider :: {}", socialId, provider);
         Member member = memberRepository.findByMemberByOauthProviderAndSocialId(provider, socialId).orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
 
+        OauthToken oauthToken = member.getOauthToken();
+        oauthToken.changeToken(appleToken.accessToken(), appleToken.refreshToken());
+
         return getTokenResponse(member);
     }
 

@@ -21,11 +21,9 @@ public record MemberUpdateRequest(
 
     String profileLink,
 
-    @NotNull(message = "주고 싶은 재능을 선택해 주세요.")
     @Size(max = 5, message = "주고 싶은 재능은 최대 5개입니다.")
     List<Long> givenTalents,
 
-    @NotNull(message = "받고 싶은 재능을 선택해 주세요.")
     @Size(max = 5, message = "받고 싶은 재능은 최대 5개입니다.")
     List<Long> takenTalents
 ) {

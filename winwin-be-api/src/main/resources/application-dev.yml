@@ -91,7 +91,3 @@ cloud:
 
 pingpong:
   url: https://dev-fe.ping-pong.world
-
-logging:
-  level:
-    org.springframework: debug

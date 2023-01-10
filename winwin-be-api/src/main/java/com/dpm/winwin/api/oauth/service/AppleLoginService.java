@@ -51,6 +51,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 @Slf4j
@@ -86,19 +87,18 @@ public class AppleLoginService {
 
         String socialId = (String) claims.get("sub");
         ProviderType provider = ProviderType.APPLE;
-        String nickname = nicknameGenerator.generate();
 
-        log.info("nickname :: {}, socialId :: {}, provider :: {}", nickname, socialId, provider);
+        log.info("socialId :: {}, provider :: {}", socialId, provider);
 
-        Member member = saveMember(nickname);
+        Member member = saveMember();
         OauthToken oauthToken = new OauthToken(member, socialId, provider, appleToken.accessToken(), appleToken.refreshToken());
         oauthRepository.save(oauthToken);
 
         return getTokenResponse(member);
     }
 
-    private Member saveMember(String nickname){
-        Member newMember = new Member(nickname, fileService.getDefaultRandomProfileImageUrl(), Ranks.ROOKIE);
+    private Member saveMember(){
+        Member newMember = new Member(fileService.getDefaultRandomProfileImageUrl(), Ranks.ROOKIE);
         return memberRepository.save(newMember);
     }
 
@@ -108,7 +108,11 @@ public class AppleLoginService {
 
         RefreshTokenEntity refreshTokenEntity = new RefreshTokenEntity(member.getId(), refreshToken);
         jwtTokenRepository.save(refreshTokenEntity);
-        return new TokenResponse(member.getId(), accessToken, refreshToken);
+
+        String nickname = member.getNickname();
+        boolean isExistNickname = StringUtils.hasText(nickname);
+
+        return new TokenResponse(member.getId(), accessToken, refreshToken, isExistNickname);
     }
 
     public TokenResponse signInMember(String code) throws ParseException, InvalidKeySpecException, NoSuchAlgorithmException {
@@ -121,6 +125,9 @@ public class AppleLoginService {
 
         log.info("socialId :: {}, provider :: {}", socialId, provider);
         Member member = memberRepository.findByMemberByOauthProviderAndSocialId(provider, socialId).orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
+
+        OauthToken oauthToken = member.getOauthToken();
+        oauthToken.changeToken(appleToken.accessToken(), appleToken.refreshToken());
 
         return getTokenResponse(member);
     }

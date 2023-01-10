@@ -34,6 +34,7 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -75,11 +76,15 @@ public class MemberCommandService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
 
-        List<SubCategory> takenTalents = subCategoryRepository.findAllById(
-                memberUpdateRequest.takenTalents());
+        List<SubCategory> takenTalents = null;
+        if (!CollectionUtils.isEmpty(memberUpdateRequest.takenTalents())){
+            takenTalents = subCategoryRepository.findAllById(memberUpdateRequest.takenTalents());
+        }
 
-        List<SubCategory> givenTalents = subCategoryRepository.findAllById(
-                memberUpdateRequest.givenTalents());
+        List<SubCategory> givenTalents = null;
+        if (!CollectionUtils.isEmpty(memberUpdateRequest.givenTalents())){
+            givenTalents = subCategoryRepository.findAllById(memberUpdateRequest.givenTalents());
+        }
 
         member.update(memberUpdateRequest.toDto(), givenTalents, takenTalents);
 

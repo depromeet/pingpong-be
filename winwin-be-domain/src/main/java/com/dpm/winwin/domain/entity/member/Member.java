@@ -52,7 +52,6 @@ public class Member extends BaseEntity{
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Post> posts = new ArrayList<>();
 
-    @Column(nullable = false)
     private String nickname;
 
     private String image;
@@ -73,8 +72,7 @@ public class Member extends BaseEntity{
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "member", cascade = CascadeType.REMOVE)
     private OauthToken oauthToken;
 
-    public Member(String nickname, String image, Ranks ranks) {
-        this.nickname = nickname;
+    public Member(String image, Ranks ranks) {
         this.ranks = ranks;
         this.image = image;
         this.likeCount = 0;
@@ -88,7 +86,10 @@ public class Member extends BaseEntity{
     }
 
     private void setGivenTalents(List<SubCategory> afterGivenTalents) {
-
+        if (afterGivenTalents == null) {
+            this.talents.removeIf(givenTalent -> (givenTalent.getType().equals(GIVE)));
+            return;
+        }
         Set<Long> before = this.talents.stream()
                 .filter(givenTalent -> givenTalent.getType().equals(GIVE))
                 .map(givenTalent -> givenTalent.getTalent().getId())
@@ -108,7 +109,10 @@ public class Member extends BaseEntity{
     }
 
     private void setTakenTalents(List<SubCategory> afterTakenTalents) {
-
+        if (afterTakenTalents == null) {
+            this.talents.removeIf(givenTalent -> (givenTalent.getType().equals(TAKE)));
+            return;
+        }
         Set<Long> before = this.talents.stream()
                 .filter(takenTalent -> takenTalent.getType().equals(TAKE))
                 .map(takenTalent -> takenTalent.getTalent().getId())

@@ -47,7 +47,6 @@ public class MemberQueryService {
 
         return new MemberRankReadResponse(
                 memberReadResponse.memberId(),
-                memberReadResponse.name(),
                 memberReadResponse.nickname(),
                 memberReadResponse.image(),
                 memberReadResponse.introduction(),

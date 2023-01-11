@@ -4,7 +4,6 @@ import java.util.List;
 
 public record MemberRankReadResponse(
         Long memberId,
-        String name,
         String nickname,
         String image,
         String introduction,

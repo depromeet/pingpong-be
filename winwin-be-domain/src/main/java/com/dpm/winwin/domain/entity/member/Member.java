@@ -52,9 +52,6 @@ public class Member extends BaseEntity{
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Post> posts = new ArrayList<>();
 
-    private String name;
-    private String email;
-
     private String nickname;
 
     private String image;
@@ -75,9 +72,7 @@ public class Member extends BaseEntity{
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "member", cascade = CascadeType.REMOVE)
     private OauthToken oauthToken;
 
-    public Member(String name, String email, String image, Ranks ranks) {
-        this.name = name;
-        this.email = email;
+    public Member(String image, Ranks ranks) {
         this.ranks = ranks;
         this.image = image;
         this.likeCount = 0;

@@ -114,6 +114,7 @@ public class MemberCommandService {
         log.info("member : {}", member);
         ResponseEntity<Object> response = revokeAppleToken(member);
 
+        log.info("response.getStatusCode() : {}", response.getStatusCode());
         if (response.getStatusCode().equals(HttpStatus.OK)) {
             likesRepository.deleteAll(likes);
             memberRepository.delete(member);
@@ -130,6 +131,7 @@ public class MemberCommandService {
         OauthToken oauthToken = member.getOauthToken();
         String refreshToken = oauthToken.getRefreshToken();
 
+        log.info("refreshToken : {}", refreshToken);
         return appleTokenRevokeRequest(oauthToken.getProviderType().name(), refreshToken);
     }
 
@@ -149,6 +151,7 @@ public class MemberCommandService {
 
         HttpEntity<MultiValueMap<String, String>> revokeRequest = new HttpEntity<>(params, headers);
 
+        log.info("revokeRequest : {}", revokeRequest);
         return restTemplate.postForEntity("https://appleid.apple.com/auth/revoke", revokeRequest, Object.class);
     }
 }

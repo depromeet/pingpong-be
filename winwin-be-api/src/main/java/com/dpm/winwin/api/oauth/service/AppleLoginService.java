@@ -10,11 +10,11 @@ import com.dpm.winwin.api.common.error.exception.custom.AppleTokenGenerateExcept
 import com.dpm.winwin.api.common.error.exception.custom.BusinessException;
 import com.dpm.winwin.api.common.error.exception.custom.InvalidIdTokenException;
 import com.dpm.winwin.api.common.file.service.FileService;
-import com.dpm.winwin.api.configuration.NicknameGenerator;
 import com.dpm.winwin.api.jwt.TokenProvider;
 import com.dpm.winwin.api.jwt.TokenResponse;
 import com.dpm.winwin.api.oauth.dto.ApplePublicKeys;
 import com.dpm.winwin.api.oauth.dto.AppleToken;
+import com.dpm.winwin.api.oauth.dto.MemberInfo;
 import com.dpm.winwin.domain.entity.member.Member;
 import com.dpm.winwin.domain.entity.member.enums.ProviderType;
 import com.dpm.winwin.domain.entity.member.enums.Ranks;
@@ -24,6 +24,7 @@ import com.dpm.winwin.domain.repository.member.MemberRepository;
 import com.dpm.winwin.domain.repository.oauth.OauthRepository;
 import com.dpm.winwin.domain.repository.token.JwtTokenRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jwt.SignedJWT;
 import io.jsonwebtoken.Claims;
@@ -60,13 +61,13 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 public class AppleLoginService {
 
+    private final ObjectMapper objectMapper;
     private final MemberRepository memberRepository;
     private final JwtTokenRepository jwtTokenRepository;
     private final TokenProvider tokenProvider;
     private final ClientRegistrationRepository clientRegistrationRepository;
     private final RestTemplate restTemplate;
     private final OauthRepository oauthRepository;
-    private final NicknameGenerator nicknameGenerator;
     private final FileService fileService;
     private static final String APPLE_BASE_URL = "https://appleid.apple.com";
     private static final String APPLE_TOKEN_REQUEST_URL = APPLE_BASE_URL + "/auth/token";
@@ -81,6 +82,7 @@ public class AppleLoginService {
     }
 
     public TokenResponse signUpMember(String memberInfo, String code) throws ParseException, NoSuchAlgorithmException, InvalidKeySpecException, JsonProcessingException {
+        MemberInfo info = objectMapper.readValue(memberInfo, MemberInfo.class);
         AppleToken appleToken = generatedToken(code);
         String idToken = appleToken.idToken();
         Claims claims = appleIdTokenParser(idToken);
@@ -90,15 +92,20 @@ public class AppleLoginService {
 
         log.info("socialId :: {}, provider :: {}", socialId, provider);
 
-        Member member = saveMember();
+        Member member = saveMember(info);
         OauthToken oauthToken = new OauthToken(member, socialId, provider, appleToken.accessToken(), appleToken.refreshToken());
         oauthRepository.save(oauthToken);
 
         return getTokenResponse(member);
     }
 
-    private Member saveMember(){
-        Member newMember = new Member(fileService.getDefaultRandomProfileImageUrl(), Ranks.ROOKIE);
+    private String getName(MemberInfo memberName) {
+        return memberName.name().lastName() + memberName.name().firstName();
+    }
+
+    private Member saveMember(MemberInfo memberInfo){
+        String name = getName(memberInfo);
+        Member newMember = new Member(name, memberInfo.email(), fileService.getDefaultRandomProfileImageUrl(), Ranks.ROOKIE);
         return memberRepository.save(newMember);
     }
 
@@ -112,7 +119,7 @@ public class AppleLoginService {
         String nickname = member.getNickname();
         boolean isExistNickname = StringUtils.hasText(nickname);
 
-        return new TokenResponse(member.getId(), accessToken, refreshToken, isExistNickname);
+        return new TokenResponse(member.getId(), accessToken, refreshToken, member.getName(), isExistNickname);
     }
 
     public TokenResponse signInMember(String code) throws ParseException, InvalidKeySpecException, NoSuchAlgorithmException {

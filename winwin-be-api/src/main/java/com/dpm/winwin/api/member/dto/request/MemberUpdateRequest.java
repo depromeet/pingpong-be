@@ -15,7 +15,6 @@ public record MemberUpdateRequest(
     @Pattern(regexp = "^[가-힣a-zA-Z\\s]{2,10}$", message = "한글/영어만 사용이 가능해요.")
     String nickname,
 
-    @NotBlank(message = "자기 소개는 필수입니다.")
     @Length(max = 300, message = "자기 소개는 300자 이하이어야 합니다.")
     String introduction,
 

@@ -18,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import org.springframework.util.StringUtils;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -55,5 +56,15 @@ public class OauthToken {
         this.providerType = providerType;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
+    }
+
+    public void changeToken(String accessToken, String refreshToken){
+        if (StringUtils.hasText(accessToken)) {
+            this.accessToken = accessToken;
+        }
+
+        if (StringUtils.hasText(accessToken)) {
+            this.refreshToken = refreshToken;
+        }
     }
 }

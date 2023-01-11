@@ -41,7 +41,6 @@ spring:
             redirect-uri: https://test.pingpongg.shop/apple/redirect
             scope:
               - openid
-              - name
               - email
         provider:
           apple:

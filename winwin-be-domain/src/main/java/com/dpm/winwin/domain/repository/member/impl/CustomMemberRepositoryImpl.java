@@ -31,7 +31,6 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
                                         Projections.constructor(
                                                 MemberReadResponse.class,
                                                 member.id,
-                                                member.name,
                                                 member.nickname,
                                                 member.image,
                                                 member.introduction,

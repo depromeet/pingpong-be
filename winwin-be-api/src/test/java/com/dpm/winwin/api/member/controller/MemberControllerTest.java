@@ -202,7 +202,6 @@ public class MemberControllerTest extends RestDocsTestSupport {
 
         when(memberQueryService.readMemberInfo(any())).thenReturn(new MemberRankReadResponse(
                 1L,
-                "홍길동",
                 "김감자",
                 "https://dpm-pingpong-bucket.s3.ap-northeast-2.amazonaws.com/profileImage/3d4395e461db40108104200e286870c4-kirby.png",
                 "안녕하세요 김감자입니다.",
@@ -230,8 +229,6 @@ public class MemberControllerTest extends RestDocsTestSupport {
                                                 .description("성공 여부"),
                                         fieldWithPath("data.memberId").type(JsonFieldType.NUMBER)
                                                 .description("저장된 회원 id"),
-                                        fieldWithPath("data.name").type(JsonFieldType.STRING)
-                                                .description("유저 이름"),
                                         fieldWithPath("data.nickname").type(JsonFieldType.STRING)
                                                 .description("닉네임"),
                                         fieldWithPath("data.image").type(JsonFieldType.STRING)

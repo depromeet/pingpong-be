@@ -43,7 +43,8 @@ public class AppleLoginController {
     @PostMapping(value = "/apple/redirect", consumes = "application/x-www-form-urlencoded;charset=UTF-8")
     public BaseResponseDto<LoginResponse> appleRedirect(@RequestBody MultiValueMap<String, String> redirectInfo,
                                                         HttpServletRequest request,
-                                                        HttpServletResponse response)
+                                                        HttpServletResponse response,
+                                                        RedirectAttributes redirectAttributes)
         throws IOException, ParseException, NoSuchAlgorithmException, InvalidKeySpecException {
         log.info("----> {}", redirectInfo);
 
@@ -71,6 +72,8 @@ public class AppleLoginController {
 
             log.info("memberInfo:: {}", memberInfo);
             TokenResponse token = appleLoginService.signUpMember(memberInfo, code);
+            redirectAttributes.addAttribute("name", token.name());
+            redirectAttributes.addFlashAttribute("flash name", token.name());
             redirectUri = getRedirectUri(token);
             setResponse(request, response, redirectUri, token);
             return BaseResponseDto.ok(new LoginResponse(token.memberId()));
@@ -79,6 +82,9 @@ public class AppleLoginController {
         String code = redirectInfo.getFirst("code");
         TokenResponse token = appleLoginService.signInMember(code);
         redirectUri = getRedirectUri(token);
+        redirectAttributes.addAttribute("name", token.name());
+        redirectAttributes.addFlashAttribute("flash name", token.name());
+
         setResponse(request, response, redirectUri, token);
         return BaseResponseDto.ok(new LoginResponse(token.memberId()));
     }

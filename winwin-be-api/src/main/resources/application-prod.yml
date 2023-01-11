@@ -40,7 +40,6 @@ spring:
             redirect-uri: https://be.ping-pong.world/apple/redirect
             scope:
               - openid
-              - name
               - email
         provider:
           apple:

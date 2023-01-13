@@ -133,7 +133,7 @@ PingPong은 두 가지 재능 공유 방식을 제공하고 있어요.
 </tr>
 </table>
 
-## System Architecture
+## Service Architecture
 
 <img width="80%" src="https://user-images.githubusercontent.com/62706048/212387766-28196c04-d195-4bc5-829a-2e43a1aa0777.png" />
 

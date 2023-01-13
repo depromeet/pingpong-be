@@ -10,7 +10,7 @@
 
 재능을 교환하고 나누며 성장하는 플랫폼
 
-각자 니즈에 맞는 재능을 교환하고 공유할 수 있도록, 사용자들이 동반 성장할 수 있도록 Ping-Pong이 도와드릴게요.
+각자 니즈에 맞는 재능을 교환, 공유하여 동반 성장할 수 있도록 Ping-Pong이 도와드릴게요.
 
 <br />
 <br />
@@ -26,26 +26,47 @@
 
 <img width='80%' src="https://user-images.githubusercontent.com/62706048/212312852-5fe7e080-e1e1-4a0d-864b-41b1efa8db07.png" />
 
+내가 관심 있는 재능과 다른 사람의 프로필을 구경할 수 있어요.
+
+재능을 공유 받고 싶다면 오픈 채팅 링크를 통해 접촉해 보세요!
+
 <br />
 <br />
 
 <img width='80%' src="https://user-images.githubusercontent.com/62706048/212312856-a1d5e466-6666-4117-8e72-6a4fb46c2fd2.png" />
 
+PingPong은 두 가지 재능 공유 방식을 제공하고 있어요.
+
+재능이 필요한 누군가에게 나눔하는 `재능 나눔`과
+
+나의 재능과 다른 사람의 재능을 맞바꾸는 `재능 교환` 중 선택할 수 있어요.
+
 <br />
 <br />
 
-<img width='80%' src="https://user-images.githubusercontent.com/62706048/212312857-58892ca4-b762-4bdb-9244-b5df58562d51.png" />
+<img width='80%' src="https://user-images.githubusercontent.com/62706048/212321819-0358d3b9-767b-4591-a5fb-2800dba9d440.png" />
+
+나의 재능을 다른 사람에게 나눠줄 수 있어요.
+
+재능을 나눔으로써 동기부여를 받고, 동반 성장도 할 수 있어요.
 
 <br />
 <br />
 
-<img width='80%' src="https://user-images.githubusercontent.com/62706048/212312859-e2868ba6-eb27-4a4e-8d7e-e82d8299690a.png" />
+<img width='80%' src="https://user-images.githubusercontent.com/62706048/212321827-bf118744-f0bd-4dd8-b21e-e74dac9799c8.png" />
+
+나의 재능과 다른 사람의 재능을 교환할 수도 있어요.
+
+서로의 재능 니즈가 맞는 상대방과 재능을 교환해 보세요!
 
 <br />
 <br />
 
 <img width='80%' src="https://user-images.githubusercontent.com/62706048/212312862-ec667783-2e91-4d9f-bf4f-02d7dcebed4b.png" />
 
+활동 이력에 따른 등급을 확인할 수 있어요.
+
+모두 프로 등급을 위해 달려가 보자구요~!
 
 ## Preview
 

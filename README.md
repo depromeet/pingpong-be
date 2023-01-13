@@ -2,7 +2,7 @@
 <!-- ![Github-readme](https://user-images.githubusercontent.com/62706048/212307682-e31536c2-912a-4312-b4e2-5860fc37f91a.png) -->
 <!-- <br /> -->
 
-<img src="https://user-images.githubusercontent.com/62706048/212308335-098f9b0a-0a99-4fe8-b9d8-668fa4aeb236.png" alt="pingpong logo" align="right" height="80" />
+<!-- <img src="https://user-images.githubusercontent.com/62706048/212308335-098f9b0a-0a99-4fe8-b9d8-668fa4aeb236.png" alt="pingpong logo" align="right" height="80" /> -->
 
 # 재능 교환 서비스 PingPong
 
@@ -134,3 +134,7 @@ PingPong은 두 가지 재능 공유 방식을 제공하고 있어요.
 </table>
 
 ## System Architecture
+
+<img width="80%" src="https://user-images.githubusercontent.com/62706048/212387766-28196c04-d195-4bc5-829a-2e43a1aa0777.png" />
+
+

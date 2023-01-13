@@ -88,7 +88,7 @@ PingPong은 두 가지 재능 공유 방식을 제공하고 있어요.
 
 <img src="https://img.shields.io/badge/amazon aws-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white">
 <img src="https://img.shields.io/badge/ec2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white">
-<img src="https://img.shields.io/static/v1?style=for-the-badge&message=Amazon+RDS&color=527FFF&logo=Amazon+RDS&logoColor=FFFFFF&label=">
+<img src="https://img.shields.io/static/v1?style=for-the-badge&message=RDS&color=527FFF&logo=Amazon+RDS&logoColor=FFFFFF&label=">
 <img src="https://img.shields.io/badge/s3-569A31?style=for-the-badge&logo=amazons3&logoColor=white">
 <img src="https://img.shields.io/badge/nginx-009639?style=for-the-badge&logo=nginx&logoColor=white">
 <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=amazons3&logoColor=white">

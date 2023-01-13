@@ -38,6 +38,7 @@ import java.text.ParseException;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
@@ -124,10 +125,17 @@ public class AppleLoginService {
         ProviderType provider = ProviderType.APPLE;
 
         log.info("socialId :: {}, provider :: {}", socialId, provider);
-        Member member = memberRepository.findByMemberByOauthProviderAndSocialId(provider, socialId).orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
+        Optional<Member> findMember = memberRepository.findByMemberByOauthProviderAndSocialId(provider, socialId);
+        if (findMember.isPresent()){
+            Member member = findMember.get();
+            OauthToken oauthToken = member.getOauthToken();
+            oauthToken.changeToken(appleToken.accessToken(), appleToken.refreshToken());
+            return getTokenResponse(member);
+        }
 
-        OauthToken oauthToken = member.getOauthToken();
-        oauthToken.changeToken(appleToken.accessToken(), appleToken.refreshToken());
+        Member member = saveMember();
+        OauthToken oauthToken = new OauthToken(member, socialId, provider, appleToken.accessToken(), appleToken.refreshToken());
+        oauthRepository.save(oauthToken);
 
         return getTokenResponse(member);
     }

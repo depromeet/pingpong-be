@@ -1,97 +1,54 @@
 <!-- 상단 대표 이미지 -->
-<!-- ![Github-readme](https://user-images.githubusercontent.com/62706048/212307682-e31536c2-912a-4312-b4e2-5860fc37f91a.png) -->
-<!-- <br /> -->
-
-<!-- <img src="https://user-images.githubusercontent.com/62706048/212308335-098f9b0a-0a99-4fe8-b9d8-668fa4aeb236.png" alt="pingpong logo" align="right" height="80" /> -->
-
-# 재능 교환 서비스 PingPong
-
-<img width='80%' src="https://user-images.githubusercontent.com/62706048/212315899-c7b129d8-0b51-4031-9df8-9d44666f0b55.png" />
-
-재능을 교환하고 나누며 성장하는 플랫폼
-
-각자 니즈에 맞는 재능을 교환, 공유하여 동반 성장할 수 있도록 Ping-Pong이 도와드릴게요.
-
-<br />
+![Github-readme](https://user-images.githubusercontent.com/62706048/226220437-0a255d53-fd75-4c86-a419-0001a309c4c9.png)
 <br />
 
-<img width='80%' src="https://user-images.githubusercontent.com/62706048/212312125-f5483c8c-cb1a-4a4c-b9d3-678a877c33be.png" />
+# Ping-Pong!
+<p>
+<img src="https://img.shields.io/github/issues-pr-closed/depromeet/pingpong-be?color=blueviolet"/>
+<img src="https://img.shields.io/github/issues/depromeet/pingpong-be?color=inactive"/>
+<img src="https://img.shields.io/github/issues-closed/depromeet/pingpong-be"/> 
+<img src="https://img.shields.io/github/stars/depromeet/pingpong-be"/>
+</p>
 
-당신이 관심 있는 분야에 얼마나 많은 사람들이 재능을 가지고 있는지 궁금한 적 있으신가요?
+## Screenshots
 
-다양한 카테고리의 재능을 둘러보고, 새로운 재능을 발견해 보세요!
-
-<br />
-<br />
-
-<img width='80%' src="https://user-images.githubusercontent.com/62706048/212312852-5fe7e080-e1e1-4a0d-864b-41b1efa8db07.png" />
-
-내가 관심 있는 재능과 다른 사람의 프로필을 구경할 수 있어요.
-
-재능을 공유 받고 싶다면 오픈 채팅 링크를 통해 접촉해 보세요!
-
-<br />
-<br />
-
-<img width='80%' src="https://user-images.githubusercontent.com/62706048/212312856-a1d5e466-6666-4117-8e72-6a4fb46c2fd2.png" />
-
-PingPong은 두 가지 재능 공유 방식을 제공하고 있어요.
-
-재능이 필요한 누군가에게 나눔하는 `재능 나눔`과
-
-나의 재능과 다른 사람의 재능을 맞바꾸는 `재능 교환` 중 선택할 수 있어요.
-
-<br />
-<br />
-
-<img width='80%' src="https://user-images.githubusercontent.com/62706048/212321819-0358d3b9-767b-4591-a5fb-2800dba9d440.png" />
-
-나의 재능을 다른 사람에게 나눠줄 수 있어요.
-
-재능을 나눔으로써 동기부여를 받고, 동반 성장도 할 수 있어요.
-
-<br />
-<br />
-
-<img width='80%' src="https://user-images.githubusercontent.com/62706048/212321827-bf118744-f0bd-4dd8-b21e-e74dac9799c8.png" />
-
-나의 재능과 다른 사람의 재능을 교환할 수도 있어요.
-
-서로의 재능 니즈가 맞는 상대방과 재능을 교환해 보세요!
-
-<br />
-<br />
-
-<img width='80%' src="https://user-images.githubusercontent.com/62706048/212312862-ec667783-2e91-4d9f-bf4f-02d7dcebed4b.png" />
-
-활동 이력에 따른 등급을 확인할 수 있어요.
-
-모두 프로 등급을 위해 달려가 보자구요~!
-
-## Preview
-
-<img width='13%' src="https://user-images.githubusercontent.com/62706048/212306300-aeb2d538-58c9-4457-a979-fd233e5f1991.png" /> <img width='13%' src="https://user-images.githubusercontent.com/62706048/212306603-d918f613-096c-4767-afa6-80bb22b17350.png" /> <img width='13%' src="https://user-images.githubusercontent.com/62706048/212306608-5b189307-0d2c-4f2c-920a-44d5ae20f638.png" /> <img width='13%' src="https://user-images.githubusercontent.com/62706048/212306610-531a6c8a-769f-4858-a3a9-3e2b7733e448.png" /> <img width='13%' src="https://user-images.githubusercontent.com/62706048/212306617-85bf51d8-1676-42ae-93b1-11249dded27b.png" /> <img width='13%' src="https://user-images.githubusercontent.com/62706048/212306620-40b9d1e7-4153-4f04-8535-979cb87d3b32.png" /> <img width='13%' src="https://user-images.githubusercontent.com/62706048/212306624-3e6c3740-0ea8-4d43-b1c0-33b21fbe9430.png" />
+<img width='13%' src="https://user-images.githubusercontent.com/62706048/226220679-04930d9c-4f78-427f-a4ef-4aea7d5c0328.png" /> <img width='13%' src="https://user-images.githubusercontent.com/62706048/226220689-56a0279c-8b04-4ae1-94ac-4afcbde786fa.png" /> <img width='13%' src="https://user-images.githubusercontent.com/62706048/226220693-2ad61fbd-5152-4675-b7ea-02cf577b694c.png" /> <img width='13%' src="https://user-images.githubusercontent.com/62706048/226220697-b3e667ae-a20c-4254-825e-da1a0f7086aa.png" /> <img width='13%' src="https://user-images.githubusercontent.com/62706048/226220702-9032da45-6d7b-44f2-a4f6-3b6ce399d292.png" /> <img width='13%' src="https://user-images.githubusercontent.com/62706048/226220707-4489b4e0-cda2-4202-8bd6-75cd1c4ac53a.png" />
 
 ## Skill
 
+**Language**
 <p>
 <img src="https://img.shields.io/badge/java-FFF000?style=for-the-badge&logo=java&logoColor=white">
+</p>
+
+**Api Spec**
+<p>
+<img src="https://img.shields.io/badge/Rest Docs-6DB33F?style=for-the-badge&logo=jwt&logoColor=white">
+</p>
+
+**Web Frameworks & related technologies**
+<p>
 <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring&logoColor=white"/>
 <img src="https://img.shields.io/badge/Spring Security-6DB33F?style=for-the-badge&logo=TypeScript&logoColor=white"/>
-
 <img src="https://img.shields.io/badge/jwt-6DB33F?style=for-the-badge&logo=jwt&logoColor=white">
 <img src="https://img.shields.io/badge/JPA-6DB33F?style=for-the-badge&logo=JPA&logoColor=white">
 <img src="https://img.shields.io/badge/gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white">
+</p>
 
+**Database**
+<p>
 <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=orange">
 <img src="https://img.shields.io/badge/redis-DC382D?style=for-the-badge&logo=redis&logoColor=orange">
+</p>
 
-<img src="https://img.shields.io/badge/amazon aws-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white">
-<img src="https://img.shields.io/badge/ec2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white">
+**Infrastructure**
+<p>
+<img src="https://img.shields.io/badge/AWS EC2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white">
+<img src="https://img.shields.io/badge/AWS Elastic Beanstalk-FF9900?style=for-the-badge&logoColor=white">
 <img src="https://img.shields.io/static/v1?style=for-the-badge&message=RDS&color=527FFF&logo=Amazon+RDS&logoColor=FFFFFF&label=">
 <img src="https://img.shields.io/badge/s3-569A31?style=for-the-badge&logo=amazons3&logoColor=white">
 <img src="https://img.shields.io/badge/nginx-009639?style=for-the-badge&logo=nginx&logoColor=white">
-<img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=amazons3&logoColor=white">
+<img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white">
 <img alt="github actions" src="https://img.shields.io/badge/-Github Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white" />
 </p>
 
@@ -135,6 +92,14 @@ PingPong은 두 가지 재능 공유 방식을 제공하고 있어요.
 
 ## Service Architecture
 
-<img width="80%" src="https://user-images.githubusercontent.com/62706048/212387766-28196c04-d195-4bc5-829a-2e43a1aa0777.png" />
+<img src="https://user-images.githubusercontent.com/62706048/212387766-28196c04-d195-4bc5-829a-2e43a1aa0777.png" />
+
+## ERD
+
+<img alt="chrome_9cu223rNVp" src="https://user-images.githubusercontent.com/62706048/226222897-315d58c0-2e43-4cfd-8ad7-0d0f16cb1d86.png">
+
+## Api-docs
+
+[Ping-Pong-API-docs](https://sa46lll.github.io/restdocs-github-page/build/index.html)
 
 
